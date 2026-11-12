@@ -8,10 +8,10 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:#55435f;background:linear-gradient(135deg,#fff0f7,#f0edff,#edf7ff)}
-header{text-align:center;padding:23px 10px;background:linear-gradient(110deg,#f4afd0,#b8a8ed);color:#60446f;border-bottom:5px solid white}
+header{text-align:center;padding:20px 10px;background:linear-gradient(110deg,#f4afd0,#b8a8ed);color:#60446f;border-bottom:5px solid white}
 header h1{margin:0;font-size:clamp(22px,5vw,32px)}
 header p{margin:8px 0 0;font-size:13px;letter-spacing:2px}
-main{max-width:1150px;margin:auto;padding:16px}
+main{max-width:1250px;margin:auto;padding:16px}
 .hidden{display:none!important}
 .card{background:white;border:1px solid #eadcf1;border-radius:22px;padding:18px;box-shadow:0 8px 25px #76558a16}
 .register{max-width:950px;margin:20px auto}
@@ -39,6 +39,8 @@ input:focus{border-color:#a994e8}
 .character strong{display:block;font-size:13px;margin:4px 0}
 .character small{font-size:10px;color:#9c80a2}
 .join{width:100%;margin-top:22px;padding:17px;border:0;border-radius:16px;color:white;font-size:18px;font-weight:bold;background:linear-gradient(90deg,#e96eae,#9582df);box-shadow:0 6px 16px #c48ac455}
+
+/* KHU VỰC THÔNG TIN */
 .top-grid{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px}
 .panel h3{color:#86568f;margin-top:0}
 .rank{display:flex;justify-content:space-between;gap:5px;padding:9px 0;border-bottom:1px solid #f0e3ef;font-size:13px}
@@ -46,20 +48,238 @@ input:focus{border-color:#a994e8}
 .board h2{margin:5px;font-size:21px}
 .board p{line-height:1.5;font-size:13px}
 .teacher{font-size:52px}
-.room{margin-top:18px;padding:16px;border:7px solid #9b7048;border-radius:20px;background:linear-gradient(180deg,#b5dff2 0%,#e1f2f8 18%,#fff0d8 18%,#ffe9ca 68%,#d6a36c 68%,#b67b4d 100%);box-shadow:0 8px 20px #97643d33}
-.room-title{max-width:520px;margin:0 auto 20px;padding:13px;text-align:center;border:3px solid #e7bd8a;border-radius:16px;background:#fffaf0}
-.room-title h2{font-size:19px}
-.students{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
-.desk{min-width:0;background:linear-gradient(135deg,#e9b979,#bd7942);border:3px solid #986035;border-radius:12px;padding:5px;box-shadow:0 6px 0 #80502e}
-.desk-top{min-height:155px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffe7b6,#e7b36f);border:2px solid #a76a3d;border-radius:8px;padding:5px}
-.desk-top svg{width:90px;height:110px;display:block}
-.student-name{width:100%;padding:6px;border-radius:9px;background:white;text-align:center;font-size:12px;overflow-wrap:anywhere}
-.seat-label{text-align:center;color:white;font-size:11px;padding:5px}
+
+/* PHÒNG HỌC VIỆT NAM */
+.room{
+ margin-top:20px;
+ padding:15px;
+ border:9px solid #a16d42;
+ border-radius:12px;
+ background:#f5e5c9;
+ box-shadow:0 10px 25px #754c3038;
+ overflow:hidden;
+}
+.classroom-wall{
+ position:relative;
+ padding:15px;
+ min-height:300px;
+ background:
+ repeating-linear-gradient(90deg,transparent 0,transparent 98px,#e8d4b5 99px,#e8d4b5 101px),
+ #fff3dc;
+ border:5px solid #d5b48a;
+}
+.wall-decor{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:12px;
+}
+.wall-window{
+ width:100px;height:75px;
+ border:6px solid #9b7048;
+ background:linear-gradient(#9ed9f2 0 55%,#b7df9c 55%);
+ position:relative;
+ box-shadow:inset 0 0 0 3px white;
+}
+.wall-window:before{
+ content:"";
+ position:absolute;left:50%;top:0;height:100%;
+ border-left:4px solid #9b7048;
+}
+.wall-window:after{
+ content:"";
+ position:absolute;left:0;top:50%;width:100%;
+ border-top:4px solid #9b7048;
+}
+.flag{
+ width:74px;height:49px;background:#da202b;
+ display:flex;align-items:center;justify-content:center;
+ box-shadow:0 2px 4px #0003;
+ font-size:26px;
+}
+.ho-portrait{
+ width:65px;height:75px;
+ border:5px solid #a16d42;
+ background:#f8f0df;
+ display:flex;align-items:center;justify-content:center;
+ font-size:37px;
+}
+.wall-clock{
+ width:58px;height:58px;border:5px solid #8e6a45;
+ border-radius:50%;background:white;
+ display:flex;align-items:center;justify-content:center;
+ font-size:25px;
+}
+.chalkboard{
+ position:relative;
+ width:min(720px,100%);
+ min-height:195px;
+ margin:5px auto 0;
+ padding:17px;
+ border:12px solid #97643d;
+ border-radius:5px;
+ background:#24613d;
+ color:#fffbe2;
+ text-align:center;
+ box-shadow:inset 0 0 18px #102e20,0 5px 0 #70472c;
+}
+.chalkboard:after{
+ content:"";
+ position:absolute;
+ bottom:-19px;left:15%;width:70%;height:10px;
+ background:#bd8754;border-radius:4px;
+}
+.chalkboard h2{
+ margin:0 0 10px;
+ font-size:clamp(17px,3vw,25px);
+ letter-spacing:1px;
+}
+.chalk-writing{
+ font-family:Georgia,serif;
+ font-style:italic;
+ font-size:clamp(14px,2.5vw,19px);
+ line-height:1.8;
+}
+.chalk-small{font-size:12px;color:#d9ebc8}
+.teacher-area{
+ display:flex;
+ justify-content:center;
+ align-items:flex-end;
+ gap:18px;
+ margin:22px auto 0;
+}
+.teacher-desk{
+ width:180px;
+ min-height:58px;
+ border:4px solid #87572f;
+ border-radius:5px;
+ background:linear-gradient(#c88b4e,#a86636);
+ text-align:center;
+ color:white;
+ padding:8px;
+ box-shadow:0 7px 0 #774522;
+ font-size:13px;
+ font-weight:bold;
+}
+.teacher-person{font-size:48px}
+.wall-board{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ margin-top:18px;
+ flex-wrap:wrap;
+}
+.notice{
+ flex:1;min-width:135px;
+ padding:10px;
+ background:#fff9df;
+ border:3px solid #d6b66f;
+ border-radius:5px;
+ text-align:center;
+ font-size:12px;
+ box-shadow:2px 3px 5px #8d653322;
+}
+.notice strong{display:block;color:#8a5834;margin-bottom:6px}
+.notice p{margin:4px 0;line-height:1.5}
+.room-title{
+ margin:0 auto 15px;
+ padding:13px;
+ text-align:center;
+ background:#fff9eb;
+ border:3px solid #d5b48a;
+ border-radius:10px;
+}
+.room-title h2{font-size:20px;margin:0;color:#825631}
+.room-title p{margin:6px 0 0;color:#98734d;font-size:13px}
+.student-zone{
+ padding:18px 10px 25px;
+ background:
+ repeating-linear-gradient(90deg,#d4a36b 0,#d4a36b 48px,#c58d58 49px,#c58d58 51px);
+ border:5px solid #9c663a;
+ border-top:10px solid #a36e42;
+}
+.students{
+ display:grid;
+ grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:22px 12px;
+ max-width:1050px;
+ margin:auto;
+}
+.desk{
+ min-width:0;
+ position:relative;
+ padding-top:4px;
+}
+.desk-top{
+ min-height:150px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:flex-end;
+ background:linear-gradient(135deg,#f4d29a,#dca365);
+ border:3px solid #8d592f;
+ border-radius:7px;
+ padding:5px;
+ box-shadow:0 7px 0 #744624;
+ position:relative;
+}
+.desk-top:before{
+ content:"";
+ position:absolute;
+ top:0;left:0;right:0;
+ height:13px;
+ background:#f7dfb4;
+ border-bottom:2px solid #9c6a3e;
+}
+.desk-top svg{width:90px;height:115px;display:block;position:relative;z-index:1}
+.desk-top .avatar-placeholder{
+ font-size:45px;
+ height:115px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+.student-name{
+ width:100%;
+ padding:6px 3px;
+ margin-top:3px;
+ border-radius:5px;
+ background:#fff9e9;
+ border:1px solid #c49b6d;
+ text-align:center;
+ font-size:11px;
+ overflow-wrap:anywhere;
+ color:#68472d;
+}
+.seat-label{
+ text-align:center;
+ color:#fff8e8;
+ font-size:10px;
+ font-weight:bold;
+ padding:9px 3px 0;
+ text-shadow:1px 1px 2px #68472d;
+}
 .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
-.action-btn{padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;background:#fff0fa;color:#805b91}
+.action-btn{padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;background:#fff0fa;color:#805b91;cursor:pointer}
+.action-btn:hover{transform:translateY(-2px);background:#fce0ef}
 footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
-@media(max-width:700px){.top-grid{grid-template-columns:1fr}.students{grid-template-columns:repeat(3,minmax(0,1fr))}.characters{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:380px){.students{grid-template-columns:repeat(2,minmax(0,1fr))}.characters{grid-template-columns:repeat(2,minmax(0,1fr))}.preview-avatar{width:105px}}
+
+@media(max-width:700px){
+ .top-grid{grid-template-columns:1fr}
+ .students{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 8px}
+ .characters{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .wall-window{width:65px;height:55px}
+ .ho-portrait{width:48px;height:58px;font-size:28px}
+ .chalkboard{min-height:170px}
+ .teacher-desk{width:135px}
+}
+@media(max-width:380px){
+ .students{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .characters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .preview-avatar{width:105px}
+}
 </style>
 </head>
 <body>
@@ -118,9 +338,62 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
 </div>
 </div>
+
 <div class="room">
-<div class="room-title"><h2>🏫 PHÒNG HỌC GIA TỘC 🌸</h2><p>Mỗi thành viên một chiếc bàn!</p></div>
+<div class="classroom-wall">
+<div class="wall-decor">
+<div class="wall-window"></div>
+<div class="flag" title="Quốc kỳ Việt Nam">⭐</div>
+<div class="ho-portrait" title="Ảnh Bác Hồ">👨🏻</div>
+<div class="wall-clock">🕘</div>
+<div class="wall-window"></div>
+</div>
+
+<div class="chalkboard">
+<h2>TRƯỜNG HỌC GIA TỘC</h2>
+<div class="chalk-writing">
+Tiên học lễ – Hậu học văn<br>
+Chăm ngoan • Học giỏi • Đoàn kết
+</div>
+<div class="chalk-small">🌸 Chào mừng các em đến với lớp học! 🌸</div>
+</div>
+
+<div class="teacher-area">
+<div class="teacher-person">👩🏻‍🏫</div>
+<div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div>
+</div>
+
+<div class="wall-board">
+<div class="notice">
+<strong>📌 NỘI QUY LỚP</strong>
+<p>Đi học đúng giờ</p>
+<p>Lễ phép, đoàn kết</p>
+<p>Giữ gìn vệ sinh</p>
+</div>
+<div class="notice">
+<strong>🏆 BẢNG THI ĐUA</strong>
+<p>🌟 Tuần học tốt</p>
+<p>🌸 Hoa điểm 10</p>
+<p>👏 Bé chăm ngoan</p>
+</div>
+<div class="notice">
+<strong>🧹 PHÂN CÔNG TRỰC NHẬT</strong>
+<p>Tổ 1: Thứ 2</p>
+<p>Tổ 2: Thứ 3</p>
+<p>Tổ 3: Thứ 4</p>
+</div>
+</div>
+</div>
+
+<div class="room-title">
+<h2>🏫 PHÒNG HỌC GIA TỘC</h2>
+<p>20 chỗ ngồi • Mỗi thành viên một chiếc bàn!</p>
+</div>
+
+<div class="student-zone">
 <div class="students" id="students"></div>
+</div>
+
 <div class="actions">
 <button class="action-btn" onclick="alert('Mini Game sắp ra mắt!')">🎮 Mini Game</button>
 <button class="action-btn" onclick="alert('Thi đua sắp ra mắt!')">🏆 Thi đua</button>
@@ -165,7 +438,6 @@ let selectedId=1,currentFilter="girl";
 function avatarSVG(c){
  const girl=c.gender==="girl";
  const s=c.style;
-
  const girlBangs=[
  `<path d="M18 52 Q14 7 60 7 Q104 7 102 52 Q87 33 72 35 Q51 27 18 52Z"/>`,
  `<path d="M18 52 Q15 7 60 7 Q103 7 102 52 L85 35 L72 44 L57 29 L42 43Z"/>`,
@@ -184,10 +456,8 @@ function avatarSVG(c){
  `<path d="M18 59 Q13 7 60 7 Q108 7 102 59 L87 42 Q69 28 51 34 L25 49Z"/>`,
  `<path d="M18 59 Q10 7 60 7 Q110 7 102 59 L90 40 L76 46 L60 29 L41 45 L25 46Z"/>`
  ];
-
  const back=girl?girlBack[(s-1)%4]:boyHair[(s-1)%4];
  const front=girl?girlBangs[(s-1)%4]:boyHair[(s+1)%4];
-
  const eyes=`
  <ellipse cx="43" cy="57" rx="9" ry="11" fill="#202438"/>
  <ellipse cx="77" cy="57" rx="9" ry="11" fill="#202438"/>
@@ -196,7 +466,6 @@ function avatarSVG(c){
  <circle cx="39" cy="62" r="1.7" fill="white"/>
  <circle cx="73" cy="62" r="1.7" fill="white"/>
  <path d="M32 46 Q43 39 53 47 M67 47 Q77 39 88 46" stroke="#302638" stroke-width="3" fill="none" stroke-linecap="round"/>`;
-
  const body=girl?`
  <path d="M34 96 L86 96 L92 117 L28 117Z" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
  <path d="M43 96 L60 111 L77 96" fill="#fff" stroke="#ccc"/>
@@ -212,112 +481,84 @@ function avatarSVG(c){
  <path d="M34 119 L55 119 L53 146 L36 146Z M65 119 L86 119 L84 146 L67 146Z" fill="#243b65" stroke="#192d51" stroke-width="1.5"/>
  <path d="M34 143 L54 143 L54 151 L30 151Z M66 143 L86 143 L90 151 L66 151Z" fill="#3c4052"/>
  `;
-
  return `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
  <ellipse cx="60" cy="155" rx="32" ry="3.5" fill="#806b85" opacity=".2"/>
-
- <!-- Tóc phía sau: hai lọn tóc cân đối -->
  <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${back}</g>
-
- <!-- Tai -->
  <circle cx="19" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
  <circle cx="101" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
  <circle cx="19" cy="67" r="4" fill="#eaa58f"/>
  <circle cx="101" cy="67" r="4" fill="#eaa58f"/>
-
- <!-- Mặt tròn -->
  <ellipse cx="60" cy="58" rx="42" ry="44" fill="${c.skin}" stroke="#252536" stroke-width="2.5"/>
-
- <!-- Mắt -->
  ${eyes}
-
- <!-- Má hồng -->
  <ellipse cx="27" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
  <ellipse cx="93" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
-
- <!-- Mũi và miệng -->
  <ellipse cx="60" cy="75" rx="2.5" ry="1.8" fill="#b66b65"/>
  <path d="M51 83 Q60 93 69 83 Q61 98 51 83Z" fill="white" stroke="#9c5864" stroke-width="1.5"/>
-
- <!-- Tóc mái -->
  <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${front}</g>
-
- <!-- Thân và đồng phục -->
  ${body}
-
- <!-- Khăn quàng đỏ: nút thắt và hai dải khăn -->
- <path d="M49 96 L60 108 L71 96 L67 119 L60 126 L53 119Z"
- fill="#d9233b" stroke="#9f1e31" stroke-width="1.5"/>
+ <path d="M49 96 L60 108 L71 96 L67 119 L60 126 L53 119Z" fill="#d9233b" stroke="#9f1e31" stroke-width="1.5"/>
  <path d="M49 96 L60 108 L71 96" fill="none" stroke="#ff9aa3" stroke-width="1.5"/>
  <rect x="56" y="104" width="8" height="7" rx="2" fill="#ec4353" stroke="#9f1e31" stroke-width="1"/>
-
- <!-- Kẹp tóc -->
  ${girl?`<circle cx="94" cy="24" r="5" fill="#f28bb6"/><circle cx="100" cy="24" r="5" fill="#f28bb6"/><circle cx="97" cy="20" r="4" fill="#ffd36d"/>`:""}
  </svg>`;
 }
 
 function setFilter(type,button){
-currentFilter=type;
-document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
-button.classList.add("active");
-renderCharacters();
+ currentFilter=type;
+ document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ renderCharacters();
 }
-
 function selectCharacter(id){
-selectedId=id;
-const c=characters.find(x=>x.id===id);
-document.getElementById("previewAvatar").innerHTML=avatarSVG(c);
-document.getElementById("previewName").textContent=c.name;
-document.getElementById("previewDescription").textContent=
-c.gender==="boy"?"Nam sinh • Sơ mi trắng • Quần navy • Khăn quàng đỏ":
-"Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ";
-renderCharacters();
+ selectedId=id;
+ const c=characters.find(x=>x.id===id);
+ document.getElementById("previewAvatar").innerHTML=avatarSVG(c);
+ document.getElementById("previewName").textContent=c.name;
+ document.getElementById("previewDescription").textContent=
+ c.gender==="boy"?"Nam sinh • Sơ mi trắng • Quần navy • Khăn quàng đỏ":
+ "Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ";
+ renderCharacters();
 }
-
 function renderCharacters(){
-const box=document.getElementById("characters");
-box.innerHTML="";
-characters.filter(c=>c.gender===currentFilter).forEach(c=>{
-const btn=document.createElement("button");
-btn.className="character"+(selectedId===c.id?" selected":"");
-btn.innerHTML=avatarSVG(c)+`<strong>${c.name}</strong><small>${c.gender==="boy"?"NAM SINH":"NỮ SINH"}</small>`;
-btn.onclick=()=>selectCharacter(c.id);
-box.appendChild(btn);
-});
+ const box=document.getElementById("characters");
+ box.innerHTML="";
+ characters.filter(c=>c.gender===currentFilter).forEach(c=>{
+  const btn=document.createElement("button");
+  btn.className="character"+(selectedId===c.id?" selected":"");
+  btn.innerHTML=avatarSVG(c)+`<strong>${c.name}</strong><small>${c.gender==="boy"?"NAM SINH":"NỮ SINH"}</small>`;
+  btn.onclick=()=>selectCharacter(c.id);
+  box.appendChild(btn);
+ });
 }
-
 function createSeats(){
-const area=document.getElementById("students");
-area.innerHTML="";
-for(let i=1;i<=20;i++){
-const desk=document.createElement("div");
-desk.className="desk";
-desk.innerHTML=`<div class="desk-top"><div class="avatar-placeholder">🪑</div><div class="student-name">Chỗ trống</div></div><div class="seat-label">BÀN ${i}</div>`;
-area.appendChild(desk);
+ const area=document.getElementById("students");
+ area.innerHTML="";
+ for(let i=1;i<=20;i++){
+  const desk=document.createElement("div");
+  desk.className="desk";
+  desk.innerHTML=`<div class="desk-top"><div class="avatar-placeholder">🪑</div><div class="student-name">Chỗ trống</div></div><div class="seat-label">BÀN ${i}</div>`;
+  area.appendChild(desk);
+ }
 }
-}
-
 function joinClass(){
-const name=document.getElementById("studentName").value.trim();
-if(!name){alert("Bạn chưa nhập tên học sinh!");return;}
-const c=characters.find(x=>x.id===selectedId);
-try{localStorage.setItem("classStudent",JSON.stringify({name,avatarId:c.id}));}catch(e){}
-document.getElementById("register").classList.add("hidden");
-document.getElementById("classroom").classList.remove("hidden");
-createSeats();
-const first=document.querySelector(".desk-top");
-first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
-first.querySelector(".student-name").textContent=name;
-window.scrollTo(0,0);
+ const name=document.getElementById("studentName").value.trim();
+ if(!name){alert("Bạn chưa nhập tên học sinh!");return;}
+ const c=characters.find(x=>x.id===selectedId);
+ try{localStorage.setItem("classStudent",JSON.stringify({name,avatarId:c.id}));}catch(e){}
+ document.getElementById("register").classList.add("hidden");
+ document.getElementById("classroom").classList.remove("hidden");
+ createSeats();
+ const first=document.querySelector(".desk-top");
+ first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
+ first.querySelector(".student-name").textContent=name;
+ window.scrollTo(0,0);
 }
-
 function leaveClass(){
-try{localStorage.removeItem("classStudent");}catch(e){}
-document.getElementById("classroom").classList.add("hidden");
-document.getElementById("register").classList.remove("hidden");
-window.scrollTo(0,0);
+ try{localStorage.removeItem("classStudent");}catch(e){}
+ document.getElementById("classroom").classList.add("hidden");
+ document.getElementById("register").classList.remove("hidden");
+ window.scrollTo(0,0);
 }
-
 selectCharacter(1);
 createSeats();
 </script>
