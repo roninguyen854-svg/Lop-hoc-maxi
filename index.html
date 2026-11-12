@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -108,6 +108,58 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 #quizBoardNavigation button{padding:10px 15px;border:0;border-radius:12px;background:#fff0c9;color:#65476f;font-weight:bold}
 #quizBoardNavigation button:disabled{opacity:.45}
 
+/* BÀI TẬP NGAY DƯỚI BẢNG XANH */
+#boardHomework{
+ margin:12px auto 20px;
+ width:100%;
+ max-width:900px;
+}
+
+/* THANH NÚT NỔI Ở ĐÁY MÀN HÌNH */
+#floatingDock{
+ display:none;
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ z-index:9999;
+ padding:9px 7px calc(9px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.97);
+ border-top:1px solid #eadcf1;
+ box-shadow:0 -5px 20px #76558a20;
+ justify-content:center;
+ align-items:center;
+ gap:7px;
+}
+
+#floatingDock button{
+ width:45px;
+ height:45px;
+ flex-shrink:0;
+ border:2px solid #eadcf1;
+ border-radius:50%;
+ background:linear-gradient(135deg,#fff0f7,#f0edff);
+ font-size:20px;
+ display:grid;
+ place-items:center;
+ padding:0;
+}
+
+#floatingDock .floating-quiz{
+ width:auto;
+ min-width:116px;
+ padding:0 13px;
+ border-radius:25px;
+ background:linear-gradient(90deg,#e96eae,#9582df);
+ color:white;
+ font-size:12px;
+ font-weight:bold;
+}
+
+#floatingDock button:active{transform:scale(.94)}
+
+body.dock-active{padding-bottom:85px}
+
 @media(max-width:500px){
  #quizBoardOptions{grid-template-columns:1fr}
 }
@@ -116,10 +168,16 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
  .students{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 8px}
  .characters{grid-template-columns:repeat(3,minmax(0,1fr))}
  .quiz-grid{grid-template-columns:1fr}
+ #floatingDock{gap:5px}
+ #floatingDock button{width:41px;height:41px;font-size:18px}
+ #floatingDock .floating-quiz{min-width:105px;font-size:11px;padding:0 9px}
 }
 @media(max-width:380px){
  .students{grid-template-columns:repeat(2,minmax(0,1fr))}
  .characters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #floatingDock{gap:4px}
+ #floatingDock button{width:37px;height:37px;font-size:16px}
+ #floatingDock .floating-quiz{min-width:95px;font-size:10px}
 }
 </style>
 </head>
@@ -222,6 +280,28 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
     </div>
    </div>
 
+   <!-- BÀI TẬP ĐƯỢC ĐƯA LÊN NGAY DƯỚI BẢNG XANH -->
+   <div id="boardHomework" class="card section">
+    <h3>📝 BÀI TẬP TRÊN BẢNG</h3>
+    <div id="questionDisplay">Cô giáo chưa đăng câu hỏi.</div>
+
+    <div id="studentAnswerArea" class="hidden">
+     <textarea id="studentAnswer" rows="3" placeholder="Nhập câu trả lời của bạn..."></textarea>
+     <button class="primary" onclick="submitAnswer()">📨 GỬI CÂU TRẢ LỜI</button>
+    </div>
+
+    <div id="teacherQuestionArea" class="hidden">
+     <input id="newQuestion" placeholder="Nhập câu hỏi chung cho cả lớp">
+     <input id="questionCategory" placeholder="Môn học (Toán, Văn, Tiếng Anh...)">
+     <input id="correctAnswer" placeholder="Đáp án đúng (chỉ giáo viên thấy)">
+     <input id="questionPoints" type="number" value="10" min="0" placeholder="Điểm thưởng">
+     <button class="primary" onclick="postQuestion()">📌 ĐĂNG CÂU HỎI LÊN BẢNG</button>
+     <button class="action-btn" onclick="showAnswers()">👀 XEM BÀI LÀM HỌC SINH</button>
+     <div id="answersList"></div>
+    </div>
+    <div id="answerResult" class="status"></div>
+   </div>
+
    <div class="teacher-area">
     <div class="teacher-person">👩🏻‍🏫</div>
     <div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div>
@@ -240,27 +320,6 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
   </div>
 
   <div class="student-zone"><div class="students" id="students"></div></div>
-
-  <div class="card section">
-   <h3>📝 BÀI TẬP TRÊN BẢNG</h3>
-   <div id="questionDisplay">Cô giáo chưa đăng câu hỏi.</div>
-
-   <div id="studentAnswerArea" class="hidden">
-    <textarea id="studentAnswer" rows="3" placeholder="Nhập câu trả lời của bạn..."></textarea>
-    <button class="primary" onclick="submitAnswer()">📨 GỬI CÂU TRẢ LỜI</button>
-   </div>
-
-   <div id="teacherQuestionArea" class="hidden">
-    <input id="newQuestion" placeholder="Nhập câu hỏi chung cho cả lớp">
-    <input id="questionCategory" placeholder="Môn học (Toán, Văn, Tiếng Anh...)">
-    <input id="correctAnswer" placeholder="Đáp án đúng (chỉ giáo viên thấy)">
-    <input id="questionPoints" type="number" value="10" min="0" placeholder="Điểm thưởng">
-    <button class="primary" onclick="postQuestion()">📌 ĐĂNG CÂU HỎI LÊN BẢNG</button>
-    <button class="action-btn" onclick="showAnswers()">👀 XEM BÀI LÀM HỌC SINH</button>
-    <div id="answersList"></div>
-   </div>
-   <div id="answerResult" class="status"></div>
-  </div>
 
   <div class="card quiz-section" id="quizSection">
    <div class="quiz-intro">
@@ -356,8 +415,16 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 </section>
 </main>
 
-<footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
+<!-- THANH NÚT NỔI DÀNH CHO HỌC SINH -->
+<div id="floatingDock">
+ <button title="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍪</button>
+ <button title="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
+ <button title="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
+ <button title="Đang ngoan" onclick="reportBehavior('Đang ngoan')">😇</button>
+ <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
+</div>
 
+<footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
 <script>
 const SUPABASE_URL="https://cikmdggrlgjuyeejyxtj.supabase.co";
 const SUPABASE_KEY="sb_publishable_d050M2AABA6BdGoxI-AcOQ_0ES71tsn";
@@ -566,10 +633,19 @@ async function teacherLogin(){
 async function enterClass(){
  $("register").classList.add("hidden");
  $("classroom").classList.remove("hidden");
+
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
  $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
+
+ // Hiện thanh nút nổi sau khi vào lớp.
+ $("floatingDock").style.display="flex";
+ document.body.classList.add("dock-active");
+
+ // Giáo viên không dùng nút báo hành vi của học sinh.
+ $("floatingDock").querySelectorAll("button:not(.floating-quiz)")
+  .forEach(button=>button.style.display=isTeacher?"none":"grid");
 
  $("myStatus").textContent=isTeacher
  ?"👑 Bạn đang đăng nhập với quyền GIÁO VIÊN"
@@ -770,6 +846,11 @@ async function gradeAnswer(answerId,studentId,correct){
 async function reportBehavior(behavior){
  if(!me)return;
 
+ if(isTeacher){
+  alert("Tài khoản giáo viên không thể gửi báo cáo hành vi học sinh.");
+  return;
+ }
+
  const {error}=await db.from("behavior_events").insert({
   classroom_id:CLASSROOM_ID,
   student_id:me.id,
@@ -782,8 +863,7 @@ async function reportBehavior(behavior){
  if(error){alert("Không gửi được: "+error.message);return;}
  $("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
 }
-
-async function loadBehaviors(){
+ async function loadBehaviors(){
  if(!isTeacher)return;
 
  const {data,error}=await db.from("behavior_events")
@@ -852,12 +932,14 @@ async function leaveClass(){
   clearInterval(quizTimerInterval);
   quizTimerInterval=null;
  }
+
  if(channel){
   await db.removeChannel(channel);
   channel=null;
  }
 
  await db.auth.signOut();
+
  me=null;
  isTeacher=false;
  currentQuestion=null;
@@ -866,8 +948,12 @@ async function leaveClass(){
  quizQuestionRows=[];
  quizAnswerMap=new Map();
 
+ $("floatingDock").style.display="none";
+ document.body.classList.remove("dock-active");
+
  $("classroom").classList.add("hidden");
  $("register").classList.remove("hidden");
+
  window.scrollTo(0,0);
 }
 
@@ -895,13 +981,44 @@ function quizCategoryName(category){
 
 function quizOptions(value){
  if(Array.isArray(value))return value;
+
  if(typeof value==="string"){
   try{
    const parsed=JSON.parse(value);
    return Array.isArray(parsed)?parsed:[];
   }catch(e){return [];}
  }
+
  return [];
+}
+
+/* NÚT LÀM KIỂM TRA NỔI */
+function floatingQuizAction(){
+ if(!me)return;
+
+ if(isTeacher){
+  $("quizSection").scrollIntoView({behavior:"smooth",block:"start"});
+  return;
+ }
+
+ if(!activeQuiz){
+  alert("Hiện chưa có bài kiểm tra đang mở.");
+  return;
+ }
+
+ if(quizSubmission&&quizSubmission.status==="submitted"){
+  alert("Bạn đã hoàn thành bài kiểm tra này rồi!");
+  $("quizSection").scrollIntoView({behavior:"smooth",block:"start"});
+  return;
+ }
+
+ if(quizSubmission&&quizQuestionRows.length){
+  $("quizSection").scrollIntoView({behavior:"smooth",block:"start"});
+  renderQuizBoardQuestion();
+  return;
+ }
+
+ startQuiz();
 }
 
 async function loadQuizFilters(){
@@ -968,6 +1085,7 @@ async function createQuiz(){
   if(difficulty!=="all")query=query.eq("difficulty",difficulty);
 
   const {data:bank,error}=await query;
+
   if(error)throw new Error("Không đọc được ngân hàng câu hỏi: "+error.message);
 
   if(!bank||bank.length<count){
@@ -1022,6 +1140,7 @@ async function createQuiz(){
 
   const answerPayload=sessionQuestions.map(q=>{
    const key=keyMap.get(String(q.question_id));
+
    return {
     session_question_id:q.id,
     correct_answer:key.correct_answer,
@@ -1030,6 +1149,7 @@ async function createQuiz(){
   });
 
   const {error:answerError}=await db.from("quiz_answer_keys").insert(answerPayload);
+
   if(answerError)throw new Error("Không lưu được đáp án đề: "+answerError.message);
 
   const endsAt=new Date(Date.now()+duration*60000).toISOString();
@@ -1044,6 +1164,7 @@ async function createQuiz(){
 
   quizStatus(`✅ Đã giao đề "${title}" gồm ${count} câu. Thời gian: ${duration} phút.`);
   $("quizResults").innerHTML="";
+
   await loadQuiz();
 
  }catch(error){
@@ -1054,7 +1175,7 @@ async function createQuiz(){
  }
 }
 
-/* Hiện hoặc ẩn nội dung bảng xanh */
+/* HIỆN HOẶC ẨN NỘI DUNG BẢNG XANH */
 function showQuizBoard(){
  $("chalkQuestion").classList.add("hidden");
  $("chalkStatus").classList.add("hidden");
@@ -1073,11 +1194,12 @@ function restoreOriginalBoard(){
  }else{
   $("chalkQuestion").innerHTML=
    "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
+
   $("chalkStatus").textContent="🌸 Chào mừng các em đến với lớp học! 🌸";
  }
 }
 
-/* Hiển thị câu hỏi hiện tại trên bảng xanh của từng học sinh */
+/* HIỂN THỊ CÂU HỎI TRÊN BẢNG XANH */
 function renderQuizBoardQuestion(){
  const item=quizQuestionRows[quizCurrentIndex];
 
@@ -1095,10 +1217,12 @@ function renderQuizBoardQuestion(){
  $("quizBoardTitle").textContent=activeQuiz.title;
  $("quizBoardMeta").textContent=
   `CÂU ${quizCurrentIndex+1}/${quizQuestionRows.length}`;
+
  $("quizBoardQuestion").textContent=q.question||"";
 
  $("quizBoardOptions").innerHTML=options.map((option,j)=>{
   const letter=String.fromCharCode(65+j);
+
   return `<label class="quiz-board-option">
    <input type="radio" name="boardQuizAnswer" value="${letter}"
     ${selected===letter?"checked":""}
@@ -1118,19 +1242,23 @@ function renderQuizBoardQuestion(){
 async function chooseBoardAnswer(questionId,answer){
  quizAnswerMap.set(String(questionId),answer);
 
- // Xếp hàng lưu đáp án để tránh nộp bài trước khi lưu xong.
- quizSaveQueue=quizSaveQueue.then(()=>saveQuizAnswer(questionId,answer));
+ quizSaveQueue=quizSaveQueue.then(()=>
+  saveQuizAnswer(questionId,answer)
+ );
+
  await quizSaveQueue;
 }
 
 function previousQuizQuestion(){
  if(quizCurrentIndex<=0)return;
+
  quizCurrentIndex--;
  renderQuizBoardQuestion();
 }
 
 function nextQuizQuestion(){
  if(quizCurrentIndex>=quizQuestionRows.length-1)return;
+
  quizCurrentIndex++;
  renderQuizBoardQuestion();
 }
@@ -1166,18 +1294,22 @@ async function loadQuiz(){
   $("startQuizBtn").classList.add("hidden");
   $("submitQuizBtn").classList.add("hidden");
   $("quizTimer").classList.add("hidden");
+
   restoreOriginalBoard();
   return;
  }
 
  if(isTeacher){
   quizStatus(`📌 Đề đang mở: ${session.title} • ${session.duration_minutes} phút`);
+
   showQuizBoard();
+
   $("quizBoardTitle").textContent=session.title;
   $("quizBoardMeta").textContent=`⏰ Thời gian làm bài: ${session.duration_minutes} phút`;
   $("quizBoardQuestion").textContent="📚 Học sinh đang thực hiện bài kiểm tra.";
   $("quizBoardOptions").innerHTML="";
   $("quizBoardNavigation").innerHTML="";
+
   return;
  }
 
@@ -1200,17 +1332,19 @@ async function loadQuiz(){
  if(existing&&existing.status==="submitted"){
   $("startQuizBtn").classList.add("hidden");
   $("submitQuizBtn").classList.add("hidden");
+
   $("quizStudentResult").innerHTML=`
    <div class="quiz-result">
     <h3>🎉 Bạn đã hoàn thành bài kiểm tra!</h3>
     <p>Điểm: <b>${Number(existing.score||0)}/100</b></p>
    </div>`;
+
   restoreOriginalBoard();
   return;
  }
 
- // Học sinh nhìn thấy thông báo đề trên bảng trước khi bắt đầu.
  showQuizBoard();
+
  $("quizBoardTitle").textContent=session.title;
  $("quizBoardMeta").textContent=`⏰ Thời gian: ${session.duration_minutes} phút`;
  $("quizBoardQuestion").textContent="📚 Bài kiểm tra đã mở. Nhấn BẮT ĐẦU LÀM BÀI bên dưới.";
@@ -1220,6 +1354,7 @@ async function loadQuiz(){
  $("startQuizBtn").textContent=existing
   ?"↩ TIẾP TỤC LÀM BÀI"
   :"✏️ BẮT ĐẦU LÀM BÀI";
+
  $("startQuizBtn").classList.remove("hidden");
 }
 
@@ -1247,6 +1382,7 @@ async function startQuiz(){
    $("studentQuizStatus").textContent="Không thể bắt đầu: "+error.message;
    return;
   }
+
   quizSubmission=data;
  }
 
@@ -1371,7 +1507,6 @@ async function finishQuiz(autoSubmit=false){
   quizTimerInterval=null;
  }
 
- // Chờ các thao tác lưu câu trả lời hoàn tất.
  await quizSaveQueue;
 
  const {data,error}=await db.rpc("submit_quiz",{
@@ -1402,6 +1537,7 @@ async function finishQuiz(autoSubmit=false){
   </div>`;
 
  $("studentQuizStatus").textContent="✅ Đã hoàn thành bài kiểm tra.";
+
  restoreOriginalBoard();
 }
 
@@ -1455,6 +1591,7 @@ async function endQuiz(){
 
  activeQuiz=null;
  quizStatus("🔒 Đã kết thúc bài kiểm tra.");
+
  await loadQuiz();
 }
 
@@ -1462,6 +1599,7 @@ async function endQuiz(){
 selectCharacter(1);
 renderCharacters();
 createSeats();
+
 </script>
 </body>
 </html>
