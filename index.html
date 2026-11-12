@@ -905,20 +905,42 @@ function quizOptions(value){
 }
 
 async function loadQuizFilters(){
- const {data,error}=await db.from("question_bank")
-  .select("category")
-  .limit(500);
+ const {data:authData,error:authError}=await db.auth.getUser();
 
- if(error){
-  quizStatus("❌ Không tải được chủ đề: "+error.message);
+ if(authError||!authData.user){
+  quizStatus("❌ Website chưa có phiên đăng nhập Supabase hợp lệ.");
   return;
  }
 
- const categories=[...new Set((data||[]).map(x=>x.category).filter(Boolean))].sort();
+ console.log("SUPABASE USER:",authData.user.id);
+ console.log("TEACHER ID:",TEACHER_ID);
+
+ if(authData.user.id!==TEACHER_ID){
+  quizStatus("❌ Sai tài khoản giáo viên. ID đăng nhập: "+authData.user.id);
+  return;
+ }
+
+ const {data,error}=await db.from("question_bank")
+  .select("category")
+  .limit(5);
+
+ if(error){
+  console.error("QUESTION BANK ERROR:",error);
+  quizStatus("❌ Lỗi đọc ngân hàng: "+error.message);
+  return;
+ }
+
+ const categories=[...new Set(
+  (data||[]).map(x=>x.category).filter(Boolean)
+ )].sort();
 
  $("quizCategory").innerHTML=
   '<option value="all">Tất cả chủ đề</option>'+
-  categories.map(c=>`<option value="${esc(c)}">${esc(quizCategoryName(c))}</option>`).join("");
+  categories.map(c=>
+   `<option value="${esc(c)}">${esc(quizCategoryName(c))}</option>`
+  ).join("");
+
+ quizStatus("✅ Kết nối ngân hàng câu hỏi thành công!");
 }
 
 async function createQuiz(){
