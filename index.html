@@ -5,213 +5,153 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>🌸 Lớp Học Gia Tộc</title>
-
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- font-family:Arial,sans-serif;
- color:#713c59;
- background:#ffe8f3;
+ margin:0;background:#ffe8f3;color:#71435e;
+ font-family:Arial,sans-serif
 }
 header{
- text-align:center;
- padding:22px 10px;
+ text-align:center;padding:22px 10px;
  background:linear-gradient(120deg,#ffaed1,#d9bdff);
- border-bottom:5px solid white;
+ border-bottom:5px solid white
 }
-header h1{font-size:27px;margin:5px}
-header p{margin:7px}
-main{max-width:1200px;margin:auto;padding:14px}
+header h1{margin:5px;font-size:27px}
+main{max-width:1100px;margin:auto;padding:14px}
 .card{
- background:#fffaff;
- border:2px solid #f4bdd8;
- border-radius:18px;
- padding:16px;
- box-shadow:0 5px 15px #a75e8520;
+ background:#fffaff;border:2px solid #f1bfd9;
+ border-radius:18px;padding:17px;
+ box-shadow:0 5px 15px #a75e8520
+}
+.register{max-width:650px;margin:30px auto;text-align:center}
+.school{font-size:65px}
+input{
+ width:100%;padding:14px;border:2px solid #efb9d6;
+ border-radius:12px;font-size:16px;margin:12px 0
+}
+button{border:0;border-radius:13px;padding:12px;font-weight:bold;cursor:pointer}
+.join{
+ width:100%;padding:16px;color:white;font-size:17px;
+ background:linear-gradient(90deg,#f46ba9,#ac7af0);
+ box-shadow:0 5px 12px #d68ab9
 }
 .hidden{display:none!important}
-.register{
- max-width:430px;
- margin:35px auto;
- text-align:center;
+.choice-title{margin:18px 0 10px}
+.filter{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.filter button{background:#f7dce9;color:#884b70;padding:9px 18px}
+.filter button.active{background:#b878d8;color:white}
+.characters{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:10px;margin:14px 0
 }
-.school{font-size:75px}
-input,select{
- width:100%;
- padding:14px;
- margin:8px 0;
- border:2px solid #efb9d6;
- border-radius:12px;
- font-size:16px;
- background:white;
+.character{
+ background:#fff1f8;border:2px solid #f1c8df;
+ border-radius:13px;padding:7px 3px;
+ min-width:0;color:#70445e
 }
-button{
- border:0;
- border-radius:14px;
- padding:13px 18px;
- font-size:15px;
- font-weight:bold;
- cursor:pointer;
+.character.selected{
+ border:3px solid #d65ca7;
+ background:#ffe0f0;
+ box-shadow:0 0 12px #e88cbd88
 }
-.join{
- width:100%;
- color:white;
- background:linear-gradient(90deg,#f46ba9,#ac7af0);
- box-shadow:0 5px 12px #d68ab9;
-}
+.character svg{width:100%;height:auto;display:block}
+.character-name{font-size:11px;display:block;margin:4px 0}
+.character.selected .character-name{font-weight:bold}
 .top-grid{
- display:grid;
- grid-template-columns:1fr 2fr 1fr;
- gap:12px;
+ display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px
 }
-.panel h3{margin:0 0 12px;color:#b44c85}
+.panel h3{color:#b44c85}
 .rank{
- display:flex;
- justify-content:space-between;
- gap:5px;
- padding:9px 0;
- border-bottom:1px solid #f3dce9;
- font-size:13px;
+ display:flex;justify-content:space-between;
+ padding:8px 0;border-bottom:1px solid #f3dce9;
+ font-size:13px
 }
 .board{
- min-height:220px;
- background:#397653;
- color:white;
- border:10px solid #b77c48;
- border-radius:13px;
- text-align:center;
- padding:14px;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- box-shadow:inset 0 0 15px #173e2c;
+ min-height:220px;background:#397653;color:white;
+ border:9px solid #b77c48;border-radius:13px;
+ text-align:center;padding:15px;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center
 }
-.board h2{margin:5px}
-.teacher{font-size:65px}
-.board p{line-height:1.5}
+.teacher{font-size:60px}
 .room{
- margin-top:15px;
- padding:16px;
- border:6px solid #bd8958;
- border-radius:17px;
- background:
- linear-gradient(180deg,#bce8fa 0%,#e5f4ff 19%,
- #fff0dc 19%,#ffe6c4 68%,#d49a62 68%,
- #bd7847 100%);
- box-shadow:0 8px 20px #95613c33;
- text-align:center;
+ margin-top:15px;padding:15px;
+ border:6px solid #bd8958;border-radius:17px;
+ background:linear-gradient(180deg,#bce8fa 0%,#e5f4ff 19%,
+ #fff0dc 19%,#ffe6c4 68%,#d49a62 68%,#bd7847 100%)
 }
 .room-title{
- display:inline-block;
- background:#fff8ee;
- border:3px solid #e6bc86;
- border-radius:20px;
- padding:8px 18px;
- margin-bottom:12px;
+ text-align:center;background:#fff8ee;
+ border:3px solid #e6bc86;border-radius:16px;
+ padding:10px;margin:0 auto 14px;max-width:500px
 }
 .students{
- display:grid;
- grid-template-columns:repeat(4,minmax(0,1fr));
- gap:13px;
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px
 }
 .desk{
  background:linear-gradient(135deg,#edbd7d,#c98243);
- padding:5px;
- border:3px solid #a96937;
- border-radius:10px;
- box-shadow:0 6px 0 #89532f;
- min-width:0;
+ padding:5px;border:3px solid #a96937;
+ border-radius:10px;box-shadow:0 6px 0 #89532f;
+ min-width:0
 }
 .desk-top{
  background:linear-gradient(135deg,#ffe1aa,#e9ad69);
- border:2px solid #a86d3e;
- border-radius:8px;
- min-height:100px;
- padding:7px 3px;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
+ border:2px solid #a86d3e;border-radius:8px;
+ min-height:125px;padding:5px;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center
 }
-.avatar{
- font-size:38px;
-}
+.desk-top svg{width:65px;height:75px}
 .student-name{
- background:white;
- border-radius:10px;
- padding:6px;
- font-size:12px;
- overflow-wrap:anywhere;
- width:100%;
- margin-top:5px;
+ background:white;border-radius:10px;padding:6px;
+ font-size:12px;overflow-wrap:anywhere;width:100%;text-align:center
 }
-.seat-label{
- color:white;
- font-size:11px;
- margin:5px;
-}
-.actions{
- display:flex;
- justify-content:center;
- flex-wrap:wrap;
- gap:9px;
- margin-top:16px;
-}
-.action-btn{
- background:#f8d9e9;
- color:#914e75;
-}
+.seat-label{color:white;font-size:11px;margin:5px;text-align:center}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px}
+.action-btn{background:#f8d9e9;color:#914e75}
 footer{text-align:center;padding:22px;color:#a36b91}
 @media(max-width:700px){
  .top-grid{grid-template-columns:1fr}
  .students{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:380px){
+ .characters{grid-template-columns:repeat(3,minmax(0,1fr))}
  .students{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
-
 <body>
 
 <header>
- <h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
- <p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
+<h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
+<p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
 </header>
 
 <main>
-
 <section class="card register" id="register">
  <div class="school">🏫🌸</div>
  <h2>Chào mừng học sinh!</h2>
- <p>Đăng ký để bước vào lớp nhé 💗</p>
+ <p>Chọn nhân vật Anime của bạn nhé 💗</p>
 
- <input id="studentName"
- maxlength="20"
+ <input id="studentName" maxlength="20"
  placeholder="Nhập tên học sinh...">
 
- <select id="studentAvatar">
-  <option value="👧🏻">👧🏻 Nữ sinh 1</option>
-  <option value="👧🏼">👧🏼 Nữ sinh 2</option>
-  <option value="👩🏻‍🎓">👩🏻‍🎓 Nữ sinh 3</option>
-  <option value="👦🏻">👦🏻 Nam sinh 1</option>
-  <option value="👦🏼">👦🏼 Nam sinh 2</option>
-  <option value="🐰">🐰 Thỏ học sinh</option>
-  <option value="🐱">🐱 Mèo học sinh</option>
-  <option value="🐼">🐼 Gấu trúc</option>
- </select>
+ <h3 class="choice-title">👧 NHÂN VẬT NỮ</h3>
+ <div class="filter">
+  <button class="active" id="allBtn" onclick="filterCharacters('all',this)">Tất cả</button>
+  <button id="girlBtn" onclick="filterCharacters('girl',this)">Nữ sinh</button>
+  <button id="boyBtn" onclick="filterCharacters('boy',this)">Nam sinh</button>
+ </div>
 
- <button class="join" onclick="joinClass()">
-  🌸 VÀO LỚP 🌸
- </button>
+ <div class="characters" id="characters"></div>
+
+ <button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
 </section>
 
 <section id="classroom" class="hidden">
 
  <div class="top-grid">
-
   <div class="card panel">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div class="rank">🥇 Roni <b>1250</b></div>
@@ -226,7 +166,7 @@ footer{text-align:center;padding:22px;color:#a36b91}
    <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
    <h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
    <p>Chăm ngoan – Học giỏi – Đoàn kết</p>
-   <p>📚 Chào cô, thả tim để được quà nhé!</p>
+   <p>💗 Chào cô, thả tim để được quà nhé!</p>
   </div>
 
   <div class="card panel">
@@ -236,95 +176,137 @@ footer{text-align:center;padding:22px;color:#a36b91}
    <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
    <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
   </div>
-
  </div>
 
  <div class="room">
   <div class="room-title">
    <h2>🏫 PHÒNG HỌC CỦA CHÚNG TA 🌸</h2>
-   <p>Chọn bàn và cùng nhau học tập!</p>
+   <p>Chào mừng các thành viên Gia Tộc!</p>
   </div>
-
   <div class="students" id="students"></div>
 
   <div class="actions">
-   <button class="action-btn"
-   onclick="alert('Mini Game sẽ được phát triển ở bước tiếp theo!')">
-    🎮 Mini Game
-   </button>
-
-   <button class="action-btn"
-   onclick="alert('Hệ thống thi đua sẽ được phát triển tiếp!')">
-    🏆 Thi đua
-   </button>
-
-   <button class="action-btn"
-   onclick="alert('Hệ thống phát quà sẽ được phát triển tiếp!')">
-    🎁 Phát quà
-   </button>
-
-   <button class="action-btn" onclick="leaveClass()">
-    ↩ Rời lớp
-   </button>
+   <button class="action-btn" onclick="alert('Mini Game sẽ được cập nhật!')">🎮 Mini Game</button>
+   <button class="action-btn" onclick="alert('Thi đua sẽ được cập nhật!')">🏆 Thi đua</button>
+   <button class="action-btn" onclick="alert('Phát quà sẽ được cập nhật!')">🎁 Phát quà</button>
+   <button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
   </div>
  </div>
-
 </section>
 </main>
 
 <footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
 
 <script>
-let currentStudent=null;
+const characters = [
+ {id:1,name:"Miyuki",gender:"girl",hair:"#29202d",skin:"#ffdbbc",clothes:"#f48bb9",style:1,accessory:"🎀"},
+ {id:2,name:"Sakura",gender:"girl",hair:"#8c5038",skin:"#ffdfc5",clothes:"#91b9f2",style:2,accessory:"🌸"},
+ {id:3,name:"Yuna",gender:"girl",hair:"#e5bd69",skin:"#ffe1c4",clothes:"#a5d8b3",style:3,accessory:"✨"},
+ {id:4,name:"Hana",gender:"girl",hair:"#e88eae",skin:"#ffdfcc",clothes:"#c5a0ee",style:4,accessory:"🎀"},
+ {id:5,name:"Akari",gender:"girl",hair:"#613b2d",skin:"#f5c8a8",clothes:"#f2a45d",style:5,accessory:"🌼"},
+ {id:6,name:"Mei",gender:"girl",hair:"#252c42",skin:"#ffdfc8",clothes:"#85cbd4",style:2,accessory:"💗"},
+ {id:7,name:"Rin",gender:"girl",hair:"#a45a42",skin:"#ffe2cc",clothes:"#b69be8",style:1,accessory:"⭐"},
+ {id:8,name:"Aoi",gender:"girl",hair:"#b5a0e5",skin:"#ffe0c7",clothes:"#f18fae",style:3,accessory:"🌷"},
+ {id:9,name:"Haruto",gender:"boy",hair:"#28232a",skin:"#f5c9a7",clothes:"#78a8df",style:1,accessory:"⭐"},
+ {id:10,name:"Ren",gender:"boy",hair:"#744b34",skin:"#ffddc0",clothes:"#82c8b1",style:2,accessory:"🎧"},
+ {id:11,name:"Sota",gender:"boy",hair:"#d0a45f",skin:"#ffe0c5",clothes:"#a9a0e9",style:3,accessory:"✨"},
+ {id:12,name:"Kaito",gender:"boy",hair:"#20283b",skin:"#eec09e",clothes:"#e58fae",style:4,accessory:"🎀"},
+ {id:13,name:"Yuki",gender:"boy",hair:"#ad6948",skin:"#ffdfc8",clothes:"#f2b86f",style:5,accessory:"🌟"},
+ {id:14,name:"Hiro",gender:"boy",hair:"#34303a",skin:"#f5c9a9",clothes:"#86c6d5",style:2,accessory:"🧢"},
+ {id:15,name:"Akio",gender:"boy",hair:"#a18b68",skin:"#ffe0c3",clothes:"#a6cf8e",style:3,accessory:"💫"},
+ {id:16,name:"Riku",gender:"boy",hair:"#49302d",skin:"#f5c7a7",clothes:"#d39bd7",style:1,accessory:"🎧"}
+];
+
+let selectedId=1;
+let currentFilter="all";
+
+function avatarSVG(c){
+ const fringe = [
+  "M20 38 Q20 5 50 8 Q83 5 80 39 L69 31 Q55 20 44 31 L31 40Z",
+  "M19 42 Q13 7 50 7 Q87 8 81 42 L72 24 Q48 39 28 24Z",
+  "M20 40 Q17 5 50 9 Q85 5 80 40 Q67 23 53 25 Q36 20 20 40Z",
+  "M20 39 Q20 6 50 7 Q80 5 80 39 L69 25 L62 38 L49 25 L34 40Z",
+  "M20 40 Q17 9 50 8 Q83 8 80 40 L70 29 Q48 16 31 38Z"
+ ][c.style-1];
+
+ const pony=c.style===3
+ ? `<circle cx="82" cy="32" r="13" fill="${c.hair}"/>`
+ : "";
+
+ return `
+ <svg viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${c.name}">
+  ${pony}
+  <path d="M18 50 Q10 12 50 9 Q90 12 82 50 L78 84 L22 84Z" fill="${c.hair}"/>
+  <path d="M24 43 Q21 16 50 16 Q79 16 76 43 L73 72 Q68 88 50 90 Q32 88 27 72Z" fill="${c.skin}"/>
+  <path d="${fringe}" fill="${c.hair}"/>
+  <ellipse cx="38" cy="53" rx="4" ry="5" fill="#382b39"/>
+  <ellipse cx="62" cy="53" rx="4" ry="5" fill="#382b39"/>
+  <circle cx="39" cy="52" r="1.4" fill="white"/>
+  <circle cx="63" cy="52" r="1.4" fill="white"/>
+  <path d="M45 69 Q50 74 56 69" fill="none" stroke="#b35f71" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="30" cy="64" rx="5" ry="3" fill="#f4a2a6" opacity=".6"/>
+  <ellipse cx="70" cy="64" rx="5" ry="3" fill="#f4a2a6" opacity=".6"/>
+  <path d="M29 85 L71 85 L82 125 L18 125Z" fill="${c.clothes}"/>
+  <path d="M42 86 L50 98 L58 86" fill="white"/>
+  <path d="M44 97 L50 104 L56 97 L50 92Z" fill="#e98cb5"/>
+  <path d="M24 90 Q13 98 17 114" stroke="${c.skin}" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M76 90 Q87 98 83 114" stroke="${c.skin}" stroke-width="9" stroke-linecap="round" fill="none"/>
+  ${c.gender==="girl" ? `<path d="M28 25 Q15 9 31 12 Q42 13 34 27Z" fill="${c.hair}"/>` : ""}
+  <text x="50" y="13" text-anchor="middle" font-size="15">${c.accessory}</text>
+ </svg>`;
+}
+
+function renderCharacters(){
+ const box=document.getElementById("characters");
+ box.innerHTML="";
+
+ characters.filter(c=>currentFilter==="all"||c.gender===currentFilter)
+ .forEach(c=>{
+  const btn=document.createElement("button");
+  btn.className="character"+(selectedId===c.id?" selected":"");
+  btn.innerHTML=avatarSVG(c)+
+   `<span class="character-name">${c.gender==="girl"?"👧":"👦"} ${c.name}</span>`;
+
+  btn.onclick=()=>{
+   selectedId=c.id;
+   renderCharacters();
+  };
+  box.appendChild(btn);
+ });
+}
+
+function filterCharacters(type,button){
+ currentFilter=type;
+ document.querySelectorAll(".filter button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ renderCharacters();
+}
 
 function createSeats(){
  const area=document.getElementById("students");
  area.innerHTML="";
-
  for(let i=1;i<=20;i++){
   const desk=document.createElement("div");
   desk.className="desk";
-
-  const top=document.createElement("div");
-  top.className="desk-top";
-
-  const avatar=document.createElement("div");
-  avatar.className="avatar";
-  avatar.textContent="🐱";
-
-  const name=document.createElement("div");
-  name.className="student-name";
-  name.textContent="Chỗ trống";
-
-  top.appendChild(avatar);
-  top.appendChild(name);
-
-  const label=document.createElement("div");
-  label.className="seat-label";
-  label.textContent="BÀN "+i;
-
-  desk.appendChild(top);
-  desk.appendChild(label);
+  desk.innerHTML=`
+   <div class="desk-top">
+    <div class="avatar-placeholder">🪑</div>
+    <div class="student-name">Chỗ trống</div>
+   </div>
+   <div class="seat-label">BÀN ${i}</div>`;
   area.appendChild(desk);
  }
 }
 
 function joinClass(){
  const name=document.getElementById("studentName").value.trim();
- const avatar=document.getElementById("studentAvatar").value;
+ if(!name){alert("Bạn hãy nhập tên học sinh!");return;}
 
- if(!name){
-  alert("Bạn chưa nhập tên học sinh!");
-  return;
- }
-
- currentStudent={name,avatar};
+ const c=characters.find(x=>x.id===selectedId);
+ const student={name:name,avatarId:c.id};
 
  try{
-  localStorage.setItem(
-   "classStudent",
-   JSON.stringify(currentStudent)
-  );
+  localStorage.setItem("classStudent",JSON.stringify(student));
  }catch(e){}
 
  document.getElementById("register").classList.add("hidden");
@@ -333,23 +315,18 @@ function joinClass(){
  createSeats();
 
  const first=document.querySelector(".desk-top");
- first.querySelector(".avatar").textContent=avatar;
+ first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
  first.querySelector(".student-name").textContent=name;
 }
 
 function leaveClass(){
- currentStudent=null;
-
- try{
-  localStorage.removeItem("classStudent");
- }catch(e){}
-
+ try{localStorage.removeItem("classStudent")}catch(e){}
  document.getElementById("classroom").classList.add("hidden");
  document.getElementById("register").classList.remove("hidden");
 }
 
+renderCharacters();
 createSeats();
 </script>
-
 </body>
 </html>
