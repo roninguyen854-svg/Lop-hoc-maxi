@@ -3,115 +3,6 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lớp Học Gia Tộc 🌸</title>
-<style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#ffe1ef,#e9dcff,#fff5f8);
-  color: #713d62;
-  min-height: 100vh;
-}
-header {
-  text-align: center;
-  padding: 35px 15px;
-  background: #fff8fc;
-  border-bottom: 4px solid #f6b3d2;
-}
-h1 { font-size: 30px; margin: 5px; }
-header p { color: #a36b91; }
-.container {
-  max-width: 650px;
-  margin: 35px auto;
-  padding: 15px;
-}
-.card {
-  background: white;
-  border-radius: 24px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 8px 25px #bd8ca633;
-}
-.school {
-  font-size: 85px;
-  margin: 10px;
-}
-input, select {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
-  border: 2px solid #f3c0d9;
-  border-radius: 13px;
-  font-size: 16px;
-  background: #fffafd;
-}
-button {
-  border: none;
-  border-radius: 15px;
-  padding: 15px 25px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.join {
-  width: 100%;
-  color: white;
-  background: linear-gradient(90deg,#fa72ae,#b58bfa);
-  box-shadow: 0 5px 15px #e7a4d5;
-  margin-top: 15px;
-}
-.join:active { transform: scale(.97); }
-#classroom {
-  display: none;
-  margin-top: 20px;
-}
-.student {
-  display: inline-block;
-  padding: 12px;
-  margin: 5px;
-  background: #fff0f7;
-  border-radius: 15px;
-}
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #a36b91;
-}
-</style>
-</head>
-<body>
-
-<header>
-  <h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
-  <p>Chào mừng bạn đến với ngôi trường Anime!</p>
-</header>
-
-<div class="container">
-  <div class="card" id="register">
-    <div class="school">🏫</div>
-    <h2>Chào mừng học sinh!</h2>
-    <p>Hãy đăng ký để bước vào lớp nhé.</p>
-
-    <input id="name" placeholder="Nhập tên học sinh...">
-
-    <select id="avatar">
-      <option value="👧🏻">👧🏻 Học sinh nữ 1</option>
-      <option value="👧🏼">👧🏼 Học sinh nữ 2</option>
-      <option value="👦🏻">👦🏻 Học sinh nam 1</option>
-      <option value="👦🏼">👦🏼 Học sinh nam 2</option>
-      <option value="🐰">🐰 Thỏ dễ thương</option>
-    </select>
-
-    <button class="join" onclick="joinClass()">
-      🌸 VÀO LỚP 🌸
-    </button>
-  
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lớp Học Gia Tộc</title>
 <style>
@@ -119,120 +10,155 @@ footer {
 body{
  margin:0;
  font-family:Arial,sans-serif;
- color:#653c58;
- background:#ffe9f3;
+ background:#ffe8f2;
+ color:#70425e;
 }
 header{
  text-align:center;
- padding:20px 10px;
- background:linear-gradient(120deg,#ffb8d7,#e5c5ff);
- border-bottom:4px solid white;
+ padding:22px 10px;
+ background:linear-gradient(110deg,#ffafd2,#d9baff);
+ border-bottom:5px solid white;
 }
 header h1{margin:5px;font-size:27px}
-header p{margin:5px}
-.container{max-width:1100px;margin:auto;padding:15px}
-.info{
+header p{margin:6px}
+main{max-width:1100px;margin:auto;padding:14px}
+.card{
+ background:white;
+ border:2px solid #f4c1dc;
+ border-radius:18px;
+ padding:18px;
+ box-shadow:0 5px 15px #b67da522;
+}
+.register{
+ max-width:430px;
+ margin:35px auto;
+ text-align:center;
+}
+.school{font-size:75px}
+input,select{
+ width:100%;
+ padding:14px;
+ margin:8px 0;
+ border:2px solid #f2c1db;
+ border-radius:12px;
+ font-size:16px;
+ background:#fffaff;
+}
+button{
+ border:0;
+ border-radius:13px;
+ padding:14px;
+ font-size:16px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.join{
+ width:100%;
+ color:white;
+ background:linear-gradient(90deg,#f36eae,#ae83ed);
+ box-shadow:0 4px 12px #d99ac8;
+}
+.hidden{display:none!important}
+.top-grid{
  display:grid;
  grid-template-columns:1fr 2fr 1fr;
  gap:12px;
 }
-.panel{
- background:#fff9fd;
- border:2px solid #f5bad6;
- border-radius:18px;
- padding:14px;
- box-shadow:0 4px 10px #bd8ca633;
-}
-.panel h3{margin:0 0 12px;color:#b64e88}
+.panel h3{margin:0 0 12px;color:#b4548c}
 .rank{
  display:flex;
  justify-content:space-between;
- padding:7px 0;
- border-bottom:1px solid #f5dce9;
+ gap:5px;
+ padding:9px 0;
+ border-bottom:1px solid #f3dce9;
  font-size:13px;
 }
 .board{
- background:#397a60;
- color:white;
- border:9px solid #b77b45;
- border-radius:14px;
- padding:22px 10px;
+ min-height:220px;
+ padding:15px;
  text-align:center;
- min-height:190px;
+ color:white;
+ background:#327a5b;
+ border:10px solid #b77b47;
+ border-radius:13px;
  display:flex;
  flex-direction:column;
+ align-items:center;
  justify-content:center;
 }
-.board h2{margin:5px}
-.board p{line-height:1.6}
-.teacher{font-size:55px}
+.board h2{margin:7px 0}
+.teacher{font-size:60px}
+.board p{line-height:1.5}
 .room{
  margin-top:15px;
- padding:20px 10px;
- background:linear-gradient(#fff4e8,#f9cda9);
- border:4px solid #e5a66e;
- border-radius:18px;
+ padding:16px;
+ border:5px solid #dca06b;
+ border-radius:16px;
+ background:linear-gradient(#fff2df,#f5c18e);
  text-align:center;
 }
-.room h2{color:#a55b75}
+.room-title{
+ background:#fff9ed;
+ border-radius:12px;
+ padding:10px;
+}
 .students{
  display:grid;
- grid-template-columns:repeat(4,1fr);
+ grid-template-columns:repeat(4,minmax(0,1fr));
  gap:12px;
  margin-top:18px;
 }
 .desk{
- background:#e6a35d;
- border:3px solid #b8783c;
- border-radius:12px;
- padding:12px 4px;
- box-shadow:0 5px 0 #a96b3b;
+ background:#b97742;
+ padding:5px;
+ border-radius:10px;
+ box-shadow:0 5px 0 #8c542e;
  min-width:0;
 }
-.desk .avatar{font-size:35px}
-.desk .student-name{
- display:block;
+.desk-top{
+ background:#eeb875;
+ border:2px solid #9e6339;
+ border-radius:8px;
+ padding:9px 2px;
+ min-height:80px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+}
+.avatar{font-size:34px}
+.student-name{
  background:white;
- border-radius:12px;
- padding:5px 2px;
- margin-top:6px;
- font-size:12px;
+ border-radius:10px;
+ padding:5px;
+ font-size:11px;
  overflow-wrap:anywhere;
-}
-.register{
- max-width:420px;
- margin:25px auto;
- text-align:center;
-}
-input,select{
+ margin-top:5px;
  width:100%;
- padding:13px;
- margin:8px 0;
- border:2px solid #f0b8d4;
- border-radius:12px;
- font-size:16px;
- background:white;
 }
-button{
- cursor:pointer;
- border:0;
- border-radius:14px;
- padding:13px 20px;
- font-size:16px;
- font-weight:bold;
-}
-.join{
- background:linear-gradient(90deg,#f76da9,#a77bf2);
+.seat-label{
+ font-size:10px;
  color:white;
- width:100%;
- box-shadow:0 5px 12px #d99ac8;
+ margin:5px;
 }
-.hidden{display:none}
-footer{text-align:center;padding:25px;color:#a36b91}
-@media(max-width:650px){
- .info{grid-template-columns:1fr}
- .students{grid-template-columns:repeat(2,1fr)}
- .board{min-height:160px}
+.actions{
+ margin-top:15px;
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ justify-content:center;
+}
+.secondary{
+ background:#f7dce9;
+ color:#8e4e72;
+}
+footer{text-align:center;padding:22px;color:#a36b91}
+@media(max-width:700px){
+ .top-grid{grid-template-columns:1fr}
+ .students{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:380px){
+ .students{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
@@ -240,98 +166,152 @@ footer{text-align:center;padding:25px;color:#a36b91}
 
 <header>
  <h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
- <p>🏫 Trường học Anime – Tiên học lễ, hậu học văn</p>
+ <p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
 </header>
 
-<div class="container">
+<main>
 
-<div class="panel register" id="register">
- <div style="font-size:65px">🏫</div>
+<section class="card register" id="register">
+ <div class="school">🏫🌸</div>
  <h2>Chào mừng học sinh!</h2>
- <p>Đăng ký để bước vào lớp học nhé 💗</p>
- <input id="name" placeholder="Nhập tên học sinh">
- <select id="avatar">
+ <p>Hãy đăng ký để bước vào lớp nhé 💗</p>
+ <input id="studentName" maxlength="20"
+ placeholder="Nhập tên học sinh...">
+ <select id="studentAvatar">
   <option value="👧🏻">👧🏻 Nữ sinh 1</option>
   <option value="👧🏼">👧🏼 Nữ sinh 2</option>
+  <option value="👧🏻‍🎓">👩🏻‍🎓 Nữ sinh 3</option>
   <option value="👦🏻">👦🏻 Nam sinh 1</option>
   <option value="👦🏼">👦🏼 Nam sinh 2</option>
   <option value="🐰">🐰 Thỏ học sinh</option>
+  <option value="🐱">🐱 Mèo học sinh</option>
  </select>
- <button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
-</div>
+ <button class="join" onclick="joinClass()">
+  🌸 VÀO LỚP 🌸
+ </button>
+</section>
 
-<div id="game" class="hidden">
+<section id="classroom" class="hidden">
 
-<div class="info">
- <div class="panel">
-  <h3>🏆 BẢNG XẾP HẠNG</h3>
-  <div class="rank">🥇 Roni Luong <b>1250</b></div>
-  <div class="rank">🥈 VNTrangBông <b>1080</b></div>
-  <div class="rank">🥉 NHƯ Ý <b>980</b></div>
-  <div class="rank">4. Joy Nguyen <b>920</b></div>
-  <div class="rank">5. tr_tai1909 <b>880</b></div>
+ <div class="top-grid">
+  <div class="card panel">
+   <h3>🏆 BẢNG XẾP HẠNG</h3>
+   <div id="leaderboard">
+    <div class="rank">🥇 Roni <b>1250</b></div>
+    <div class="rank">🥈 VNTrang <b>1080</b></div>
+    <div class="rank">🥉 NHƯ Ý <b>980</b></div>
+    <div class="rank">4. Joy <b>920</b></div>
+    <div class="rank">5. Tài <b>880</b></div>
+   </div>
+  </div>
+
+  <div class="board">
+   <div class="teacher">👩🏻‍🏫</div>
+   <h2>LỚP HỌC GIA TỘC</h2>
+   <h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
+   <p>Chăm ngoan – Học giỏi – Đoàn kết</p>
+   <p>💗 Chào cô, thả tim để được quà nhé!</p>
+  </div>
+
+  <div class="card panel">
+   <h3>👑 CHỨC VỤ LỚP</h3>
+   <div class="rank">👑 Lớp trưởng <b>Roni</b></div>
+   <div class="rank">⭐ Lớp phó <b>Trang</b></div>
+   <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
+   <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
+  </div>
  </div>
 
- <div class="board">
-  <div class="teacher">👩🏻‍🏫</div>
-  <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
-  <p>Chào mừng các học sinh thân yêu!</p>
-  <h3>📚 TIẾT HỌC HÔM NAY</h3>
-  <p>Chăm ngoan – Học giỏi – Đoàn kết 💗</p>
+ <div class="room">
+  <div class="room-title">
+   <h2>🏫 PHÒNG HỌC CỦA CHÚNG TA</h2>
+   <p>🌸 Mỗi học sinh một chiếc bàn 🌸</p>
+  </div>
+
+  <div class="students" id="students"></div>
+
+  <div class="actions">
+   <button class="secondary" onclick="leaveClass()">
+    Rời lớp
+   </button>
+  </div>
  </div>
 
- <div class="panel">
-  <h3>👑 CHỨC VỤ LỚP</h3>
-  <div class="rank">👑 Lớp trưởng <b>Roni</b></div>
-  <div class="rank">⭐ Lớp phó <b>Trang</b></div>
-  <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
-  <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
+ <div class="card" style="margin-top:15px;text-align:center">
+  <h3>📚 HOẠT ĐỘNG LỚP</h3>
+  <p>🎮 Mini Game | 🏆 Thi đua | 🎁 Phát quà</p>
+  <p>💗 Cùng nhau xây dựng Gia Tộc nhé!</p>
  </div>
-</div>
 
-<div class="room">
- <h2>🏫 PHÒNG HỌC CỦA CHÚNG TA</h2>
- <p>🌸 Chúc các bạn có một ngày học vui vẻ 🌸</p>
- <div class="students" id="students">
-  <div class="desk"><div class="avatar">👧🏻</div><span class="student-name">Học sinh 1</span></div>
-  <div class="desk"><div class="avatar">👦🏻</div><span class="student-name">Học sinh 2</span></div>
-  <div class="desk"><div class="avatar">👧🏼</div><span class="student-name">Học sinh 3</span></div>
-  <div class="desk"><div class="avatar">👦🏼</div><span class="student-name">Học sinh 4</span></div>
- </div>
-</div>
+</section>
+</main>
 
-<div class="panel" style="margin-top:15px;text-align:center">
- <h3>🎁 HOẠT ĐỘNG LỚP</h3>
- <p>📚 Bài kiểm tra | 🏆 Thi đua | 🎮 Mini Game</p>
- <p>💗 Hãy cùng nhau học tập thật tốt!</p>
- <button onclick="leaveClass()" style="background:#f6d8e8;color:#914d76">Rời lớp</button>
-</div>
-</div>
-</div>
-
-<footer>© 2026 Lớp Học Gia Tộc 🌸</footer>
+<footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
 
 <script>
+let currentStudent=null;
+
+function createSeats(){
+ const area=document.getElementById("students");
+ area.innerHTML="";
+
+ for(let i=1;i<=20;i++){
+  const desk=document.createElement("div");
+  desk.className="desk";
+
+  const top=document.createElement("div");
+  top.className="desk-top";
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent="🪑";
+
+  const name=document.createElement("div");
+  name.className="student-name";
+  name.textContent="Chỗ trống";
+
+  top.appendChild(avatar);
+  top.appendChild(name);
+  desk.appendChild(top);
+
+  const label=document.createElement("div");
+  label.className="seat-label";
+  label.textContent="BÀN "+i;
+  desk.appendChild(label);
+
+  area.appendChild(desk);
+ }
+}
+
 function joinClass(){
- const name=document.getElementById("name").value.trim();
- const avatar=document.getElementById("avatar").value;
- if(!name){alert("Bạn hãy nhập tên học sinh!");return;}
+ const name=document.getElementById("studentName").value.trim();
+ const avatar=document.getElementById("studentAvatar").value;
+
+ if(!name){
+  alert("Bạn hãy nhập tên học sinh!");
+  return;
+ }
+
+ currentStudent={name,avatar};
+ localStorage.setItem("classStudent",JSON.stringify(currentStudent));
+
  document.getElementById("register").classList.add("hidden");
- document.getElementById("game").classList.remove("hidden");
- document.getElementById("students").innerHTML+=
- `<div class="desk"><div class="avatar">${avatar}</div>
- <span class="student-name">${escapeHTML(name)}</span></div>`;
+ document.getElementById("classroom").classList.remove("hidden");
+
+ createSeats();
+ const firstSeat=document.querySelector(".desk-top");
+ firstSeat.querySelector(".avatar").textContent=avatar;
+ firstSeat.querySelector(".student-name").textContent=name;
 }
-function escapeHTML(s){
- return s.replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",
- '"':"&quot;","'":"&#39;"
- })[c]);
-}
+
 function leaveClass(){
- document.getElementById("game").classList.add("hidden");
+ currentStudent=null;
+ localStorage.removeItem("classStudent");
+ document.getElementById("classroom").classList.add("hidden");
  document.getElementById("register").classList.remove("hidden");
 }
+
+createSeats();
 </script>
 </body>
 </html>
