@@ -1,48 +1,67 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lớp Học Gia Tộc 🌸</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:#55435f;background:linear-gradient(135deg,#fff0f7,#f0edff,#edf7ff)}
 header{text-align:center;padding:20px 10px;background:linear-gradient(110deg,#f4afd0,#b8a8ed);color:#60446f;border-bottom:5px solid white}
-header h1{margin:0;font-size:clamp(22px,5vw,32px)}header p{margin:8px 0 0;font-size:13px;letter-spacing:2px}
-main{max-width:1250px;margin:auto;padding:16px}.hidden{display:none!important}
+header h1{margin:0;font-size:clamp(22px,5vw,32px)}
+header p{margin:8px 0 0;font-size:13px;letter-spacing:2px}
+main{max-width:1250px;margin:auto;padding:16px}
+.hidden{display:none!important}
 .card{background:white;border:1px solid #eadcf1;border-radius:22px;padding:18px;box-shadow:0 8px 25px #76558a16}
-.register{max-width:950px;margin:20px auto}.intro{text-align:center}.school-icon{font-size:48px}
-.intro h2{color:#895b9b;margin:8px}.intro p{color:#a58aab;font-size:14px}
-input,select,textarea{width:100%;padding:12px;border:2px solid #e8d5ef;border-radius:12px;font-size:15px;margin:8px 0}
-input:focus,textarea:focus{outline:none;border-color:#a994e8}
+.register{max-width:950px;margin:20px auto}
+.intro{text-align:center}
+.school-icon{font-size:48px}
+.intro h2{color:#895b9b;margin:8px}
+.intro p{color:#a58aab;font-size:14px}
+input{width:100%;padding:15px;border:2px solid #e8d5ef;border-radius:14px;font-size:16px;outline:none;margin:15px 0}
+input:focus{border-color:#a994e8}
 .section-title{text-align:center;color:#865f9c;margin:22px 0 12px}
 .filters{display:flex;justify-content:center;gap:10px;margin:15px 0}
-button{cursor:pointer;font-family:inherit}
 .filter{border:1px solid #ead9ef;background:#fff6fb;color:#805d8b;padding:12px 24px;border-radius:30px;font-weight:bold}
 .filter.active{background:linear-gradient(90deg,#e978ad,#9a84dc);color:white;border-color:transparent}
 .selected-preview{display:flex;align-items:center;gap:15px;background:linear-gradient(120deg,#fff0f7,#f0edff);border:2px solid #ead4ef;border-radius:20px;padding:12px;margin:15px 0 20px;min-height:165px}
-.preview-avatar{width:135px;flex-shrink:0}.preview-avatar svg{width:100%;height:155px;display:block}
-.preview-info{flex:1}.preview-info small{color:#a17da9;font-weight:bold;letter-spacing:1px}
-.preview-info h3{font-size:23px;margin:7px 0;color:#80558f}.preview-info p{font-size:13px;color:#967d9b}
+.preview-avatar{width:135px;flex-shrink:0}
+.preview-avatar svg{width:100%;height:155px;display:block}
+.preview-info{flex:1}
+.preview-info small{color:#a17da9;font-weight:bold;letter-spacing:1px}
+.preview-info h3{font-size:23px;margin:7px 0;color:#80558f}
+.preview-info p{font-size:13px;color:#967d9b}
 .characters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .character{min-width:0;border:2px solid #eadcf0;border-radius:18px;background:linear-gradient(#fffafd,#f7f2fc);padding:7px 5px;color:#59466a;transition:.2s}
 .character.selected{border:3px solid #d96aa9;background:linear-gradient(#ffe5f1,#eee8ff);box-shadow:0 5px 15px #d58cba55;transform:translateY(-3px)}
-.character svg{width:100%;height:145px;display:block}.character strong{display:block;font-size:13px;margin:4px 0}.character small{font-size:10px;color:#9c80a2}
-.join{width:100%;margin-top:22px;padding:17px;border:0;border-radius:16px;color:white;font-size:18px;font-weight:bold;background:linear-gradient(90deg,#e96eae,#9582df);box-shadow:0 6px 16px #c48ac455}
-.top-grid{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px}.panel h3{color:#86568f;margin-top:0}
+.character svg{width:100%;height:145px;display:block}
+.character strong{display:block;font-size:13px;margin:4px 0}
+.character small{font-size:10px;color:#9c80a2}
+.join{width:100%;margin-top:22px;padding:17px;border:0;border-radius:16px;color:white;font-size:18px;font-weight:bold;background:linear-gradient(90deg,#e96eae,#9582df);box-shadow:0 6px 16px #c48ac455;cursor:pointer}
+
+/* KHU VỰC THÔNG TIN */
+.top-grid{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px}
+.panel h3{color:#86568f;margin-top:0}
 .rank{display:flex;justify-content:space-between;gap:5px;padding:9px 0;border-bottom:1px solid #f0e3ef;font-size:13px}
 .board{min-height:235px;padding:15px;border:9px solid #93643f;border-radius:14px;color:white;background:#286342;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px #173b29}
-.board h2{margin:5px;font-size:21px}.board p{line-height:1.5;font-size:13px}.teacher{font-size:52px}
+.board h2{margin:5px;font-size:21px}
+.board p{line-height:1.5;font-size:13px}
+.teacher{font-size:52px}
+
+/* PHÒNG HỌC VIỆT NAM */
 .room{margin-top:20px;padding:15px;border:9px solid #a16d42;border-radius:12px;background:#f5e5c9;box-shadow:0 10px 25px #754c3038;overflow:hidden}
 .classroom-wall{position:relative;padding:15px;min-height:300px;background:repeating-linear-gradient(90deg,transparent 0,transparent 98px,#e8d4b5 99px,#e8d4b5 101px),#fff3dc;border:5px solid #d5b48a}
 .wall-decor{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.wall-window{width:100px;height:75px;border:6px solid #9b7048;background:linear-gradient(#9ed9f2 0 55%,#b7df9c 55%);position:relative}
+.wall-window{width:100px;height:75px;border:6px solid #9b7048;background:linear-gradient(#9ed9f2 0 55%,#b7df9c 55%);position:relative;box-shadow:inset 0 0 0 3px white}
 .wall-window:before{content:"";position:absolute;left:50%;top:0;height:100%;border-left:4px solid #9b7048}
 .wall-window:after{content:"";position:absolute;left:0;top:50%;width:100%;border-top:4px solid #9b7048}
 .flag{width:74px;height:49px;background:#da202b;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px #0003;font-size:26px}
 .ho-portrait{width:65px;height:75px;border:5px solid #a16d42;background:#f8f0df;display:flex;align-items:center;justify-content:center;font-size:37px}
 .wall-clock{width:58px;height:58px;border:5px solid #8e6a45;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:25px}
 .chalkboard{position:relative;width:min(720px,100%);min-height:195px;margin:5px auto 0;padding:17px;border:12px solid #97643d;border-radius:5px;background:#24613d;color:#fffbe2;text-align:center;box-shadow:inset 0 0 18px #102e20,0 5px 0 #70472c}
+.chalkboard:after{content:"";position:absolute;bottom:-19px;left:15%;width:70%;height:10px;background:#bd8754;border-radius:4px}
 .chalkboard h2{margin:0 0 10px;font-size:clamp(17px,3vw,25px);letter-spacing:1px}
 .chalk-writing{font-family:Georgia,serif;font-style:italic;font-size:clamp(14px,2.5vw,19px);line-height:1.8}
 .chalk-small{font-size:12px;color:#d9ebc8}
@@ -51,139 +70,363 @@ button{cursor:pointer;font-family:inherit}
 .teacher-person{font-size:48px}
 .wall-board{display:flex;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap}
 .notice{flex:1;min-width:135px;padding:10px;background:#fff9df;border:3px solid #d6b66f;border-radius:5px;text-align:center;font-size:12px;box-shadow:2px 3px 5px #8d653322}
-.notice strong{display:block;color:#8a5834;margin-bottom:6px}.notice p{margin:4px 0;line-height:1.5}
+.notice strong{display:block;color:#8a5834;margin-bottom:6px}
+.notice p{margin:4px 0;line-height:1.5}
 .room-title{margin:0 auto 15px;padding:13px;text-align:center;background:#fff9eb;border:3px solid #d5b48a;border-radius:10px}
-.room-title h2{font-size:20px;margin:0;color:#825631}.room-title p{margin:6px 0 0;color:#98734d;font-size:13px}
+.room-title h2{font-size:20px;margin:0;color:#825631}
+.room-title p{margin:6px 0 0;color:#98734d;font-size:13px}
 .student-zone{padding:18px 10px 25px;background:repeating-linear-gradient(90deg,#d4a36b 0,#d4a36b 48px,#c58d58 49px,#c58d58 51px);border:5px solid #9c663a;border-top:10px solid #a36e42}
 .students{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 12px;max-width:1050px;margin:auto}
-.desk{min-width:0;position:relative;padding-top:4px}.desk-top{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:linear-gradient(135deg,#f4d29a,#dca365);border:3px solid #8d592f;border-radius:7px;padding:5px;box-shadow:0 7px 0 #744624;position:relative}
+.desk{min-width:0;position:relative;padding-top:4px}
+.desk-top{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:linear-gradient(135deg,#f4d29a,#dca365);border:3px solid #8d592f;border-radius:7px;padding:5px;box-shadow:0 7px 0 #744624;position:relative}
 .desk-top:before{content:"";position:absolute;top:0;left:0;right:0;height:13px;background:#f7dfb4;border-bottom:2px solid #9c6a3e}
 .desk-top svg{width:90px;height:115px;display:block;position:relative;z-index:1}
 .desk-top .avatar-placeholder{font-size:45px;height:115px;display:flex;align-items:center;justify-content:center}
 .student-name{width:100%;padding:6px 3px;margin-top:3px;border-radius:5px;background:#fff9e9;border:1px solid #c49b6d;text-align:center;font-size:11px;overflow-wrap:anywhere;color:#68472d}
 .seat-label{text-align:center;color:#fff8e8;font-size:10px;font-weight:bold;padding:9px 3px 0;text-shadow:1px 1px 2px #68472d}
 .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
-.action-btn,.primary-btn{padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;background:#fff0fa;color:#805b91}
-.primary-btn{background:linear-gradient(90deg,#e96eae,#9582df);color:white;border:0;font-weight:bold}
-.action-btn:hover,.primary-btn:hover{filter:brightness(.97);transform:translateY(-1px)}
-.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-.game-card{border:2px solid #eadcf1;border-radius:16px;padding:14px;background:#fffaff;text-align:center}
-.game-card .emoji{font-size:30px}.game-card h3{margin:6px 0;color:#80558f}.game-card p{font-size:12px;color:#987da0}
-.modal-backdrop{position:fixed;inset:0;background:#24182c99;display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}
-.modal{width:mi
- (650px,100%);max-height:90vh;overflow:auto;background:#fffafd;border-radius:22px;padding:20px;box-shadow:0 20px 60px #0004}
-.modal h2{color:#855995;margin-top:0}.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-.option{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;border:2px solid #eadcf1;border-radius:12px;background:white;color:#5b4766}
-.option:hover{border-color:#c28ed5;background:#fff3fa}
-.notice-box{padding:12px;border-radius:12px;background:#fff1d9;color:#805b32;margin:10px 0}
-.status-pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#f4eaff;color:#865a9b;font-size:11px;font-weight:bold}
-.admin-panel{border:2px solid #e1c8ed;background:#fffaff;border-radius:18px;padding:15px;margin-top:15px}
-.admin-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #f0e3ef;font-size:13px}
-.small-btn{border:0;border-radius:9px;padding:8px 10px;background:#f4e5fb;color:#79518d}
-.danger{background:#ffe5e8;color:#a23d4b}.good{background:#e4f7e9;color:#32784a}
+.action-btn{padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;background:#fff0fa;color:#805b91;cursor:pointer}
+.action-btn:hover{transform:translateY(-2px);background:#fce0ef}
 footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
-@media(max-width:700px){.top-grid{grid-template-columns:1fr}.students{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 8px}.characters{grid-template-columns:repeat(3,minmax(0,1fr))}.wall-window{width:65px;height:55px}.ho-portrait{width:48px;height:58px;font-size:28px}.chalkboard{min-height:170px}.teacher-desk{width:135px}.game-grid{grid-template-columns:1fr}}
-@media(max-width:380px){.students{grid-template-columns:repeat(2,minmax(0,1fr))}.characters{grid-template-columns:repeat(2,minmax(0,1fr))}.preview-avatar{width:105px}}
+
+@media(max-width:700px){
+ .top-grid{grid-template-columns:1fr}
+ .students{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 8px}
+ .characters{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .wall-window{width:65px;height:55px}
+ .ho-portrait{width:48px;height:58px;font-size:28px}
+ .chalkboard{min-height:170px}
+ .teacher-desk{width:135px}
+}
+@media(max-width:380px){
+ .students{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .characters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .preview-avatar{width:105px}
+}
 </style>
 </head>
+
 <body>
-<header><h1>🌸 LỚP HỌC GIA TỘC 🌸</h1><p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p></header>
+<header>
+<h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
+<p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
+</header>
+
 <main>
 <section id="register" class="card register">
- <div class="intro"><div class="school-icon">🏫🌸</div><h2>CHỌN NHÂN VẬT CỦA BẠN</h2><p>Chào mừng đến với ngôi trường Gia Tộc!</p></div>
- <input id="studentName" maxlength="20" placeholder="✏️ Nhập tên học sinh của bạn...">
- <h3 class="section-title">✨ BỘ SƯU TẬP HỌC SINH ✨</h3>
- <div class="filters"><button class="filter active" onclick="setFilter('girl',this)">👧 NỮ SINH</button><button class="filter" onclick="setFilter('boy',this)">👦 NAM SINH</button></div>
- <div class="selected-preview"><div class="preview-avatar" id="previewAvatar"></div><div class="preview-info"><small>NHÂN VẬT ĐANG CHỌN</small><h3 id="previewName">Miyuki</h3><p id="previewDescription">Nữ sinh • Đồng phục học sinh</p></div></div>
- <div class="characters" id="characters"></div><button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
+<div class="intro">
+<div class="school-icon">🏫🌸</div>
+<h2>CHỌN NHÂN VẬT CỦA BẠN</h2>
+<p>Chào mừng đến với ngôi trường Gia Tộc!</p>
+</div>
+
+<input id="studentName" maxlength="20" placeholder="✏️ Nhập tên học sinh của bạn...">
+
+<h3 class="section-title">✨ BỘ SƯU TẬP HỌC SINH ✨</h3>
+
+<div class="filters">
+<button class="filter active" onclick="setFilter('girl',this)">👧 NỮ SINH</button>
+<button class="filter" onclick="setFilter('boy',this)">👦 NAM SINH</button>
+</div>
+
+<div class="selected-preview">
+<div class="preview-avatar" id="previewAvatar"></div>
+<div class="preview-info">
+<small>NHÂN VẬT ĐANG CHỌN</small>
+<h3 id="previewName">Miyuki</h3>
+<p id="previewDescription">Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ</p>
+</div>
+</div>
+
+<div class="characters" id="characters"></div>
+<button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
 </section>
+
 <section id="classroom" class="hidden">
- <div class="top-grid">
-  <div class="card panel"><h3>🏆 BẢNG XẾP HẠNG</h3><div id="ranking"></div></div>
-  <div class="board"><div class="teacher">👩🏻‍🏫</div><h2>🌸 LỚP HỌC GIA TỘC 🌸</h2><h3 id="teacherAnnouncement">🎁 CÔ PHÁT QUÀ NÈ!</h3><p>Chăm ngoan – Học giỏi – Đoàn kết</p><p>💗 Học vui, chơi vui, nhớ nghe lời cô nhé!</p></div>
-  <div class="card panel"><h3>👑 CHỨC VỤ LỚP</h3><div class="rank">👑 Lớp trưởng <b>Roni</b></div><div class="rank">⭐ Lớp phó <b>Trang</b></div><div class="rank">🌷 Tổ trưởng <b>Joy</b></div><div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div></div>
- </div>
- <div class="room">
-  <div class="classroom-wall">
-   <div class="wall-decor"><div class="wall-window"></div><div class="flag">⭐</div><div class="ho-portrait">👨🏻</div><div class="wall-clock">🕘</div><div class="wall-window"></div></div>
-   <div class="chalkboard"><h2>TRƯỜNG HỌC GIA TỘC</h2><div class="chalk-writing">Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết</div><div class="chalk-small">🌸 Chào mừng các em đến với lớp học! 🌸</div></div>
-   <div class="teacher-area"><div class="teacher-person">👩🏻‍🏫</div><div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div></div>
-   <div class="wall-board"><div class="notice"><strong>📌 NỘI QUY LỚP</strong><p>Đi học đúng giờ</p><p>Lễ phép, đoàn kết</p><p>Giữ gìn vệ sinh</p></div><div class="notice"><strong>🏆 BẢNG THI ĐUA</strong><p>🌟 Tuần học tốt</p><p>🌸 Hoa điểm 10</p><p>👏 Bé chăm ngoan</p></div><div class="notice"><strong>🧹 PHÂN CÔNG TRỰC NHẬT</strong><p>Tổ 1: Thứ 2</p><p>Tổ 2: Thứ 3</p><p>Tổ 3: Thứ 4</p></div></div>
-  </div>
-  <div class="room-title"><h2>🏫 PHÒNG HỌC GIA TỘC</h2><p>20 chỗ ngồi • Mỗi thành viên một chiếc bàn!</p></div>
-  <div class="student-zone"><div class="students" id="students"></div></div>
-  <div class="actions">
-   <button class="action-btn" onclick="openGames()">🧠 Đố vui & Tri thức</button>
-   <button class="action-btn" onclick="tryMischief('eat')">🍬 Ăn vụng</button>
-   <button class="action-btn" onclick="tryMischief('phone')">📱 Chơi điện thoại</button>
-   <button class="action-btn" onclick="tryMischief('talk')">💬 Nói chuyện</button>
-   <button class="action-btn" onclick="openStudentProfile()">🎒 Hồ sơ của tôi</button>
-   <button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
-  </div>
-  <div class="card" style="margin-top:15px"><h3>📣 Nhật ký lớp học</h3><div id="activityLog"><p>🌸 Lớp học đã mở cửa. Chúc các bạn một ngày vui vẻ!</p></div></div>
-  <div class="admin-panel" id="adminEntry"><h3>🔐 Khu vực cô giáo</h3><p style="font-size:13px">Chủ website đăng nhập để quản lý lớp, kiểm tra học sinh và tạo câu hỏi.</p><button class="primary-btn" onclick="adminLogin()">👩🏻‍🏫 Đăng nhập cô giáo</button></div>
-  <div class="admin-panel hidden" id="adminPanel">
-   <h3>👩🏻‍🏫 BÀN ĐIỀU KHIỂN CỦA CÔ GIÁO <span class="status-pill">QUẢN TRỊ</span></h3>
-   <p id="adminSummary"></p>
-   <div class="modal-actions"><button class="small-btn" onclick="inspectRandom()">🔎 Kiểm tra bất ngờ</button><button class="small-btn" onclick="manageQuestions()">📚 Quản lý câu hỏi</button><button class="small-btn" onclick="teacherAnnouncement()">📢 Thông báo lớp</button><button class="small-btn danger" onclick="adminLogout()">Đăng xuất</button></div>
-   <h4>👀 Học sinh và hành vi hiện tại</h4><div id="adminStudents"></div>
-  </div>
- </div>
+<div class="top-grid">
+<div class="card panel">
+<h3>🏆 BẢNG XẾP HẠNG</h3>
+<div class="rank">🥇 Roni <b>1250</b></div>
+<div class="rank">🥈 VNTrang <b>1080</b></div>
+<div class="rank">🥉 NHƯ Ý <b>980</b></div>
+<div class="rank">4. Joy <b>920</b></div>
+<div class="rank">5. Tài <b>880</b></div>
+</div>
+
+<div class="board">
+<div class="teacher">👩🏻‍🏫</div>
+<h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
+<h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
+<p>Chăm ngoan – Học giỏi – Đoàn kết</p>
+<p>💗 Chào cô, thả tim để được quà nhé!</p>
+</div>
+
+<div class="card panel">
+<h3>👑 CHỨC VỤ LỚP</h3>
+<div class="rank">👑 Lớp trưởng <b>Roni</b></div>
+<div class="rank">⭐ Lớp phó <b>Trang</b></div>
+<div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
+<div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
+</div>
+</div>
+
+<div class="room">
+<div class="classroom-wall">
+<div class="wall-decor">
+<div class="wall-window"></div>
+<div class="flag" title="Quốc kỳ Việt Nam">⭐</div>
+<div class="ho-portrait" title="Ảnh Bác Hồ">👨🏻</div>
+<div class="wall-clock">🕘</div>
+<div class="wall-window"></div>
+</div>
+
+<div class="chalkboard">
+<h2>TRƯỜNG HỌC GIA TỘC</h2>
+<div class="chalk-writing">
+Tiên học lễ – Hậu học văn<br>
+Chăm ngoan • Học giỏi • Đoàn kết
+</div>
+<div class="chalk-small">🌸 Chào mừng các em đến với lớp học! 🌸</div>
+</div>
+
+<div class="teacher-area">
+<div class="teacher-person">👩🏻‍🏫</div>
+<div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div>
+</div>
+
+<div class="wall-board">
+<div class="notice">
+<strong>📌 NỘI QUY LỚP</strong>
+<p>Đi học đúng giờ</p>
+<p>Lễ phép, đoàn kết</p>
+<p>Giữ gìn vệ sinh</p>
+</div>
+<div class="notice">
+<strong>🏆 BẢNG THI ĐUA</strong>
+<p>🌟 Tuần học tốt</p>
+<p>🌸 Hoa điểm 10</p>
+<p>👏 Bé chăm ngoan</p>
+</div>
+<div class="notice">
+<strong>🧹 PHÂN CÔNG TRỰC NHẬT</strong>
+<p>Tổ 1: Thứ 2</p>
+<p>Tổ 2: Thứ 3</p>
+<p>Tổ 3: Thứ 4</p>
+</div>
+</div>
+</div>
+
+<div class="room-title">
+<h2>🏫 PHÒNG HỌC GIA TỘC</h2>
+<p>20 chỗ ngồi • Mỗi thành viên một chiếc bàn!</p>
+</div>
+
+<div class="student-zone">
+<div class="students" id="students"></div>
+</div>
+
+<div class="actions">
+<button class="action-btn" onclick="alert('Mini Game sắp ra mắt!')">🎮 Mini Game</button>
+<button class="action-btn" onclick="alert('Thi đua sắp ra mắt!')">🏆 Thi đua</button>
+<button class="action-btn" onclick="alert('Phát quà sắp ra mắt!')">🎁 Phát quà</button>
+<button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
+</div>
+</div>
 </section>
 </main>
+
 <footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
-<div id="modalRoot"></div>
+
 <script>
 const characters=[
-{id:1,name:"Miyuki",gender:"girl",hair:"#202638",skin:"#ffd5b4",style:1},{id:2,name:"Sakura",gender:"girl",hair:"#55352c",skin:"#ffe0c5",style:2},{id:3,name:"Yuna",gender:"girl",hair:"#b58a4c",skin:"#ffe4cc",style:3},{id:4,name:"Hana",gender:"girl",hair:"#9b526d",skin:"#ffdfcc",style:4},{id:5,name:"Akari",gender:"girl",hair:"#613b2d",skin:"#f5c8a8",style:5},{id:6,name:"Mei",gender:"girl",hair:"#252c42",skin:"#ffdfc8",style:6},{id:7,name:"Rin",gender:"girl",hair:"#a45a42",skin:"#ffe2cc",style:7},{id:8,name:"Aoi",gender:"girl",hair:"#70649c",skin:"#ffe0c7",style:8},{id:9,name:"Nana",gender:"girl",hair:"#30212b",skin:"#f6cfb5",style:9},{id:10,name:"Emi",gender:"girl",hair:"#c58a55",skin:"#ffe2ca",style:10},{id:11,name:"Koharu",gender:"girl",hair:"#463449",skin:"#ffdfc7",style:11},{id:12,name:"Hikari",gender:"girl",hair:"#a77c8a",skin:"#ffe3d0",style:12},{id:13,name:"Haruto",gender:"boy",hair:"#28232a",skin:"#f5c9a7",style:1},{id:14,name:"Ren",gender:"boy",hair:"#744b34",skin:"#ffddc0",style:2},{id:15,name:"Sota",gender:"boy",hair:"#d0a45f",skin:"#ffe0c5",style:3},{id:16,name:"Kaito",gender:"boy",hair:"#20283b",skin:"#eec09e",style:4},{id:17,name:"Yuki",gender:"boy",hair:"#ad6948",skin:"#ffdfc8",style:5},{id:18,name:"Hiro",gender:"boy",hair:"#34303a",skin:"#f5c9a9",style:6},{id:19,name:"Akio",gender:"boy",hair:"#a18b68",skin:"#ffe0c3",style:7},{id:20,name:"Riku",gender:"boy",hair:"#49302d",skin:"#f5c7a7",style:8},{id:21,name:"Taiga",gender:"boy",hair:"#252b39",skin:"#f4c9ae",style:9},{id:22,name:"Minato",gender:"boy",hair:"#9c6849",skin:"#ffe0c8",style:10},{id:23,name:"Itsuki",gender:"boy",hair:"#574b45",skin:"#f6d0b5",style:11},{id:24,name:"Daiki",gender:"boy",hair:"#d2ad76",skin:"#ffe0c4",style:12}];
-const quizBank=[
-{cat:"Đố mẹo",q:"Cái gì càng lấy đi thì càng lớn?",opts:["Cái hố","Đống tiền","Tuổi tác","Cây bút"],a:0,why:"Càng đào đất đi thì cái hố càng lớn.",pts:10},
-{cat:"Đố vui",q:"Một đàn chim đậu trên cành, người thợ săn bắn một phát. Hỏi còn mấy con?",opts:["Một con","Không còn con nào","Hai con","Tùy số chim"],a:1,why:"Tiếng súng làm những con chim còn lại bay đi; con bị bắn cũng không còn đậu trên cành.",pts:10},
-{cat:"Toán 6–9",q:"Giá trị của 3² + 4² là bao nhiêu?",opts:["12","25","49","14"],a:1,why:"3² = 9 và 4² = 16; tổng là 25.",pts:10},
-{cat:"Ngữ văn",q:"Tác giả truyện ngắn 'Lão Hạc' là ai?",opts:["Ngô Tất Tố","Nam Cao","Kim Lân","Tô Hoài"],a:1,why:"'Lão Hạc' là truyện ngắn nổi tiếng của nhà văn Nam Cao.",pts:10},
-{cat:"Tiếng Anh",q:"Chọn dạng quá khứ của động từ 'go'.",opts:["goed","gone","went","going"],a:2,why:"Quá khứ đơn của 'go' là 'went'; 'gone' là quá khứ phân từ.",pts:10},
-{cat:"Khoa học tự nhiên",q:"Hành tinh nào gần Mặt Trời nhất?",opts:["Trái Đất","Sao Kim","Sao Thủy","Sao Hỏa"],a:2,why:"Sao Thủy là hành tinh gần Mặt Trời nhất.",pts:10},
-{cat:"Lịch sử",q:"Chiến thắng Điện Biên Phủ diễn ra năm nào?",opts:["1945","1954","1968","1975"],a:1,why:"Chiến thắng Điện Biên Phủ diễn ra ngày 7/5/1954.",pts:10},
-{cat:"Địa lý",q:"Việt Nam nằm ở khu vực nào của châu Á?",opts:["Đông Á","Nam Á","Đông Nam Á","Tây Á"],a:2,why:"Việt Nam thuộc khu vực Đông Nam Á.",pts:10},
-{cat:"Tin học",q:"Thiết bị nào thường dùng để nhập văn bản?",opts:["Màn hình","Bàn phím","Loa","Máy in"],a:1,why:"Bàn phím là thiết bị nhập liệu phổ biến.",pts:10},
-{cat:"Đố mẹo",q:"Tháng nào trong năm có 28 ngày?",opts:["Tháng 2","Tháng 4","Tất cả các tháng","Tháng 12"],a:2,why:"Tháng nào cũng có ít nhất 28 ngày!",pts:10},
-{cat:"Sinh học",q:"Bộ phận nào của cây chủ yếu hấp thụ nước và muối khoáng?",opts:["Lá","Hoa","Rễ","Quả"],a:2,why:"Rễ cây hấp thụ nước và muối khoáng từ đất.",pts:10},
-{cat:"Vật lý",q:"Đơn vị đo cường độ dòng điện là gì?",opts:["Vôn","Ampe","Oát","Jun"],a:1,why:"Cường độ dòng điện được đo bằng ampe (A).",pts:10}
+{id:1,name:"Miyuki",gender:"girl",hair:"#202638",skin:"#ffd5b4",style:1,extra:"🎀"},
+{id:2,name:"Sakura",gender:"girl",hair:"#55352c",skin:"#ffe0c5",style:2,extra:"🌸"},
+{id:3,name:"Yuna",gender:"girl",hair:"#b58a4c",skin:"#ffe4cc",style:3,extra:"✨"},
+{id:4,name:"Hana",gender:"girl",hair:"#9b526d",skin:"#ffdfcc",style:4,extra:"🎀"},
+{id:5,name:"Akari",gender:"girl",hair:"#613b2d",skin:"#f5c8a8",style:5,extra:"🌼"},
+{id:6,name:"Mei",gender:"girl",hair:"#252c42",skin:"#ffdfc8",style:6,extra:"💗"},
+{id:7,name:"Rin",gender:"girl",hair:"#a45a42",skin:"#ffe2cc",style:7,extra:"⭐"},
+{id:8,name:"Aoi",gender:"girl",hair:"#70649c",skin:"#ffe0c7",style:8,extra:"🌷"},
+{id:9,name:"Nana",gender:"girl",hair:"#30212b",skin:"#f6cfb5",style:9,extra:"💕"},
+{id:10,name:"Emi",gender:"girl",hair:"#c58a55",skin:"#ffe2ca",style:10,extra:"🌻"},
+{id:11,name:"Koharu",gender:"girl",hair:"#463449",skin:"#ffdfc7",style:11,extra:"🌸"},
+{id:12,name:"Hikari",gender:"girl",hair:"#a77c8a",skin:"#ffe3d0",style:12,extra:"✨"},
+
+{id:13,name:"Haruto",gender:"boy",hair:"#28232a",skin:"#f5c9a7",style:1},
+{id:14,name:"Ren",gender:"boy",hair:"#744b34",skin:"#ffddc0",style:2},
+{id:15,name:"Sota",gender:"boy",hair:"#d0a45f",skin:"#ffe0c5",style:3},
+{id:16,name:"Kaito",gender:"boy",hair:"#20283b",skin:"#eec09e",style:4},
+{id:17,name:"Yuki",gender:"boy",hair:"#ad6948",skin:"#ffdfc8",style:5},
+{id:18,name:"Hiro",gender:"boy",hair:"#34303a",skin:"#f5c9a9",style:6},
+{id:19,name:"Akio",gender:"boy",hair:"#a18b68",skin:"#ffe0c3",style:7},
+{id:20,name:"Riku",gender:"boy",hair:"#49302d",skin:"#f5c7a7",style:8},
+{id:21,name:"Taiga",gender:"boy",hair:"#252b39",skin:"#f4c9ae",style:9},
+{id:22,name:"Minato",gender:"boy",hair:"#9c6849",skin:"#ffe0c8",style:10},
+{id:23,name:"Itsuki",gender:"boy",hair:"#574b45",skin:"#f6d0b5",style:11},
+{id:24,name:"Daiki",gender:"boy",hair:"#d2ad76",skin:"#ffe0c4",style:12}
 ];
-let filter="girl",selected=1,student=null,students=[],admin=false,autoTimer=null,questions=[...quizBank];
-const $=id=>document.getElementById(id);
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function avatarSVG(c){const girl=c.gender==="girl";const bow=girl?`<path d="M48 42 Q30 23 22 39 Q34 54 48 47 Q62 54 75 39 Q65 23 48 42" fill="#ef83b7"/>`:"";const hairBack=`<path d="M16 54 Q9 5 49 7 Q89 5 82 55 L79 99 Q67 116 48 112 Q25 116 17 98Z" fill="${c.hair}"/>`;const hairFront=`<path d="M15 47 Q12 7 49 8 Q86 5 83 48 Q67 27 49 33 Q31 25 15 47Z" fill="${c.hair}"/>`;return `<svg viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="153" rx="31" ry="5" fill="#765b6a" opacity=".15"/>${hairBack}<path d="M25 86 Q18 60 22 43 Q25 22 50 22 Q76 22 78 45 L76 87 Q72 108 50 111 Q28 108 25 86Z" fill="${c.skin}"/><path d="M24 67 Q20 55 24 45 Q30 31 50 32 Q70 30 77 46 L78 66 Q65 57 57 58 Q43 55 24 67Z" fill="${c.hair}"/><ellipse cx="37" cy="73" rx="5" ry="7" fill="#382d3b"/><ellipse cx="63" cy="73" rx="5" ry="7" fill="#382d3b"/><circle cx="39" cy="71" r="1.7" fill="white"/><circle cx="65" cy="71" r="1.7" fill="white"/><path d="M43 91 Q50 97 57 91" fill="none" stroke="#b85f71" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="29" cy="86" rx="7" ry="4" fill="#f49b9d" opacity=".5"/><ellipse cx="71" cy="86" rx="7" ry="4" fill="#f49b9d" opacity=".5"/><path d="M22 106 Q50 96 78 106 L87 151 L13 151Z" fill="white" stroke="#45536e" stroke-width="2"/><path d="M42 105 L50 124 L58 105" fill="none" stroke="#d92e42" stroke-width="5"/><path d="M44 121 L50 128 L56 121" fill="none" stroke="#d92e42" stroke-width="3"/>${girl?`<path d="M20 133 L80 133 L92 154 L8 154Z" fill="#273d68" stroke="#1e2d4e" stroke-width="2"/>`:`<path d="M25 132 L75 132 L72 157 L28 157Z" fill="#273d68" stroke="#1e2d4e" stroke-width="2"/>`}${bow}</svg>`}
-function setFilter(g,btn){filter=g;document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));btn.classList.add("active");renderCharacters()}
-function selectCharacter(id){selected=id;const c=characters.find(x=>x.id===id);$("previewAvatar").innerHTML=avatarSVG(c);$("previewName").textContent=c.name;$("previewDescription").textContent=(c.gender==="girl"?"Nữ sinh":"Nam sinh")+" • Đồng phục học sinh";renderCharacters()}
-function renderCharacters(){$("characters").innerHTML=characters.filter(c=>c.gender===filter).map(c=>`<button class="character ${selected===c.id?"selected":""}" onclick="selectCharacter(${c.id})">${avatarSVG(c)}<strong>${c.name}</strong><small>${c.gender==="girl"?"Nữ sinh":"Nam sinh"}</small></button>`).join("")}
-function load(){try{students=JSON.parse(localStorage.getItem("giaTocStudents")||"[]");questions=JSON.parse(localStorage.getItem("giaTocQuestions")||"null")||[...quizBank]}catch(e){students=[];questions=[...quizBank]}}
-function save(){localStorage.setItem("giaTocStudents",JSON.stringify(students));localStorage.setItem("giaTocQuestions",JSON.stringify(questions))}
-function log(message){const box=$("activityLog");if(box){box.innerHTML=`<p>${escapeHTML(message)}</p>`+box.innerHTML}}
-function joinClass(){const name=$("studentName").value.trim();if(!name){alert("Bạn hãy nhập tên trước nhé!");return}if(students.length>=20){alert("Lớp đã đủ 20 học sinh rồi!");return}const s={id:"s"+Date.now(),name,avatarId:selected,points:0,status:"Trong lớp",behavior:"",behaviorText:"",phoneTaken:false,history:[]};students.push(s);student=s;save();$("register").classList.add("hidden");$("classroom").classList.remove("hidden");renderRoom();startDetection();log("🌸 "+name+" đã bước vào lớp học!")}
-function leaveClass(){if(!student)return;students=students.filter(s=>s.id!==student.id);student=null;save();$("classroom").classList.add("hidden");$("register").classList.remove("hidden");renderRoom()}
-function renderRoom(){if(!$("students"))return;$("students").innerHTML=students.map((s,i)=>{const c=characters.find(x=>x.id===s.avatarId)||characters[0];return `<div class="desk"><div class="desk-top">${avatarSVG(c)}<div class="student-name">${escapeHTML(s.name)} ${s.behavior?"🤫":""} ${s.phoneTaken?"📵":""}</div></div><div class="seat-label">BÀN ${i+1} • ⭐ ${s.points}</div></div>`}).join("");$("ranking").innerHTML=[...students].sort((a,b)=>b.points-a.points).map((s,i)=>`<div class="rank"><span>${i+1}. ${escapeHTML(s.name)}</span><b>⭐ ${s.points}</b></div>`).join("")||"<p>Chưa có học sinh</p>";if(admin)renderAdmin()}
-function modal(content){$("modalRoot").innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal">${content}</div></div>`}
-function closeModal(){$("modalRoot").innerHTML=""}
-function openGames(){modal(`<h2>🧠 GIỜ ĐỐ VUI GIA TỘC</h2><p>Chọn thử thách bạn muốn tham gia nhé!</p><div class="game-grid"><button class="game-card" onclick="startQuiz('Đố mẹo')"><div class="emoji">🤔</div><h3>Đố mẹo</h3><p>Câu hỏi xoắn não</p></button><button class="game-card" onclick="startQuiz('Đố vui')"><div class="emoji">😂</div><h3>Đố vui</h3><p>Vừa vui vừa bất ngờ</p></button><button class="game-card" onclick="startQuiz('all')"><div class="emoji">🏅</div><h3>Đố tri thức</h3><p>Kiến thức cấp 2 Việt Nam</p></button></div><p class="status-pill">Trả lời đúng: +10 điểm</p><div class="modal-actions"><button class="action-btn" onclick="closeModal()">Đóng</button></div>`)}
-function startQuiz(category){let pool=questions.filter(q=>category==="all"||q.cat===category);if(!pool.length){alert("Chưa có câu hỏi trong mục này.");return}let q=pool[Math.floor(Math.random()*pool.length)];let opts=q.opts.map((o,i)=>({o,i})).sort(()=>Math.random()-.5);modal(`<h2>📝 ${escapeHTML(q.cat)}</h2><p>${escapeHTML(q.q)}</p>${opts.map(x=>`<button class="option" onclick="answerQuiz(${x.i},${q.a},${q.pts},${JSON.stringify(q.why).replace(/"/g,'&quot;')})">${escapeHTML(x.o)}</button>`).join("")}<p class="status-pill">⏱️ Hãy suy nghĩ thật kỹ!</p><div class="modal-actions"><button class="action-btn" onclick="closeModal()">Thoát câu hỏi</button></div>`)}
-function answerQuiz(choice,correct,pts,why){if(choice===correct){student.points+=pts;student.history.push("Trả lời đúng câu đố +"+pts);save();log("🌟 "+student.name+" trả lời đúng và nhận "+pts+" điểm!");modal(`<h2>🎉 Chính xác!</h2><div class="notice-box">${escapeHTML(why)}</div><p>Bạn được cộng <b>${pts} điểm</b>!</p><button class="primary-btn" onclick="closeModal();renderRoom()">Tuyệt vời!</button>`)}else{modal(`<h2>🙈 Chưa đúng rồi!</h2><div class="notice-box">${escapeHTML(why)}</div><p>Không bị trừ điểm nhé, thử câu khác nào!</p><button class="primary-btn" onclick="closeModal()">Đã hiểu</button>`)}renderRoom()}
-function tryMischief(type){if(!student)return;if(student.status!=="Trong lớp"){alert("Bạn đang ở trạng thái "+student.status+". Chưa thể nghịch tiếp đâu!");return}if(student.behavior){alert("Bạn đang có hành vi chưa bị cô phát hiện. Hãy chờ xem cô có bắt gặp không nhé!");return}const acts={eat:{label:"Ăn vụng",icon:"🍬",risk:0.48,success:"Bạn lén lấy bánh trong ngăn bàn."},phone:{label:"Chơi điện thoại",icon:"📱",risk:0.42,success:"Bạn lén mở điện thoại dưới bàn."},talk:{label:"Nói chuyện riêng",icon:"💬",risk:0.55,success:"Bạn quay xuống bàn sau tám chuyện."}};const a=acts[type];student.behavior=type;student.behaviorText=a.label;student.lastAction=Date.now();save();log(a.icon+" "+student.name+" đang "+a.label.toLowerCase()+"...");renderRoom();modal(`<h2>${a.icon} ${a.label}</h2><p>${a.success}</p><div class="notice-box">🤫 Cô giáo chưa phát hiện. Bạn đang hồi hộp chờ xem cô có nhìn thấy không...</div><p class="status-pill">Hành vi đang được giấu kín</p><button class="primary-btn" onclick="closeModal()">Tiếp tục</button>`)}
-function startDetection(){if(autoTimer)clearInterval(autoTimer);autoTimer=setInterval(()=>{if(!students.length)return;const acting=students.filter(s=>s.behavior&&s.status==="Trong lớp");if(!acting.length)return;const target=acting[Math.floor(Math.random()*acting.length)];if(Math.random()<0.24){detectStudent(target.id,"Cô giáo tình cờ nhìn thấy");}},12000)}
-function detectStudent(id,reason){const s=students.find(x=>x.id===id);if(!s||!s.behavior)return;const behavior=s.behavior;const punishment=behavior==="phone"?"phone":behavior==="eat"?"eat":"talk";s.behavior="";s.history.push("Bị phát hiện: "+s.behaviorText);if(punishment==="phone"){s.phoneTaken=true;s.points=Math.max(0,s.points-15);s.status="Trong lớp";log("👩🏻‍🏫 Cô bắt gặp "+s.name+" chơi điện thoại và tịch thu điện thoại, trừ 15 điểm!");}else if(punishment==="eat"){s.points=Math.max(0,s.points-5);log("👩🏻‍🏫 Cô bắt gặp "+s.name+" ăn vụng và trừ 5 điểm!");}else{s.points=Math.max(0,s.points-5);log("👩🏻‍🏫 Cô bắt gặp "+s.name+" nói chuyện riêng và trừ 5 điểm!");}s.behaviorText="";save();renderRoom();if(student&&student.id===id){modal(`<h2>😱 CÔ GIÁO PHÁT HIỆN!</h2><div class="notice-box">${reason}! ${escapeHTML(s.name)} đã bị bắt quả tang.</div><p>${punishment==="phone"?"📱 Điện thoại bị tịch thu và trừ 15 điểm.":punishment==="eat"?"🍬 Bị nhắc nhở và trừ 5 điểm.":"💬 Bị nhắc nhở và trừ 5 điểm."}</p><button class="primary-btn" onclick="closeModal()">Dạ, em biết lỗi rồi!</button>`)}}
-function openStudentProfile(){if(!student)return;showStudent(student.id)}
-function showStudent(id){const s=students.find(x=>x.id===id);if(!s)return;modal(`<h2>🎒 Hồ sơ học sinh</h2><div style="display:flex;align-items:center;gap:14px">${avatarSVG(characters.find(c=>c.id===s.avatarId)||characters[0])}<div><h3>${escapeHTML(s.name)}</h3><p>⭐ ${s.points} điểm</p><span class="status-pill">${escapeHTML(s.status)}</span></div></div><p>📱 Điện thoại: ${s.phoneTaken?"Đang bị cô tịch thu":"Đang giữ"}</p><p>🕵️ Hành vi: ${s.behavior?escapeHTML(s.behaviorText):"Không có"}</p><p>📚 Số lần ghi nhận: ${s.history.length}</p><button class="action-btn" onclick="closeModal()">Đóng</button>`)}
-function adminLogin(){const p=prompt("Nhập mật khẩu cô giáo:");if(p===null)return;/* Demo only: password is not secure in a public static website. */if(p==="Giatoc@2026"){admin=true;$("adminEntry").classList.add("hidden");$("adminPanel").classList.remove("hidden");renderAdmin();log("🔐 Cô giáo đã đăng nhập khu vực quản trị.")}else alert("Sai mật khẩu!")}
-function adminLogout(){admin=false;$("adminPanel").classList.add("hidden");$("adminEntry").classList.remove("hidden")}
-function renderAdmin(){$("adminSummary").textContent="Sĩ số: "+students.length+"/20 • Đang có hành vi: "+students.filter(s=>s.behavior).length+" • Đang bị mời ra ngoài: "+students.filter(s=>s.status==="Ngoài lớp").length;$("adminStudents").innerHTML=students.map(s=>`<div class="admin-row"><span><b>${escapeHTML(s.name)}</b><br><small>${s.behavior? "⚠️ "+escapeHTML(s.behaviorText):"Bình thường"} • ${s.points} điểm • ${escapeHTML(s.status)}</small></span><span><button class="small-btn" onclick="inspectStudent('${s.id}')">Kiểm tra</button> <button class="small-btn" onclick="punishStudent('${s.id}')">Xử lý</button></span></div>`).join("")||"<p>Chưa có học sinh.</p>"}
-function inspectStudent(id){const s=students.find(x=>x.id===id);if(!s)return;if(s.behavior){detectStudent(id,"Cô giáo chủ động kiểm tra");if(admin)renderAdmin()}else{log("🔎 Cô giáo kiểm tra "+s.name+" nhưng không phát hiện vi phạm.");alert("Cô kiểm tra "+s.name+" nhưng bạn ấy đang ngoan!");}}
-function inspectRandom(){const acting=students.filter(s=>s.behavior);if(!acting.length){alert("Hiện không có học sinh nào đang có hành vi đáng ngờ.");return}const s=acting[Math.floor(Math.random()*acting.length)];inspectStudent(s.id)}
-function punishStudent(id){const s=students.find(x=>x.id===id);if(!s)return;modal(`<h2>⚖️ Xử lý học sinh: ${escapeHTML(s.name)}</h2><p>Chọn hình thức xử lý của cô giáo:</p><div class="modal-actions"><button class="small-btn" onclick="applyPunishment('${s.id}','warn')">📣 Nhắc nhở</button><button class="small-btn" onclick="applyPunishment('${s.id}','minus')">⭐ Trừ 10 điểm</button><button class="small-btn" onclick="applyPunishment('${s.id}','phone')">📱 Tịch thu điện thoại</button><button class="small-btn danger" onclick="applyPunishment('${s.id}','out')">🚪 Mời ra khỏi lớp</button><button class="small-btn good" onclick="applyPunishment('${s.id}','return')">↩ Cho vào lớp / trả điện thoại</button></div><button class="action-btn" onclick="closeModal()">Hủy</button>`)}
-function applyPunishment(id,type){const s=students.find(x=>x.id===id);if(!s)return;if(type==="warn"){s.history.push("Cô nhắc nhở");log("📣 Cô giáo nhắc nhở "+s.name+".")}if(type==="minus"){s.points=Math.max(0,s.points-10);s.history.push("Bị trừ 10 điểm");log("⭐ Cô giáo trừ 10 điểm của "+s.name+".")}if(type==="phone"){s.phoneTaken=true;s.history.push("Bị tịch thu điện thoại");log("📱 Cô giáo tịch thu điện thoại của "+s.name+".")}if(type==="out"){s.status="Ngoài lớp";s.history.push("Bị mời ra khỏi lớp");log("🚪 "+s.name+" bị mời ra khỏi lớp.")}if(type==="return"){s.status="Trong lớp";s.phoneTaken=false;s.history.push("Được vào lớp / trả điện thoại");log("🌸 "+s.name+" được vào lớp và nhận lại điện thoại.")}save();closeModal();renderRoom()}
-function manageQuestions(){modal(`<h2>📚 Quản lý ngân hàng câu hỏi</h2><p>Cô giáo có thể thêm câu hỏi trắc nghiệm vào bộ câu hỏi trên thiết bị này.</p><input id="newCat" placeholder="Môn / loại câu hỏi (VD: Toán 7)"><textarea id="newQuestion" rows="2" placeholder="Nội dung câu hỏi"></textarea><input id="o0" placeholder="Đáp án A"><input id="o1" placeholder="Đáp án B"><input id="o2" placeholder="Đáp án C"><input id="o3" placeholder="Đáp án D"><label>Đáp án đúng</label><select id="correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select><textarea id="explain" rows="2" placeholder="Giải thích đáp án"></textarea><button class="primary-btn" onclick="addQuestion()">Thêm câu hỏi</button><p>Hiện có ${questions.length} câu hỏi.</p><button class="action-btn" onclick="closeModal()">Đóng</button>`)}
-function addQuestion(){const cat=$("newCat").value.trim(),q=$("newQuestion").value.trim(),opts=[0,1,2,3].map(i=>$("o"+i).value.trim());if(!cat||!q||opts.some(x=>!x)){alert("Hãy nhập đầy đủ câu hỏi và 4 đáp án.");return}questions.push({cat,q,opts,a:Number($("correct").value),why:$("explain").value.trim()||"Cô giáo sẽ bổ sung lời giải.",pts:10});save();closeModal();alert("Đã thêm câu hỏi!")}
-function teacherAnnouncement(){const msg=prompt("Nhập thông báo của cô giáo:");if(!msg)return;$("teacherAnnouncement").textContent="📢 "+msg;log("📢 Cô giáo thông báo: "+msg)}
-load();selectCharacter(1);renderRoom();
+
+let selectedId=1,currentFilter="girl";
+
+function avatarSVG(c){
+ const girl=c.gender==="girl";
+ const s=c.style-1;
+
+ const girlHair=[
+  {back:`<path d="M18 65 Q5 10 60 7 Q115 10 102 65 L105 130 Q100 151 85 128 L80 91 L40 91 L35 128 Q20 151 15 130Z"/>`,front:`<path d="M18 48 Q18 7 60 7 Q102 7 102 48 Q88 31 73 34 Q58 22 43 35 Q28 32 18 48Z"/>`},
+  {back:`<path d="M18 60 Q5 10 60 7 Q115 10 102 60 L112 118 Q105 142 91 125 L82 85 L38 85 L29 125 Q15 142 8 118Z"/>`,front:`<path d="M17 49 Q12 8 60 7 Q108 8 103 49 L86 38 L72 25 L58 43 L42 27 L26 45Z"/>`},
+  {back:`<path d="M18 62 Q7 10 60 7 Q113 10 102 62 L105 143 Q94 151 83 125 L80 90 L40 90 L37 125 Q26 151 15 143Z"/>`,front:`<path d="M17 48 Q15 7 60 7 Q105 7 103 48 Q87 36 75 35 Q57 29 43 37 Q28 34 17 48Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L110 124 Q100 144 87 121 L80 91 L40 91 L33 121 Q20 144 10 124Z"/>`,front:`<path d="M17 49 Q15 7 60 7 Q105 7 103 49 L90 34 L75 45 L60 25 L43 43 L28 34Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L104 130 Q93 145 82 121 L80 90 L40 90 L38 121 Q27 145 16 130Z"/>`,front:`<path d="M17 48 Q14 7 60 7 Q106 7 103 48 Q87 29 72 35 Q53 24 39 37 Q25 34 17 48Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L115 120 Q107 142 91 123 L80 88 L40 88 L29 123 Q13 142 5 120Z"/>`,front:`<path d="M17 49 Q13 7 60 7 Q107 7 103 49 L87 40 L71 28 L59 42 L45 27 L28 42Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L106 139 Q94 150 82 123 L80 90 L40 90 L36 123 Q24 150 14 139Z"/>`,front:`<path d="M17 49 Q15 7 60 7 Q105 7 103 49 Q91 36 76 31 L62 43 L48 31 Q29 34 17 49Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L108 127 Q97 145 84 121 L80 90 L40 90 L34 121 Q21 145 12 127Z"/>`,front:`<path d="M17 48 Q15 7 60 7 Q105 7 103 48 L91 35 L76 42 L61 25 L45 42 L29 34Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L110 140 Q98 151 85 124 L80 90 L40 90 L35 124 Q22 151 10 140Z"/>`,front:`<path d="M17 49 Q13 7 60 7 Q107 7 103 49 Q88 32 73 37 Q57 23 42 37 Q28 33 17 49Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L104 126 Q92 145 82 120 L80 90 L40 90 L38 120 Q28 145 16 126Z"/>`,front:`<path d="M17 49 Q15 7 60 7 Q105 7 103 49 L85 37 L72 26 L57 42 L43 28 L28 43Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L112 131 Q98 151 85 124 L80 90 L40 90 L35 124 Q20 151 8 131Z"/>`,front:`<path d="M17 48 Q15 7 60 7 Q105 7 103 48 Q87 35 72 34 Q55 26 42 38 Q27 33 17 48Z"/>`},
+  {back:`<path d="M18 62 Q5 10 60 7 Q115 10 102 62 L105 136 Q94 150 82 124 L80 90 L40 90 L37 124 Q25 150 15 136Z"/>`,front:`<path d="M17 49 Q13 7 60 7 Q107 7 103 49 L88 35 L72 43 L59 26 L44 43 L28 34Z" />`}
+ ];
+
+ const boyHair=[
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L91 43 Q80 28 60 30 Q37 27 26 46Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L87 41 L69 28 L54 42 L35 31 L24 48Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L87 42 Q69 28 51 34 L25 49Z"/>`,
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L90 40 L76 46 L60 29 L41 45 L25 46Z"/>`,
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L92 35 Q75 44 65 27 L48 43 L31 32 L24 48Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L88 39 L75 31 L58 43 L42 30 L25 47Z"/>`,
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L88 43 L74 28 L60 40 L45 27 L26 46Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L90 39 Q72 30 59 44 L43 29 L25 47Z"/>`,
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L88 40 L72 45 L58 28 L43 42 L25 45Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L88 35 L72 43 L60 25 L43 42 L25 47Z"/>`,
+  `<path d="M18 58 Q10 7 60 7 Q110 7 102 58 L92 42 L78 28 L62 40 L46 29 L25 47Z"/>`,
+  `<path d="M18 58 Q13 7 60 7 Q108 7 102 58 L90 38 L74 44 L60 29 L42 44 L25 47Z"/>`
+ ];
+
+ const hairBack=girl?girlHair[s].back:boyHair[s];
+ const hairFront=girl?girlHair[s].front:boyHair[s];
+
+ const eyes=`
+ <ellipse cx="43" cy="57" rx="9" ry="11" fill="#202438"/>
+ <ellipse cx="77" cy="57" rx="9" ry="11" fill="#202438"/>
+ <ellipse cx="46" cy="53" rx="3.8" ry="4.5" fill="white"/>
+ <ellipse cx="80" cy="53" rx="3.8" ry="4.5" fill="white"/>
+ <circle cx="39" cy="62" r="1.7" fill="white"/>
+ <circle cx="73" cy="62" r="1.7" fill="white"/>
+ <path d="M32 46 Q43 39 53 47 M67 47 Q77 39 88 46" stroke="#302638" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+
+ const body=girl?`
+ <path d="M34 96 L86 96 L94 122 L26 122Z" fill="#fff" stroke="#9ba2b5" stroke-width="1.5"/>
+ <path d="M44 96 L60 111 L76 96" fill="#fff" stroke="#c5c5c5" stroke-width="1.5"/>
+ <path d="M28 118 L92 118 L85 140 L35 140Z" fill="#243b65" stroke="#192d51" stroke-width="1.5"/>
+ <path d="M39 120 L43 137 M51 120 L52 139 M64 120 L64 139 M77 120 L74 137" stroke="#8290aa" stroke-width="1.5"/>
+ <path d="M39 139 L52 139 L51 148 L39 148Z M68 139 L81 139 L82 148 L69 148Z" fill="${c.skin}"/>
+ <path d="M35 146 Q44 143 52 148 L54 153 L31 153 Q30 149 35 146Z M68 148 Q77 143 85 148 L89 153 L66 153Z" fill="#3c4052"/>
+ `:`
+ <path d="M34 96 L86 96 L94 122 L26 122Z" fill="#fff" stroke="#9ba2b5" stroke-width="1.5"/>
+ <path d="M44 96 L60 111 L76 96" fill="#fff" stroke="#c5c5c5" stroke-width="1.5"/>
+ <path d="M31 119 L89 119 L85 147 L66 147 L60 128 L54 147 L35 147Z" fill="#243b65" stroke="#192d51" stroke-width="1.5"/>
+ <path d="M60 122 L60 145" stroke="#8290aa" stroke-width="1.5"/>
+ <path d="M34 145 L54 145 L54 151 L30 153Z M66 145 L86 145 L90 153 L66 151Z" fill="#3c4052"/>
+ `;
+
+ const scarf=`
+ <path d="M48 96 L60 108 L72 96 L68 119 L60 128 L52 119Z" fill="#d9233b" stroke="#a51e32" stroke-width="1.5" stroke-linejoin="round"/>
+ <path d="M48 96 L60 108 L72 96" fill="none" stroke="#ff9aa3" stroke-width="1.5"/>
+ `;
+
+ const accessories=girl?`
+ <g>
+ <circle cx="${[94,25,96,24,94,25,95,24,96,25,94,24][s]}" cy="${[24,24,24,24,25,24,24,24,25,24,24,24][s]}" r="5" fill="${["#f28bb6","#f28bb6","#ffd36d","#ef83b7","#f6c45d","#f28bb6","#f6c45d","#e6a2c5","#f28bb6","#ffd36d","#ef83b7","#f6c45d"][s]}"/>
+ <circle cx="${[100,19,102,18,100,19,101,18,102,19,100,18][s]}" cy="25" r="4" fill="${c.hair}"/>
+ </g>`:"";
+
+ return `
+ <svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+ <ellipse cx="60" cy="155" rx="32" ry="3.5" fill="#806b85" opacity=".2"/>
+ <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${hairBack}</g>
+ <circle cx="19" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
+ <circle cx="101" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
+ <circle cx="19" cy="67" r="4" fill="#eaa58f"/>
+ <circle cx="101" cy="67" r="4" fill="#eaa58f"/>
+ <ellipse cx="60" cy="58" rx="42" ry="44" fill="${c.skin}" stroke="#252536" stroke-width="2.5"/>
+ ${eyes}
+ <ellipse cx="27" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
+ <ellipse cx="93" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
+ <ellipse cx="60" cy="75" rx="2.5" ry="1.8" fill="#b66b65"/>
+ <path d="M51 83 Q60 93 69 83 Q61 98 51 83Z" fill="white" stroke="#9c5864" stroke-width="1.5"/>
+ <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${hairFront}</g>
+ ${body}
+ ${scarf}
+ ${accessories}
+ </svg>`;
+}
+
+function setFilter(type,button){
+ currentFilter=type;
+ document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ renderCharacters();
+}
+
+function selectCharacter(id){
+ selectedId=id;
+ const c=characters.find(x=>x.id===id);
+ document.getElementById("previewAvatar").innerHTML=avatarSVG(c);
+ document.getElementById("previewName").textContent=c.name;
+ document.getElementById("previewDescription").textContent=
+ c.gender==="boy"
+ ?"Nam sinh • Sơ mi trắng • Quần navy • Khăn quàng đỏ"
+ :"Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ";
+ renderCharacters();
+}
+
+function renderCharacters(){
+ const box=document.getElementById("characters");
+ box.innerHTML="";
+ characters.filter(c=>c.gender===currentFilter).forEach(c=>{
+  const btn=document.createElement("button");
+  btn.className="character"+(selectedId===c.id?" selected":"");
+  btn.innerHTML=avatarSVG(c)+`<strong>${c.name}</strong><small>${c.gender==="boy"?"NAM SINH":"NỮ SINH"}</small>`;
+  btn.onclick=()=>selectCharacter(c.id);
+  box.appendChild(btn);
+ });
+}
+
+function createSeats(){
+ const area=document.getElementById("students");
+ area.innerHTML="";
+ for(let i=1;i<=20;i++){
+  const desk=document.createElement("div");
+  desk.className="desk";
+  desk.innerHTML=`<div class="desk-top"><div class="avatar-placeholder">🪑</div><div class="student-name">Chỗ trống</div></div><div class="seat-label">BÀN ${i}</div>`;
+  area.appendChild(desk);
+ }
+}
+
+function joinClass(){
+ const name=document.getElementById("studentName").value.trim();
+ if(!name){alert("Bạn chưa nhập tên học sinh!");return;}
+ const c=characters.find(x=>x.id===selectedId);
+ try{localStorage.setItem("classStudent",JSON.stringify({name,avatarId:c.id}));}catch(e){}
+ document.getElementById("register").classList.add("hidden");
+ document.getElementById("classroom").classList.remove("hidden");
+ createSeats();
+ const first=document.querySelector(".desk-top");
+ first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
+ first.querySelector(".student-name").textContent=name;
+ window.scrollTo(0,0);
+}
+
+function leaveClass(){
+ try{localStorage.removeItem("classStudent");}catch(e){}
+ document.getElementById("classroom").classList.add("hidden");
+ document.getElementById("register").classList.remove("hidden");
+ window.scrollTo(0,0);
+}
+
+selectCharacter(1);
+renderCharacters();
+createSeats();
 </script>
 </body>
 </html>
