@@ -7,416 +7,315 @@
 <title>Lớp Học Gia Tộc 🌸</title>
 <style>
 *{box-sizing:border-box}
-:root{
- --navy:#263d67;--red:#d83e50;--pink:#f4a6cb;
- --purple:#a994e8;--ink:#4b4260;
-}
-body{
- margin:0;font-family:"Trebuchet MS",Arial,sans-serif;
- color:var(--ink);
- background:linear-gradient(140deg,#f7efff,#fff5f8,#edf5ff);
-}
-header{
- text-align:center;padding:24px 12px;
- background:linear-gradient(110deg,#f4b3d2,#b9b2ee);
- color:#59446f;border-bottom:5px solid white;
-}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:#55435f;background:linear-gradient(135deg,#fff0f7,#f0edff,#edf7ff)}
+header{text-align:center;padding:23px 10px;background:linear-gradient(110deg,#f4afd0,#b8a8ed);color:#60446f;border-bottom:5px solid white}
 header h1{margin:0;font-size:clamp(22px,5vw,32px)}
 header p{margin:8px 0 0;font-size:13px;letter-spacing:2px}
-main{max-width:1150px;margin:auto;padding:18px}
+main{max-width:1150px;margin:auto;padding:16px}
 .hidden{display:none!important}
-.card{
- background:white;border:1px solid #eadcf1;
- border-radius:22px;padding:18px;
- box-shadow:0 8px 25px #76558a16;
-}
+.card{background:white;border:1px solid #eadcf1;border-radius:22px;padding:18px;box-shadow:0 8px 25px #76558a16}
 .register{max-width:950px;margin:20px auto}
 .intro{text-align:center}
 .school-icon{font-size:48px}
-.intro h2{color:#825b9b;margin:8px 0}
+.intro h2{color:#895b9b;margin:8px}
 .intro p{color:#a58aab;font-size:14px}
-input{
- width:100%;padding:15px;border:2px solid #e8d5ef;
- border-radius:14px;font-size:16px;outline:none;margin:15px 0;
-}
+input{width:100%;padding:15px;border:2px solid #e8d5ef;border-radius:14px;font-size:16px;outline:none;margin:15px 0}
 input:focus{border-color:#a994e8}
 .section-title{text-align:center;color:#865f9c;margin:22px 0 12px}
 .filters{display:flex;justify-content:center;gap:10px;margin:15px 0}
-.filter{
- border:1px solid #ead9ef;background:#fff6fb;
- color:#805d8b;padding:12px 24px;border-radius:30px;font-weight:bold;
-}
-.filter.active{
- background:linear-gradient(90deg,#e978ad,#9a84dc);
- color:white;border-color:transparent;
-}
-.selected-preview{
- display:flex;align-items:center;gap:15px;
- background:linear-gradient(120deg,#fff0f7,#f0edff);
- border:2px solid #ead4ef;border-radius:20px;
- padding:12px;margin:15px 0 20px;min-height:175px;
-}
-.preview-avatar{width:130px;flex-shrink:0}
+.filter{border:1px solid #ead9ef;background:#fff6fb;color:#805d8b;padding:12px 24px;border-radius:30px;font-weight:bold}
+.filter.active{background:linear-gradient(90deg,#e978ad,#9a84dc);color:white;border-color:transparent}
+.selected-preview{display:flex;align-items:center;gap:15px;background:linear-gradient(120deg,#fff0f7,#f0edff);border:2px solid #ead4ef;border-radius:20px;padding:12px;margin:15px 0 20px;min-height:165px}
+.preview-avatar{width:135px;flex-shrink:0}
 .preview-avatar svg{width:100%;height:155px;display:block}
 .preview-info{flex:1}
 .preview-info small{color:#a17da9;font-weight:bold;letter-spacing:1px}
 .preview-info h3{font-size:23px;margin:7px 0;color:#80558f}
 .preview-info p{font-size:13px;color:#967d9b}
-.characters{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;
-}
-.character{
- min-width:0;border:2px solid #eadcf0;border-radius:18px;
- background:linear-gradient(#fffafd,#f7f2fc);
- padding:8px 5px;color:#59466a;transition:.2s;
-}
-.character.selected{
- border:3px solid #d96aa9;
- background:linear-gradient(#ffe5f1,#eee8ff);
- box-shadow:0 5px 15px #d58cba55;
- transform:translateY(-3px);
-}
+.characters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.character{min-width:0;border:2px solid #eadcf0;border-radius:18px;background:linear-gradient(#fffafd,#f7f2fc);padding:7px 5px;color:#59466a;transition:.2s}
+.character.selected{border:3px solid #d96aa9;background:linear-gradient(#ffe5f1,#eee8ff);box-shadow:0 5px 15px #d58cba55;transform:translateY(-3px)}
 .character svg{width:100%;height:145px;display:block}
 .character strong{display:block;font-size:13px;margin:4px 0}
 .character small{font-size:10px;color:#9c80a2}
-.join{
- width:100%;margin-top:22px;padding:17px;border:0;
- border-radius:16px;color:white;font-size:18px;font-weight:bold;
- background:linear-gradient(90deg,#e96eae,#9582df);
- box-shadow:0 6px 16px #c48ac455;
-}
+.join{width:100%;margin-top:22px;padding:17px;border:0;border-radius:16px;color:white;font-size:18px;font-weight:bold;background:linear-gradient(90deg,#e96eae,#9582df);box-shadow:0 6px 16px #c48ac455}
 .top-grid{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px}
 .panel h3{color:#86568f;margin-top:0}
-.rank{
- display:flex;justify-content:space-between;gap:5px;
- padding:9px 0;border-bottom:1px solid #f0e3ef;font-size:13px;
-}
-.board{
- min-height:235px;padding:15px;border:9px solid #93643f;
- border-radius:14px;color:white;background:#286342;text-align:center;
- display:flex;flex-direction:column;align-items:center;justify-content:center;
- box-shadow:inset 0 0 18px #173b29;
-}
+.rank{display:flex;justify-content:space-between;gap:5px;padding:9px 0;border-bottom:1px solid #f0e3ef;font-size:13px}
+.board{min-height:235px;padding:15px;border:9px solid #93643f;border-radius:14px;color:white;background:#286342;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px #173b29}
 .board h2{margin:5px;font-size:21px}
 .board p{line-height:1.5;font-size:13px}
 .teacher{font-size:52px}
-.room{
- margin-top:18px;padding:16px;border:7px solid #9b7048;
- border-radius:20px;
- background:linear-gradient(180deg,#b5dff2 0%,#e1f2f8 18%,
- #fff0d8 18%,#ffe9ca 68%,#d6a36c 68%,#b67b4d 100%);
- box-shadow:0 8px 20px #97643d33;
-}
-.room-title{
- max-width:520px;margin:0 auto 20px;padding:13px;
- text-align:center;border:3px solid #e7bd8a;
- border-radius:16px;background:#fffaf0;
-}
+.room{margin-top:18px;padding:16px;border:7px solid #9b7048;border-radius:20px;background:linear-gradient(180deg,#b5dff2 0%,#e1f2f8 18%,#fff0d8 18%,#ffe9ca 68%,#d6a36c 68%,#b67b4d 100%);box-shadow:0 8px 20px #97643d33}
+.room-title{max-width:520px;margin:0 auto 20px;padding:13px;text-align:center;border:3px solid #e7bd8a;border-radius:16px;background:#fffaf0}
 .room-title h2{font-size:19px}
 .students{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
-.desk{
- min-width:0;background:linear-gradient(135deg,#e9b979,#bd7942);
- border:3px solid #986035;border-radius:12px;padding:5px;
- box-shadow:0 6px 0 #80502e;
-}
-.desk-top{
- min-height:155px;display:flex;flex-direction:column;
- align-items:center;justify-content:center;
- background:linear-gradient(135deg,#ffe7b6,#e7b36f);
- border:2px solid #a76a3d;border-radius:8px;padding:5px;
-}
+.desk{min-width:0;background:linear-gradient(135deg,#e9b979,#bd7942);border:3px solid #986035;border-radius:12px;padding:5px;box-shadow:0 6px 0 #80502e}
+.desk-top{min-height:155px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffe7b6,#e7b36f);border:2px solid #a76a3d;border-radius:8px;padding:5px}
 .desk-top svg{width:90px;height:110px;display:block}
-.avatar-placeholder{font-size:40px}
-.student-name{
- width:100%;padding:6px;border-radius:9px;background:white;
- text-align:center;font-size:12px;overflow-wrap:anywhere;
-}
+.student-name{width:100%;padding:6px;border-radius:9px;background:white;text-align:center;font-size:12px;overflow-wrap:anywhere}
 .seat-label{text-align:center;color:white;font-size:11px;padding:5px}
 .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
-.action-btn{
- padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;
- background:#fff0fa;color:#805b91;
-}
+.action-btn{padding:12px 16px;border:1px solid #ead8ed;border-radius:12px;background:#fff0fa;color:#805b91}
 footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
-@media(max-width:700px){
- .top-grid{grid-template-columns:1fr}
- .students{grid-template-columns:repeat(3,minmax(0,1fr))}
- .characters{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:380px){
- .students{grid-template-columns:repeat(2,minmax(0,1fr))}
- .characters{grid-template-columns:repeat(2,minmax(0,1fr))}
- .preview-avatar{width:105px}
-}
+@media(max-width:700px){.top-grid{grid-template-columns:1fr}.students{grid-template-columns:repeat(3,minmax(0,1fr))}.characters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:380px){.students{grid-template-columns:repeat(2,minmax(0,1fr))}.characters{grid-template-columns:repeat(2,minmax(0,1fr))}.preview-avatar{width:105px}}
 </style>
 </head>
-
 <body>
 <header>
- <h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
- <p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
+<h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
+<p>🏫 TIÊN HỌC LỄ – HẬU HỌC VĂN</p>
 </header>
 
 <main>
 <section id="register" class="card register">
- <div class="intro">
-  <div class="school-icon">🏫🌸</div>
-  <h2>CHỌN NHÂN VẬT CỦA BẠN</h2>
-  <p>Chào mừng đến với ngôi trường Gia Tộc!</p>
- </div>
-
- <input id="studentName" maxlength="20"
- placeholder="✏️ Nhập tên học sinh của bạn...">
-
- <h3 class="section-title">✨ BỘ SƯU TẬP HỌC SINH ✨</h3>
-
- <div class="filters">
-  <button class="filter active" onclick="setFilter('girl',this)">👧 NỮ SINH</button>
-  <button class="filter" onclick="setFilter('boy',this)">👦 NAM SINH</button>
- </div>
-
- <div class="selected-preview">
-  <div class="preview-avatar" id="previewAvatar"></div>
-  <div class="preview-info">
-   <small>NHÂN VẬT ĐANG CHỌN</small>
-   <h3 id="previewName">Miyuki</h3>
-   <p id="previewDescription">Nữ sinh • Đồng phục học sinh</p>
-  </div>
- </div>
-
- <div class="characters" id="characters"></div>
- <button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
+<div class="intro">
+<div class="school-icon">🏫🌸</div>
+<h2>CHỌN NHÂN VẬT CỦA BẠN</h2>
+<p>Chào mừng đến với ngôi trường Gia Tộc!</p>
+</div>
+<input id="studentName" maxlength="20" placeholder="✏️ Nhập tên học sinh của bạn...">
+<h3 class="section-title">✨ BỘ SƯU TẬP HỌC SINH ✨</h3>
+<div class="filters">
+<button class="filter active" onclick="setFilter('girl',this)">👧 NỮ SINH</button>
+<button class="filter" onclick="setFilter('boy',this)">👦 NAM SINH</button>
+</div>
+<div class="selected-preview">
+<div class="preview-avatar" id="previewAvatar"></div>
+<div class="preview-info">
+<small>NHÂN VẬT ĐANG CHỌN</small>
+<h3 id="previewName">Miyuki</h3>
+<p id="previewDescription">Nữ sinh • Đồng phục học sinh</p>
+</div>
+</div>
+<div class="characters" id="characters"></div>
+<button class="join" onclick="joinClass()">🌸 VÀO LỚP 🌸</button>
 </section>
 
 <section id="classroom" class="hidden">
- <div class="top-grid">
-  <div class="card panel">
-   <h3>🏆 BẢNG XẾP HẠNG</h3>
-   <div class="rank">🥇 Roni <b>1250</b></div>
-   <div class="rank">🥈 VNTrang <b>1080</b></div>
-   <div class="rank">🥉 NHƯ Ý <b>980</b></div>
-   <div class="rank">4. Joy <b>920</b></div>
-   <div class="rank">5. Tài <b>880</b></div>
-  </div>
-
-  <div class="board">
-   <div class="teacher">👩🏻‍🏫</div>
-   <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
-   <h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
-   <p>Chăm ngoan – Học giỏi – Đoàn kết</p>
-   <p>💗 Chào cô, thả tim để được quà nhé!</p>
-  </div>
-
-  <div class="card panel">
-   <h3>👑 CHỨC VỤ LỚP</h3>
-   <div class="rank">👑 Lớp trưởng <b>Roni</b></div>
-   <div class="rank">⭐ Lớp phó <b>Trang</b></div>
-   <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
-   <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
-  </div>
- </div>
-
- <div class="room">
-  <div class="room-title">
-   <h2>🏫 PHÒNG HỌC GIA TỘC 🌸</h2>
-   <p>Mỗi thành viên một chiếc bàn!</p>
-  </div>
-  <div class="students" id="students"></div>
-  <div class="actions">
-   <button class="action-btn" onclick="alert('Mini Game sắp ra mắt!')">🎮 Mini Game</button>
-   <button class="action-btn" onclick="alert('Thi đua sắp ra mắt!')">🏆 Thi đua</button>
-   <button class="action-btn" onclick="alert('Phát quà sắp ra mắt!')">🎁 Phát quà</button>
-   <button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
-  </div>
- </div>
+<div class="top-grid">
+<div class="card panel">
+<h3>🏆 BẢNG XẾP HẠNG</h3>
+<div class="rank">🥇 Roni <b>1250</b></div>
+<div class="rank">🥈 VNTrang <b>1080</b></div>
+<div class="rank">🥉 NHƯ Ý <b>980</b></div>
+<div class="rank">4. Joy <b>920</b></div>
+<div class="rank">5. Tài <b>880</b></div>
+</div>
+<div class="board">
+<div class="teacher">👩🏻‍🏫</div>
+<h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
+<h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
+<p>Chăm ngoan – Học giỏi – Đoàn kết</p>
+<p>💗 Chào cô, thả tim để được quà nhé!</p>
+</div>
+<div class="card panel">
+<h3>👑 CHỨC VỤ LỚP</h3>
+<div class="rank">👑 Lớp trưởng <b>Roni</b></div>
+<div class="rank">⭐ Lớp phó <b>Trang</b></div>
+<div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
+<div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
+</div>
+</div>
+<div class="room">
+<div class="room-title"><h2>🏫 PHÒNG HỌC GIA TỘC 🌸</h2><p>Mỗi thành viên một chiếc bàn!</p></div>
+<div class="students" id="students"></div>
+<div class="actions">
+<button class="action-btn" onclick="alert('Mini Game sắp ra mắt!')">🎮 Mini Game</button>
+<button class="action-btn" onclick="alert('Thi đua sắp ra mắt!')">🏆 Thi đua</button>
+<button class="action-btn" onclick="alert('Phát quà sắp ra mắt!')">🎁 Phát quà</button>
+<button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
+</div>
+</div>
 </section>
 </main>
-
 <footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
 
 <script>
 const characters=[
-{id:1,name:"Miyuki",gender:"girl",hair:"#29202d",skin:"#ffdfc8",hairStyle:1,extra:"🎀"},
-{id:2,name:"Sakura",gender:"girl",hair:"#55352c",skin:"#ffe1ca",hairStyle:2,extra:"🌸"},
-{id:3,name:"Yuna",gender:"girl",hair:"#b58a4c",skin:"#ffe4cc",hairStyle:3,extra:"✨"},
-{id:4,name:"Hana",gender:"girl",hair:"#9b526d",skin:"#ffdfcc",hairStyle:4,extra:"🎀"},
-{id:5,name:"Akari",gender:"girl",hair:"#613b2d",skin:"#f5c8a8",hairStyle:5,extra:"🌼"},
-{id:6,name:"Mei",gender:"girl",hair:"#252c42",skin:"#ffdfc8",hairStyle:6,extra:"💗"},
-{id:7,name:"Rin",gender:"girl",hair:"#a45a42",skin:"#ffe2cc",hairStyle:7,extra:"⭐"},
-{id:8,name:"Aoi",gender:"girl",hair:"#70649c",skin:"#ffe0c7",hairStyle:8,extra:"🌷"},
-{id:9,name:"Nana",gender:"girl",hair:"#30212b",skin:"#f6cfb5",hairStyle:9,extra:"💕"},
-{id:10,name:"Emi",gender:"girl",hair:"#c58a55",skin:"#ffe2ca",hairStyle:10,extra:"🌻"},
-{id:11,name:"Koharu",gender:"girl",hair:"#463449",skin:"#ffdfc7",hairStyle:11,extra:"🌸"},
-{id:12,name:"Hikari",gender:"girl",hair:"#a77c8a",skin:"#ffe3d0",hairStyle:12,extra:"✨"},
-
-{id:13,name:"Haruto",gender:"boy",hair:"#28232a",skin:"#f5c9a7",hairStyle:1},
-{id:14,name:"Ren",gender:"boy",hair:"#744b34",skin:"#ffddc0",hairStyle:2},
-{id:15,name:"Sota",gender:"boy",hair:"#d0a45f",skin:"#ffe0c5",hairStyle:3},
-{id:16,name:"Kaito",gender:"boy",hair:"#20283b",skin:"#eec09e",hairStyle:4},
-{id:17,name:"Yuki",gender:"boy",hair:"#ad6948",skin:"#ffdfc8",hairStyle:5},
-{id:18,name:"Hiro",gender:"boy",hair:"#34303a",skin:"#f5c9a9",hairStyle:6},
-{id:19,name:"Akio",gender:"boy",hair:"#a18b68",skin:"#ffe0c3",hairStyle:7},
-{id:20,name:"Riku",gender:"boy",hair:"#49302d",skin:"#f5c7a7",hairStyle:8},
-{id:21,name:"Taiga",gender:"boy",hair:"#252b39",skin:"#f4c9ae",hairStyle:9},
-{id:22,name:"Minato",gender:"boy",hair:"#9c6849",skin:"#ffe0c8",hairStyle:10},
-{id:23,name:"Itsuki",gender:"boy",hair:"#574b45",skin:"#f6d0b5",hairStyle:11},
-{id:24,name:"Daiki",gender:"boy",hair:"#d2ad76",skin:"#ffe0c4",hairStyle:12}
+{id:1,name:"Miyuki",gender:"girl",hair:"#202638",skin:"#ffd5b4",style:1,extra:"🎀"},
+{id:2,name:"Sakura",gender:"girl",hair:"#55352c",skin:"#ffe0c5",style:2,extra:"🌸"},
+{id:3,name:"Yuna",gender:"girl",hair:"#b58a4c",skin:"#ffe4cc",style:3,extra:"✨"},
+{id:4,name:"Hana",gender:"girl",hair:"#9b526d",skin:"#ffdfcc",style:4,extra:"🎀"},
+{id:5,name:"Akari",gender:"girl",hair:"#613b2d",skin:"#f5c8a8",style:5,extra:"🌼"},
+{id:6,name:"Mei",gender:"girl",hair:"#252c42",skin:"#ffdfc8",style:6,extra:"💗"},
+{id:7,name:"Rin",gender:"girl",hair:"#a45a42",skin:"#ffe2cc",style:7,extra:"⭐"},
+{id:8,name:"Aoi",gender:"girl",hair:"#70649c",skin:"#ffe0c7",style:8,extra:"🌷"},
+{id:9,name:"Nana",gender:"girl",hair:"#30212b",skin:"#f6cfb5",style:9,extra:"💕"},
+{id:10,name:"Emi",gender:"girl",hair:"#c58a55",skin:"#ffe2ca",style:10,extra:"🌻"},
+{id:11,name:"Koharu",gender:"girl",hair:"#463449",skin:"#ffdfc7",style:11,extra:"🌸"},
+{id:12,name:"Hikari",gender:"girl",hair:"#a77c8a",skin:"#ffe3d0",style:12,extra:"✨"},
+{id:13,name:"Haruto",gender:"boy",hair:"#28232a",skin:"#f5c9a7",style:1},
+{id:14,name:"Ren",gender:"boy",hair:"#744b34",skin:"#ffddc0",style:2},
+{id:15,name:"Sota",gender:"boy",hair:"#d0a45f",skin:"#ffe0c5",style:3},
+{id:16,name:"Kaito",gender:"boy",hair:"#20283b",skin:"#eec09e",style:4},
+{id:17,name:"Yuki",gender:"boy",hair:"#ad6948",skin:"#ffdfc8",style:5},
+{id:18,name:"Hiro",gender:"boy",hair:"#34303a",skin:"#f5c9a9",style:6},
+{id:19,name:"Akio",gender:"boy",hair:"#a18b68",skin:"#ffe0c3",style:7},
+{id:20,name:"Riku",gender:"boy",hair:"#49302d",skin:"#f5c7a7",style:8},
+{id:21,name:"Taiga",gender:"boy",hair:"#252b39",skin:"#f4c9ae",style:9},
+{id:22,name:"Minato",gender:"boy",hair:"#9c6849",skin:"#ffe0c8",style:10},
+{id:23,name:"Itsuki",gender:"boy",hair:"#574b45",skin:"#f6d0b5",style:11},
+{id:24,name:"Daiki",gender:"boy",hair:"#d2ad76",skin:"#ffe0c4",style:12}
 ];
 
-let selectedId=1;
-let currentFilter="girl";
+let selectedId=1,currentFilter="girl";
 
 function avatarSVG(c){
  const girl=c.gender==="girl";
- const s=c.hairStyle;
+ const s=c.style;
 
+ const girlBangs=[
+ `<path d="M18 52 Q14 7 60 7 Q104 7 102 52 Q87 33 72 35 Q51 27 18 52Z"/>`,
+ `<path d="M18 52 Q15 7 60 7 Q103 7 102 52 L85 35 L72 44 L57 29 L42 43Z"/>`,
+ `<path d="M18 52 Q25 7 60 7 Q97 7 102 52 Q83 32 62 35 Q38 29 18 52Z"/>`,
+ `<path d="M18 52 Q14 7 60 7 Q104 7 102 52 L87 35 L72 43 L59 29 L39 45Z"/>`
+ ];
  const girlBack=[
- `<path d="M24 55 Q7 12 50 7 Q94 11 76 57 L83 168 Q69 179 64 126 L36 126 Q31 179 17 168Z"/>`,
- `<path d="M24 55 Q8 15 50 7 Q90 11 77 60 L85 164 Q73 177 65 127 L35 127 Q27 177 15 164Z"/>`,
- `<path d="M23 55 Q10 9 50 8 Q91 9 78 55 L73 166 Q59 176 61 128 L39 128 Q39 176 20 166Z"/>`,
- `<path d="M24 56 Q7 10 50 8 Q92 10 76 57 L80 161 Q68 179 63 126 L37 126 Q32 178 17 161Z"/>`,
- `<path d="M23 56 Q7 13 50 7 Q93 10 77 58 L87 165 Q70 178 64 127 L36 127 Q29 178 13 165Z"/>`,
- `<path d="M24 54 Q9 12 50 8 Q92 10 76 57 L76 165 Q64 178 63 126 L37 126 Q31 178 20 165Z"/>`
+ `<path d="M18 63 Q5 18 60 7 Q115 18 102 63 L107 128 Q100 146 87 120 L80 100 L40 100 L33 120 Q20 146 13 128Z"/>`,
+ `<path d="M18 63 Q6 17 60 7 Q114 17 102 63 L108 126 Q97 146 86 117 L80 99 L40 99 L34 117 Q23 146 12 126Z"/>`,
+ `<path d="M18 63 Q6 17 60 7 Q114 17 102 63 L105 137 Q94 145 86 119 L80 99 L40 99 L34 119 Q26 145 15 137Z"/>`,
+ `<path d="M18 63 Q5 17 60 7 Q115 17 102 63 L110 128 Q98 146 86 118 L80 99 L40 99 L34 118 Q22 146 10 128Z"/>`
  ];
  const boyHair=[
- `<path d="M19 55 Q10 8 50 7 Q91 8 81 55 L72 42 Q65 29 50 30 Q31 28 23 46Z"/>`,
- `<path d="M18 53 Q14 10 50 8 Q84 8 82 52 L72 40 Q58 27 41 32 L24 45Z"/>`,
- `<path d="M18 53 Q14 7 50 7 Q87 8 82 53 L69 41 L57 25 L45 38 L34 27 L23 46Z"/>`,
- `<path d="M19 53 Q13 8 50 7 Q88 9 81 53 L72 44 Q62 31 50 30 Q32 29 19 53Z"/>`,
- `<path d="M19 53 Q10 12 49 7 Q87 8 82 52 L71 38 Q59 30 44 32 L25 47Z"/>`,
- `<path d="M18 52 Q15 8 50 7 Q86 9 82 52 L67 38 L54 32 L42 38 L27 43Z"/>`
+ `<path d="M18 59 Q10 7 60 7 Q110 7 102 59 L91 43 Q80 28 60 30 Q37 27 26 46Z"/>`,
+ `<path d="M18 59 Q13 7 60 7 Q108 7 102 59 L87 41 L69 28 L54 42 L35 31 L24 48Z"/>`,
+ `<path d="M18 59 Q13 7 60 7 Q108 7 102 59 L87 42 Q69 28 51 34 L25 49Z"/>`,
+ `<path d="M18 59 Q10 7 60 7 Q110 7 102 59 L90 40 L76 46 L60 29 L41 45 L25 46Z"/>`
  ];
 
- const girlFront=[
- `<path d="M19 49 Q18 8 50 8 Q82 8 81 49 Q65 30 51 32 Q34 28 19 49Z"/>`,
- `<path d="M19 48 Q19 8 50 8 Q83 9 81 49 L66 33 L55 43 L47 30 L35 41Z"/>`,
- `<path d="M19 47 Q25 7 51 9 Q80 8 82 47 Q61 28 47 33 Q31 30 19 47Z"/>`,
- `<path d="M18 48 Q17 9 50 8 Q83 8 82 47 L69 30 L57 42 L45 29 L32 43Z"/>`,
- `<path d="M18 48 Q23 7 51 8 Q78 8 82 48 Q63 29 50 33 Q32 28 18 48Z"/>`,
- `<path d="M18 47 Q17 8 50 8 Q84 8 82 47 L70 33 L54 43 L45 30 L31 42Z"/>`
- ];
- const boyFront=boyHair;
+ const back=girl?girlBack[(s-1)%4]:boyHair[(s-1)%4];
+ const front=girl?girlBangs[(s-1)%4]:boyHair[(s+1)%4];
 
- let back=girl?girlBack[(s-1)%6]:boyHair[(s-1)%6];
- let front=girl?girlFront[(s-1)%6]:boyFront[(s+2)%6];
+ const eyes=`
+ <ellipse cx="43" cy="57" rx="9" ry="11" fill="#202438"/>
+ <ellipse cx="77" cy="57" rx="9" ry="11" fill="#202438"/>
+ <ellipse cx="46" cy="53" rx="3.8" ry="4.5" fill="white"/>
+ <ellipse cx="80" cy="53" rx="3.8" ry="4.5" fill="white"/>
+ <circle cx="39" cy="62" r="1.7" fill="white"/>
+ <circle cx="73" cy="62" r="1.7" fill="white"/>
+ <path d="M32 46 Q43 39 53 47 M67 47 Q77 39 88 46" stroke="#302638" stroke-width="3" fill="none" stroke-linecap="round"/>`;
 
- const eyes=girl
- ? `<ellipse cx="37" cy="60" rx="5" ry="7" fill="#302536"/>
-    <ellipse cx="63" cy="60" rx="5" ry="7" fill="#302536"/>
-    <circle cx="39" cy="57" r="2" fill="white"/>
-    <circle cx="65" cy="57" r="2" fill="white"/>
-    <path d="M31 51 Q37 46 43 50 M57 50 Q64 46 69 51" stroke="#49303b" stroke-width="2.3" fill="none"/>`
- : `<ellipse cx="37" cy="60" rx="4.5" ry="5.5" fill="#302536"/>
-    <ellipse cx="63" cy="60" rx="4.5" ry="5.5" fill="#302536"/>
-    <circle cx="38" cy="58" r="1.6" fill="white"/>
-    <circle cx="64" cy="58" r="1.6" fill="white"/>
-    <path d="M31 51 L43 50 M57 50 L69 51" stroke="#49303b" stroke-width="2.5" fill="none"/>`;
+ const body=girl?`
+ <path d="M34 96 L86 96 L92 117 L28 117Z" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+ <path d="M43 96 L60 111 L77 96" fill="#fff" stroke="#ccc"/>
+ <path d="M54 104 L60 110 L66 104 L60 98Z" fill="#d6293e"/>
+ <path d="M28 116 L92 116 L84 137 L36 137Z" fill="#243b65" stroke="#192d51" stroke-width="1.5"/>
+ <path d="M39 118 L42 135 M52 118 L52 137 M66 118 L65 137 M79 118 L75 135" stroke="#8290aa" stroke-width="1.5"/>
+ <path d="M39 136 L51 136 L49 146 L38 146Z M69 136 L81 136 L82 146 L70 146Z" fill="${c.skin}"/>
+ <path d="M35 144 Q43 141 51 146 L52 151 L31 151 Q29 147 35 144Z M69 146 Q78 141 85 146 L89 151 L67 151Z" fill="#3c4052"/>
+ `:`
+ <path d="M34 96 L86 96 L92 121 L28 121Z" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+ <path d="M43 96 L60 111 L77 96" fill="#fff" stroke="#ccc"/>
+ <path d="M54 104 L60 110 L66 104 L60 98Z" fill="#d6293e"/>
+ <path d="M34 119 L55 119 L53 146 L36 146Z M65 119 L86 119 L84 146 L67 146Z" fill="#243b65" stroke="#192d51" stroke-width="1.5"/>
+ <path d="M34 143 L54 143 L54 151 L30 151Z M66 143 L86 143 L90 151 L66 151Z" fill="#3c4052"/>
+ `;
 
- const uniform=girl
- ? `<path d="M29 103 L71 103 L80 135 L20 135Z" fill="#fff" stroke="#b9b7c2" stroke-width="1.5"/>
-    <path d="M43 103 L50 117 L57 103" fill="#dfe8f5"/>
-    <path d="M46 114 L50 120 L54 114 L50 108Z" fill="#d73548"/>
-    <path d="M20 134 L80 134 L74 162 L26 162Z" fill="#243b65" stroke="#182b4c" stroke-width="1.5"/>
-    <path d="M28 135 L31 160 M39 135 L40 160 M50 135 L50 160 M61 135 L60 160 M72 135 L69 160" stroke="#7183a2" stroke-width="1.5"/>
-    <path d="M28 103 L12 132 M72 103 L88 132" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
-    <path d="M43 103 L50 116 L57 103" fill="none" stroke="#c5cbd5" stroke-width="1"/>
-    <path d="M47 115 L50 122 L53 115" fill="#d52f43"/>`
- : `<path d="M29 103 L71 103 L81 148 L19 148Z" fill="#fff" stroke="#b9b7c2" stroke-width="1.5"/>
-    <path d="M43 103 L50 117 L57 103" fill="#e7edf7"/>
-    <path d="M46 114 L50 120 L54 114 L50 108Z" fill="#d73548"/>
-    <path d="M20 105 L12 137 M80 105 L88 137" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
-    <path d="M28 146 L49 146 L47 187 L29 187Z" fill="#263d67"/>
-    <path d="M51 146 L72 146 L71 187 L53 187Z" fill="#263d67"/>
-    <path d="M28 183 L48 183 L48 193 L25 193Z" fill="#3d4054"/>
-    <path d="M53 183 L73 183 L76 193 L52 193Z" fill="#3d4054"/>`;
+ return `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+ <ellipse cx="60" cy="155" rx="32" ry="3.5" fill="#806b85" opacity=".2"/>
 
- return `<svg viewBox="0 0 100 205" xmlns="http://www.w3.org/2000/svg">
- <ellipse cx="50" cy="198" rx="30" ry="4" fill="#795b76" opacity=".18"/>
- <g fill="${c.hair}" stroke="#45303a" stroke-width="1.2" stroke-linejoin="round">${back}</g>
- <path d="M23 42 Q22 22 50 20 Q78 22 77 42 L73 79 Q68 96 50 98 Q32 96 27 79Z"
- fill="${c.skin}" stroke="#c58f83" stroke-width="1"/>
- <path d="M20 58 Q14 51 22 46 M80 58 Q86 51 78 46" fill="${c.skin}" stroke="#c58f83"/>
+ <!-- Tóc phía sau: hai lọn tóc cân đối -->
+ <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${back}</g>
+
+ <!-- Tai -->
+ <circle cx="19" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
+ <circle cx="101" cy="67" r="10" fill="${c.skin}" stroke="#252536" stroke-width="2"/>
+ <circle cx="19" cy="67" r="4" fill="#eaa58f"/>
+ <circle cx="101" cy="67" r="4" fill="#eaa58f"/>
+
+ <!-- Mặt tròn -->
+ <ellipse cx="60" cy="58" rx="42" ry="44" fill="${c.skin}" stroke="#252536" stroke-width="2.5"/>
+
+ <!-- Mắt -->
  ${eyes}
- <ellipse cx="27" cy="72" rx="6" ry="3.5" fill="#f29ba7" opacity=".48"/>
- <ellipse cx="73" cy="72" rx="6" ry="3.5" fill="#f29ba7" opacity=".48"/>
- <path d="M47 79 Q50 82 53 79" stroke="#b56e75" stroke-width="1.7" fill="none" stroke-linecap="round"/>
- <path d="M43 89 Q50 94 57 89" stroke="#b75f75" stroke-width="2" fill="none" stroke-linecap="round"/>
- <g fill="${c.hair}" stroke="#45303a" stroke-width="1.2">${front}</g>
- ${uniform}
- <path d="M43 103 L50 116 L57 103 L54 124 L50 130 L46 124Z" fill="#d92f43" stroke="#a51d30" stroke-width="1"/>
- <path d="M45 105 L50 115 L55 105" fill="none" stroke="#f58b92" stroke-width="1"/>
- ${girl?`<path d="M34 162 L47 162 L45 184 L34 184Z" fill="${c.skin}"/>
- <path d="M53 162 L66 162 L66 184 L55 184Z" fill="${c.skin}"/>
- <path d="M29 181 L47 181 L48 192 L25 192Z" fill="#f1f1f4"/>
- <path d="M53 181 L71 181 L76 192 L52 192Z" fill="#f1f1f4"/>`:""}
+
+ <!-- Má hồng -->
+ <ellipse cx="27" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
+ <ellipse cx="93" cy="76" rx="8" ry="5" fill="#f17e87" opacity=".8"/>
+
+ <!-- Mũi và miệng -->
+ <ellipse cx="60" cy="75" rx="2.5" ry="1.8" fill="#b66b65"/>
+ <path d="M51 83 Q60 93 69 83 Q61 98 51 83Z" fill="white" stroke="#9c5864" stroke-width="1.5"/>
+
+ <!-- Tóc mái -->
+ <g fill="${c.hair}" stroke="#252536" stroke-width="2.5" stroke-linejoin="round">${front}</g>
+
+ <!-- Thân và đồng phục -->
+ ${body}
+
+ <!-- Khăn quàng đỏ: nút thắt và hai dải khăn -->
+ <path d="M49 96 L60 108 L71 96 L67 119 L60 126 L53 119Z"
+ fill="#d9233b" stroke="#9f1e31" stroke-width="1.5"/>
+ <path d="M49 96 L60 108 L71 96" fill="none" stroke="#ff9aa3" stroke-width="1.5"/>
+ <rect x="56" y="104" width="8" height="7" rx="2" fill="#ec4353" stroke="#9f1e31" stroke-width="1"/>
+
+ <!-- Kẹp tóc -->
+ ${girl?`<circle cx="94" cy="24" r="5" fill="#f28bb6"/><circle cx="100" cy="24" r="5" fill="#f28bb6"/><circle cx="97" cy="20" r="4" fill="#ffd36d"/>`:""}
  </svg>`;
 }
 
 function setFilter(type,button){
- currentFilter=type;
- document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
- button.classList.add("active");
- renderCharacters();
+currentFilter=type;
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+renderCharacters();
 }
 
 function selectCharacter(id){
- selectedId=id;
- const c=characters.find(x=>x.id===id);
- document.getElementById("previewAvatar").innerHTML=avatarSVG(c);
- document.getElementById("previewName").textContent=c.name;
- document.getElementById("previewDescription").textContent=
- c.gender==="boy"?"Nam sinh • Sơ mi trắng • Quần navy • Khăn quàng đỏ":
- "Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ";
- renderCharacters();
+selectedId=id;
+const c=characters.find(x=>x.id===id);
+document.getElementById("previewAvatar").innerHTML=avatarSVG(c);
+document.getElementById("previewName").textContent=c.name;
+document.getElementById("previewDescription").textContent=
+c.gender==="boy"?"Nam sinh • Sơ mi trắng • Quần navy • Khăn quàng đỏ":
+"Nữ sinh • Sơ mi trắng • Váy navy • Khăn quàng đỏ";
+renderCharacters();
 }
 
 function renderCharacters(){
- const box=document.getElementById("characters");
- box.innerHTML="";
- characters.filter(c=>c.gender===currentFilter).forEach(c=>{
-  const btn=document.createElement("button");
-  btn.className="character"+(selectedId===c.id?" selected":"");
-  btn.innerHTML=avatarSVG(c)+
-   `<strong>${c.name}</strong><small>${c.gender==="boy"?"NAM SINH":"NỮ SINH"}</small>`;
-  btn.onclick=()=>selectCharacter(c.id);
-  box.appendChild(btn);
- });
+const box=document.getElementById("characters");
+box.innerHTML="";
+characters.filter(c=>c.gender===currentFilter).forEach(c=>{
+const btn=document.createElement("button");
+btn.className="character"+(selectedId===c.id?" selected":"");
+btn.innerHTML=avatarSVG(c)+`<strong>${c.name}</strong><small>${c.gender==="boy"?"NAM SINH":"NỮ SINH"}</small>`;
+btn.onclick=()=>selectCharacter(c.id);
+box.appendChild(btn);
+});
 }
 
 function createSeats(){
- const area=document.getElementById("students");
- area.innerHTML="";
- for(let i=1;i<=20;i++){
-  const desk=document.createElement("div");
-  desk.className="desk";
-  desk.innerHTML=`<div class="desk-top">
-   <div class="avatar-placeholder">🪑</div>
-   <div class="student-name">Chỗ trống</div>
-  </div><div class="seat-label">BÀN ${i}</div>`;
-  area.appendChild(desk);
- }
+const area=document.getElementById("students");
+area.innerHTML="";
+for(let i=1;i<=20;i++){
+const desk=document.createElement("div");
+desk.className="desk";
+desk.innerHTML=`<div class="desk-top"><div class="avatar-placeholder">🪑</div><div class="student-name">Chỗ trống</div></div><div class="seat-label">BÀN ${i}</div>`;
+area.appendChild(desk);
+}
 }
 
 function joinClass(){
- const name=document.getElementById("studentName").value.trim();
- if(!name){alert("Bạn chưa nhập tên học sinh!");return;}
- const c=characters.find(x=>x.id===selectedId);
- const student={name:name,avatarId:c.id};
- try{localStorage.setItem("classStudent",JSON.stringify(student));}catch(e){}
- document.getElementById("register").classList.add("hidden");
- document.getElementById("classroom").classList.remove("hidden");
- createSeats();
- const first=document.querySelector(".desk-top");
- first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
- first.querySelector(".student-name").textContent=name;
- window.scrollTo(0,0);
+const name=document.getElementById("studentName").value.trim();
+if(!name){alert("Bạn chưa nhập tên học sinh!");return;}
+const c=characters.find(x=>x.id===selectedId);
+try{localStorage.setItem("classStudent",JSON.stringify({name,avatarId:c.id}));}catch(e){}
+document.getElementById("register").classList.add("hidden");
+document.getElementById("classroom").classList.remove("hidden");
+createSeats();
+const first=document.querySelector(".desk-top");
+first.querySelector(".avatar-placeholder").outerHTML=avatarSVG(c);
+first.querySelector(".student-name").textContent=name;
+window.scrollTo(0,0);
 }
 
 function leaveClass(){
- try{localStorage.removeItem("classStudent");}catch(e){}
- document.getElementById("classroom").classList.add("hidden");
- document.getElementById("register").classList.remove("hidden");
- window.scrollTo(0,0);
+try{localStorage.removeItem("classStudent");}catch(e){}
+document.getElementById("classroom").classList.add("hidden");
+document.getElementById("register").classList.remove("hidden");
+window.scrollTo(0,0);
 }
 
 selectCharacter(1);
