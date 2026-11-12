@@ -4,31 +4,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lớp Học Gia Tộc</title>
+<title>🌸 Lớp Học Gia Tộc</title>
+
 <style>
 *{box-sizing:border-box}
 body{
  margin:0;
  font-family:Arial,sans-serif;
- background:#ffe8f2;
- color:#70425e;
+ color:#713c59;
+ background:#ffe8f3;
 }
 header{
  text-align:center;
  padding:22px 10px;
- background:linear-gradient(110deg,#ffafd2,#d9baff);
+ background:linear-gradient(120deg,#ffaed1,#d9bdff);
  border-bottom:5px solid white;
 }
-header h1{margin:5px;font-size:27px}
-header p{margin:6px}
-main{max-width:1100px;margin:auto;padding:14px}
+header h1{font-size:27px;margin:5px}
+header p{margin:7px}
+main{max-width:1200px;margin:auto;padding:14px}
 .card{
- background:white;
- border:2px solid #f4c1dc;
+ background:#fffaff;
+ border:2px solid #f4bdd8;
  border-radius:18px;
- padding:18px;
- box-shadow:0 5px 15px #b67da522;
+ padding:16px;
+ box-shadow:0 5px 15px #a75e8520;
 }
+.hidden{display:none!important}
 .register{
  max-width:430px;
  margin:35px auto;
@@ -39,32 +41,31 @@ input,select{
  width:100%;
  padding:14px;
  margin:8px 0;
- border:2px solid #f2c1db;
+ border:2px solid #efb9d6;
  border-radius:12px;
  font-size:16px;
- background:#fffaff;
+ background:white;
 }
 button{
  border:0;
- border-radius:13px;
- padding:14px;
- font-size:16px;
+ border-radius:14px;
+ padding:13px 18px;
+ font-size:15px;
  font-weight:bold;
  cursor:pointer;
 }
 .join{
  width:100%;
  color:white;
- background:linear-gradient(90deg,#f36eae,#ae83ed);
- box-shadow:0 4px 12px #d99ac8;
+ background:linear-gradient(90deg,#f46ba9,#ac7af0);
+ box-shadow:0 5px 12px #d68ab9;
 }
-.hidden{display:none!important}
 .top-grid{
  display:grid;
  grid-template-columns:1fr 2fr 1fr;
  gap:12px;
 }
-.panel h3{margin:0 0 12px;color:#b4548c}
+.panel h3{margin:0 0 12px;color:#b44c85}
 .rank{
  display:flex;
  justify-content:space-between;
@@ -75,82 +76,92 @@ button{
 }
 .board{
  min-height:220px;
- padding:15px;
- text-align:center;
+ background:#397653;
  color:white;
- background:#327a5b;
- border:10px solid #b77b47;
+ border:10px solid #b77c48;
  border-radius:13px;
+ text-align:center;
+ padding:14px;
  display:flex;
  flex-direction:column;
- align-items:center;
  justify-content:center;
+ align-items:center;
+ box-shadow:inset 0 0 15px #173e2c;
 }
-.board h2{margin:7px 0}
-.teacher{font-size:60px}
+.board h2{margin:5px}
+.teacher{font-size:65px}
 .board p{line-height:1.5}
 .room{
  margin-top:15px;
  padding:16px;
- border:5px solid #dca06b;
- border-radius:16px;
- background:linear-gradient(#fff2df,#f5c18e);
+ border:6px solid #bd8958;
+ border-radius:17px;
+ background:
+ linear-gradient(180deg,#bce8fa 0%,#e5f4ff 19%,
+ #fff0dc 19%,#ffe6c4 68%,#d49a62 68%,
+ #bd7847 100%);
+ box-shadow:0 8px 20px #95613c33;
  text-align:center;
 }
 .room-title{
- background:#fff9ed;
- border-radius:12px;
- padding:10px;
+ display:inline-block;
+ background:#fff8ee;
+ border:3px solid #e6bc86;
+ border-radius:20px;
+ padding:8px 18px;
+ margin-bottom:12px;
 }
 .students{
  display:grid;
  grid-template-columns:repeat(4,minmax(0,1fr));
- gap:12px;
- margin-top:18px;
+ gap:13px;
 }
 .desk{
- background:#b97742;
+ background:linear-gradient(135deg,#edbd7d,#c98243);
  padding:5px;
+ border:3px solid #a96937;
  border-radius:10px;
- box-shadow:0 5px 0 #8c542e;
+ box-shadow:0 6px 0 #89532f;
  min-width:0;
 }
 .desk-top{
- background:#eeb875;
- border:2px solid #9e6339;
+ background:linear-gradient(135deg,#ffe1aa,#e9ad69);
+ border:2px solid #a86d3e;
  border-radius:8px;
- padding:9px 2px;
- min-height:80px;
+ min-height:100px;
+ padding:7px 3px;
  display:flex;
  flex-direction:column;
  align-items:center;
  justify-content:center;
 }
-.avatar{font-size:34px}
+.avatar{
+ font-size:38px;
+}
 .student-name{
  background:white;
  border-radius:10px;
- padding:5px;
- font-size:11px;
+ padding:6px;
+ font-size:12px;
  overflow-wrap:anywhere;
- margin-top:5px;
  width:100%;
+ margin-top:5px;
 }
 .seat-label{
- font-size:10px;
  color:white;
+ font-size:11px;
  margin:5px;
 }
 .actions{
- margin-top:15px;
  display:flex;
- gap:8px;
- flex-wrap:wrap;
  justify-content:center;
+ flex-wrap:wrap;
+ gap:9px;
+ margin-top:16px;
 }
-.secondary{
- background:#f7dce9;
- color:#8e4e72;
+.action-btn{
+ background:#f8d9e9;
+ color:#914e75;
 }
 footer{text-align:center;padding:22px;color:#a36b91}
 @media(max-width:700px){
@@ -162,6 +173,7 @@ footer{text-align:center;padding:22px;color:#a36b91}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -174,18 +186,23 @@ footer{text-align:center;padding:22px;color:#a36b91}
 <section class="card register" id="register">
  <div class="school">🏫🌸</div>
  <h2>Chào mừng học sinh!</h2>
- <p>Hãy đăng ký để bước vào lớp nhé 💗</p>
- <input id="studentName" maxlength="20"
+ <p>Đăng ký để bước vào lớp nhé 💗</p>
+
+ <input id="studentName"
+ maxlength="20"
  placeholder="Nhập tên học sinh...">
+
  <select id="studentAvatar">
   <option value="👧🏻">👧🏻 Nữ sinh 1</option>
   <option value="👧🏼">👧🏼 Nữ sinh 2</option>
-  <option value="👧🏻‍🎓">👩🏻‍🎓 Nữ sinh 3</option>
+  <option value="👩🏻‍🎓">👩🏻‍🎓 Nữ sinh 3</option>
   <option value="👦🏻">👦🏻 Nam sinh 1</option>
   <option value="👦🏼">👦🏼 Nam sinh 2</option>
   <option value="🐰">🐰 Thỏ học sinh</option>
   <option value="🐱">🐱 Mèo học sinh</option>
+  <option value="🐼">🐼 Gấu trúc</option>
  </select>
+
  <button class="join" onclick="joinClass()">
   🌸 VÀO LỚP 🌸
  </button>
@@ -194,23 +211,22 @@ footer{text-align:center;padding:22px;color:#a36b91}
 <section id="classroom" class="hidden">
 
  <div class="top-grid">
+
   <div class="card panel">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
-   <div id="leaderboard">
-    <div class="rank">🥇 Roni <b>1250</b></div>
-    <div class="rank">🥈 VNTrang <b>1080</b></div>
-    <div class="rank">🥉 NHƯ Ý <b>980</b></div>
-    <div class="rank">4. Joy <b>920</b></div>
-    <div class="rank">5. Tài <b>880</b></div>
-   </div>
+   <div class="rank">🥇 Roni <b>1250</b></div>
+   <div class="rank">🥈 VNTrang <b>1080</b></div>
+   <div class="rank">🥉 NHƯ Ý <b>980</b></div>
+   <div class="rank">4. Joy <b>920</b></div>
+   <div class="rank">5. Tài <b>880</b></div>
   </div>
 
   <div class="board">
    <div class="teacher">👩🏻‍🏫</div>
-   <h2>LỚP HỌC GIA TỘC</h2>
+   <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
    <h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
    <p>Chăm ngoan – Học giỏi – Đoàn kết</p>
-   <p>💗 Chào cô, thả tim để được quà nhé!</p>
+   <p>📚 Chào cô, thả tim để được quà nhé!</p>
   </div>
 
   <div class="card panel">
@@ -220,27 +236,37 @@ footer{text-align:center;padding:22px;color:#a36b91}
    <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
    <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
   </div>
+
  </div>
 
  <div class="room">
   <div class="room-title">
-   <h2>🏫 PHÒNG HỌC CỦA CHÚNG TA</h2>
-   <p>🌸 Mỗi học sinh một chiếc bàn 🌸</p>
+   <h2>🏫 PHÒNG HỌC CỦA CHÚNG TA 🌸</h2>
+   <p>Chọn bàn và cùng nhau học tập!</p>
   </div>
 
   <div class="students" id="students"></div>
 
   <div class="actions">
-   <button class="secondary" onclick="leaveClass()">
-    Rời lớp
+   <button class="action-btn"
+   onclick="alert('Mini Game sẽ được phát triển ở bước tiếp theo!')">
+    🎮 Mini Game
+   </button>
+
+   <button class="action-btn"
+   onclick="alert('Hệ thống thi đua sẽ được phát triển tiếp!')">
+    🏆 Thi đua
+   </button>
+
+   <button class="action-btn"
+   onclick="alert('Hệ thống phát quà sẽ được phát triển tiếp!')">
+    🎁 Phát quà
+   </button>
+
+   <button class="action-btn" onclick="leaveClass()">
+    ↩ Rời lớp
    </button>
   </div>
- </div>
-
- <div class="card" style="margin-top:15px;text-align:center">
-  <h3>📚 HOẠT ĐỘNG LỚP</h3>
-  <p>🎮 Mini Game | 🏆 Thi đua | 🎁 Phát quà</p>
-  <p>💗 Cùng nhau xây dựng Gia Tộc nhé!</p>
  </div>
 
 </section>
@@ -264,7 +290,7 @@ function createSeats(){
 
   const avatar=document.createElement("div");
   avatar.className="avatar";
-  avatar.textContent="🪑";
+  avatar.textContent="🐱";
 
   const name=document.createElement("div");
   name.className="student-name";
@@ -272,13 +298,13 @@ function createSeats(){
 
   top.appendChild(avatar);
   top.appendChild(name);
-  desk.appendChild(top);
 
   const label=document.createElement("div");
   label.className="seat-label";
   label.textContent="BÀN "+i;
-  desk.appendChild(label);
 
+  desk.appendChild(top);
+  desk.appendChild(label);
   area.appendChild(desk);
  }
 }
@@ -288,30 +314,42 @@ function joinClass(){
  const avatar=document.getElementById("studentAvatar").value;
 
  if(!name){
-  alert("Bạn hãy nhập tên học sinh!");
+  alert("Bạn chưa nhập tên học sinh!");
   return;
  }
 
  currentStudent={name,avatar};
- localStorage.setItem("classStudent",JSON.stringify(currentStudent));
+
+ try{
+  localStorage.setItem(
+   "classStudent",
+   JSON.stringify(currentStudent)
+  );
+ }catch(e){}
 
  document.getElementById("register").classList.add("hidden");
  document.getElementById("classroom").classList.remove("hidden");
 
  createSeats();
- const firstSeat=document.querySelector(".desk-top");
- firstSeat.querySelector(".avatar").textContent=avatar;
- firstSeat.querySelector(".student-name").textContent=name;
+
+ const first=document.querySelector(".desk-top");
+ first.querySelector(".avatar").textContent=avatar;
+ first.querySelector(".student-name").textContent=name;
 }
 
 function leaveClass(){
  currentStudent=null;
- localStorage.removeItem("classStudent");
+
+ try{
+  localStorage.removeItem("classStudent");
+ }catch(e){}
+
  document.getElementById("classroom").classList.add("hidden");
  document.getElementById("register").classList.remove("hidden");
 }
 
 createSeats();
 </script>
+
 </body>
 </html>
