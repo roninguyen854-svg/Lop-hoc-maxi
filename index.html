@@ -330,15 +330,58 @@ async function joinClass(){
  isTeacher=false;await enterClass();
 }
 async function teacherLogin(){
- const email=$("teacherEmail").value.trim(),password=$("teacherPassword").value;
- if(!email||!password){alert("Nhập email và mật khẩu giáo viên.");return;}
- const {data,error}=await db.auth.signInWithPassword({email,password});
- if(error){alert("Đăng nhập thất bại: "+error.message);return;}
- const {data:p,error:pe}=await db.from("profiles").select("*").eq("id",data.user.id).single();
- if(pe||!p||p.role!=="teacher"||p.classroom_id!==CLASSROOM_ID){
- await db.auth.signOut();alert("Tài khoản này chưa được cấp quyền giáo viên của lớp.");return;
+ const email=$("teacherEmail").value.trim();
+ const password=$("teacherPassword").value;
+
+ if(!email||!password){
+   alert("Nhập email và mật khẩu giáo viên.");
+   return;
  }
- me={id:p.id,name:p.display_name,avatarId:p.avatar_id};isTeacher=true;
+
+ const {data,error}=await db.auth.signInWithPassword({
+   email,
+   password
+ });
+
+ if(error){
+   alert("Đăng nhập thất bại: "+error.message);
+   return;
+ }
+
+ // Xác minh đúng tài khoản giáo viên đã được cấp quyền
+ if(data.user.id !== TEACHER_ID){
+   await db.auth.signOut();
+   alert("Tài khoản này không phải tài khoản giáo viên của lớp.");
+   return;
+ }
+
+ // Lấy hồ sơ giáo viên
+ const {data:p,error:profileError}=await db
+   .from("profiles")
+   .select("id,display_name,avatar_id,role,classroom_id")
+   .eq("id",TEACHER_ID)
+   .maybeSingle();
+
+ if(profileError){
+   console.error("Lỗi đọc hồ sơ giáo viên:",profileError);
+   await db.auth.signOut();
+   alert("Không đọc được hồ sơ giáo viên. Hãy kiểm tra quyền SELECT của bảng profiles.");
+   return;
+ }
+
+ if(!p || p.role!=="teacher" || p.classroom_id!==CLASSROOM_ID){
+   await db.auth.signOut();
+   alert("Hồ sơ giáo viên chưa khớp quyền hoặc mã lớp trong Supabase.");
+   return;
+ }
+
+ me={
+   id:p.id,
+   name:p.display_name,
+   avatarId:p.avatar_id
+ };
+
+ isTeacher=true;
  await enterClass();
 }
 async function enterClass(){
