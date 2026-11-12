@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lớp Học Gia Tộc 🌸</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ffe1ef,#e9dcff,#fff5f8);
+  color: #713d62;
+  min-height: 100vh;
+}
+header {
+  text-align: center;
+  padding: 35px 15px;
+  background: #fff8fc;
+  border-bottom: 4px solid #f6b3d2;
+}
+h1 { font-size: 30px; margin: 5px; }
+header p { color: #a36b91; }
+.container {
+  max-width: 650px;
+  margin: 35px auto;
+  padding: 15px;
+}
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 8px 25px #bd8ca633;
+}
+.school {
+  font-size: 85px;
+  margin: 10px;
+}
+input, select {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: 2px solid #f3c0d9;
+  border-radius: 13px;
+  font-size: 16px;
+  background: #fffafd;
+}
+button {
+  border: none;
+  border-radius: 15px;
+  padding: 15px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.join {
+  width: 100%;
+  color: white;
+  background: linear-gradient(90deg,#fa72ae,#b58bfa);
+  box-shadow: 0 5px 15px #e7a4d5;
+  margin-top: 15px;
+}
+.join:active { transform: scale(.97); }
+#classroom {
+  display: none;
+  margin-top: 20px;
+}
+.student {
+  display: inline-block;
+  padding: 12px;
+  margin: 5px;
+  background: #fff0f7;
+  border-radius: 15px;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #a36b91;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌸 LỚP HỌC GIA TỘC 🌸</h1>
+  <p>Chào mừng bạn đến với ngôi trường Anime!</p>
+</header>
+
+<div class="container">
+  <div class="card" id="register">
+    <div class="school">🏫</div>
+    <h2>Chào mừng học sinh!</h2>
+    <p>Hãy đăng ký để bước vào lớp nhé.</p>
+
+    <input id="name" placeholder="Nhập tên học sinh...">
+
+    <select id="avatar">
+      <option value="👧🏻">👧🏻 Học sinh nữ 1</option>
+      <option value="👧🏼">👧🏼 Học sinh nữ 2</option>
+      <option value="👦🏻">👦🏻 Học sinh nam 1</option>
+      <option value="👦🏼">👦🏼 Học sinh nam 2</option>
+      <option value="🐰">🐰 Thỏ dễ thương</option>
+    </select>
+
+    <button class="join" onclick="joinClass()">
+      🌸 VÀO LỚP 🌸
+    </button>
+  </div>
+
+  <div class="card" id="classroom">
+    <div class="school">🌸🏫🌸</div>
+    <h2>Chúc mừng bạn đã vào lớp!</h2>
+    <div id="student"></div>
+    <p>Chúc bạn có một tiết học vui vẻ 💗</p>
+    <button class="join" onclick="leaveClass()">Rời lớp</button>
+  </div>
+</div>
+
+<footer>© 2026 Lớp Học Gia Tộc 💗</footer>
+
+<script>
+function joinClass() {
+  const name = document.getElementById("name").value.trim();
+  const avatar = document.getElementById("avatar").value;
+
+  if (!name) {
+    alert("Bạn chưa nhập tên học sinh!");
+    return;
+  }
+
+  localStorage.setItem("studentName", name);
+  localStorage.setItem("studentAvatar", avatar);
+
+  document.getElementById("register").style.display = "none";
+  document.getElementById("classroom").style.display = "block";
+  document.getElementById("student").innerHTML =
+    "<div class='student'><div style='font-size:55px'>" +
+    avatar + "</div><b>" + escapeHTML(name) +
+    "</b></div>";
+}
+
+function escapeHTML(value) {
+  return value.replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[c]);
+}
+
+function leaveClass() {
+  document.getElementById("classroom").style.display = "none";
+  document.getElementById("register").style.display = "block";
+}
+</script>
+
+</body>
+</html>
