@@ -219,6 +219,22 @@ body.dock-active{padding-bottom:85px}
  .classroom-summary .notice p{font-size:11px;line-height:1.35}
 }
 
+/* Kéo dài bảng xanh theo chiều dọc để có nhiều không gian hiển thị nội dung. */
+.chalkboard{
+ min-height:340px!important;
+ padding-top:28px!important;
+ padding-bottom:28px!important;
+}
+@media(max-width:700px){
+ .chalkboard{
+  min-height:360px!important;
+  padding:28px 16px!important;
+ }
+ .chalkboard h2{margin:8px 0 20px}
+ .chalk-question{margin:22px auto;font-size:clamp(18px,4vw,25px);line-height:1.65}
+ .chalk-status{margin:20px auto 8px;line-height:1.6}
+}
+
 /* Thu gọn thẻ bài tập phía học sinh: không lặp đề, không giữ khoảng trống. */
 body.student-mode #boardHomework #questionDisplay{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important}
 body.student-mode #boardHomework{padding:12px 14px!important;margin:10px auto 14px!important;max-height:none!important;overflow:visible!important}
