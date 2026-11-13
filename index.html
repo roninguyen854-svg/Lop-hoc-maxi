@@ -560,12 +560,9 @@ body.student-mode #floatingDock .floating-leave{
    </div>
 
    <div class="chalkboard">
-    <div class="teacher-person" style="font-size:42px">👩🏻‍🏫</div>
     <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
-    <h3>🎁 CÔ PHÁT QUÀ NÈ!</h3>
     <div id="chalkQuestion" class="chalk-question">Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết</div>
     <div id="chalkStatus" class="chalk-status">🌸 Chào mừng các em đến với lớp học!</div>
-    <p>💗 Chào cô, thả tim để được quà nhé!</p>
    </div>
 
    <div id="boardHomework" class="card section">
@@ -1397,7 +1394,7 @@ async function loadQuestion(){
  if(!data){
   if(chalkQuestion)chalkQuestion.innerHTML=
    "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
-  if(chalkStatus)chalkStatus.textContent="🌸 Chào mừng các em đến với lớp học!";
+  if(chalkStatus)chalkStatus.textContent="";
   if(questionDisplay)questionDisplay.textContent="Cô giáo chưa đăng câu hỏi.";
   if(studentAnswerArea)studentAnswerArea.classList.add("hidden");
   return;
