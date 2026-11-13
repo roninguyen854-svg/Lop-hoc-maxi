@@ -934,7 +934,11 @@ body.student-mode.dock-active{padding-bottom:0!important}
 <div class="snack-item"><div class="emoji">🍬</div><b>Kẹo</b><div>1 điểm</div><button onclick="buySnack('candy')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🍪</div><b>Bánh quy</b><div>2 điểm</div><button onclick="buySnack('cookie')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🍿</div><b>Bim bim</b><div>3 điểm</div><button onclick="buySnack('bim_bim')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">🥤</div><b>Nước ngọt</b><div>3 điểm</div><button onclick="buySnack('drink')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">⚡</div><b>Sting</b><div>3 điểm</div><button onclick="buySnack('sting')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍊</div><b>Nước cam</b><div>3 điểm</div><button onclick="buySnack('orange_juice')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">💧</div><b>Nước lọc</b><div>1 điểm</div><button onclick="buySnack('water')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍵</div><b>C2</b><div>3 điểm</div><button onclick="buySnack('c2')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌿</div><b>Dr.Thanh</b><div>3 điểm</div><button onclick="buySnack('dr_thanh')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🥭</div><b>BT me</b><div>4 điểm</div><button onclick="buySnack('bt_me')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🌶️</div><b>BT trộn</b><div>5 điểm</div><button onclick="buySnack('bt_tron')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🌯</div><b>BT cuộn</b><div>5 điểm</div><button onclick="buySnack('bt_cuon')">Mua ngay</button></div>
@@ -1893,7 +1897,7 @@ async function gradeAnswer(answerId,studentId,correct){
 
 let snackRewardInterval=null;
 let snackShopState=null;
-const snackLabels={candy:"🍬 Kẹo",cookie:"🍪 Bánh quy",bim_bim:"🍿 Bim bim",drink:"🥤 Nước ngọt",bt_me:"🥭 BT me",bt_tron:"🌶️ BT trộn",bt_cuon:"🌯 BT cuộn",milk_tea:"🧋 Tà tưa",sandwich:"🥪 Bánh mì"};
+const snackLabels={candy:"🍬 Kẹo",water:"💧 Nước lọc",cookie:"🍪 Bánh quy",bim_bim:"🍿 Bim bim",sting:"⚡ Sting",orange_juice:"🍊 Nước cam",c2:"🍵 C2",dr_thanh:"🌿 Dr.Thanh",bt_me:"🥭 BT me",bt_tron:"🌶️ BT trộn",bt_cuon:"🌯 BT cuộn",milk_tea:"🧋 Tà tưa",sandwich:"🥪 Bánh mì"};
 async function refreshSnackShop(){
  if(!me||isTeacher)return;
  const {data,error}=await db.rpc("get_snack_shop_state");
@@ -1901,7 +1905,7 @@ async function refreshSnackShop(){
  snackShopState=data||{};$("snackBalance").textContent=Number(snackShopState.balance||0);
  const inv=snackShopState.inventory||{};
  $("snackInventory").innerHTML="🎒 <b>Túi đồ của em:</b> "+Object.keys(snackLabels).map(k=>snackLabels[k]+" × "+Number(inv[k]||0)).join(" · ");
- $("snackStarterInfo").textContent=snackShopState.starter_claimed?"🎁 Em đã nhận phần quà miễn phí ban đầu.":"🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 nước ngọt!";
+ $("snackStarterInfo").textContent=snackShopState.starter_claimed?"🎁 Em đã nhận phần quà miễn phí ban đầu.":"🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 Sting!";
 }
 async function openSnackShop(){
  if(!me||isTeacher){alert("Cửa hàng chỉ dành cho học sinh đang ở trong lớp.");return;}
