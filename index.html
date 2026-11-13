@@ -334,6 +334,7 @@ body.dock-active{padding-bottom:85px}
   <div class="room-title">
    <h2>🏫 PHÒNG HỌC GIA TỘC</h2>
    <p>30 chỗ ngồi • Mỗi thành viên một chiếc bàn!</p>
+   <p id="seatOccupancy" aria-live="polite">🪑 Đang tải số ghế...</p>
   </div>
   <div class="student-zone"><div class="students" id="students"></div></div>
 
@@ -753,23 +754,41 @@ async function loadMembers(){
  const {data:classroom,error:classError}=await db.from("classrooms")
   .select("active_session_id")
   .eq("id",CLASSROOM_ID).maybeSingle();
- if(classError){console.error("Lỗi đọc phiên lớp:",classError);return;}
+ if(classError){
+  console.error("Lỗi đọc phiên lớp:",classError);
+  $("seatOccupancy").textContent="⚠️ Không tải được số ghế.";
+  return;
+ }
 
  createSeats();
- if(!classroom?.active_session_id)return;
+ if(!classroom?.active_session_id){
+  $("seatOccupancy").textContent="🪑 0/30 chỗ đang sử dụng";
+  return;
+ }
 
- // 30 bàn chỉ đại diện cho thành viên của phiên học hiện tại.
+ // Chỉ online/offline mới giữ ghế; left đã giải phóng ghế.
  const {data:members,error}=await db.from("class_session_members")
-  .select("student_id,display_name,avatar_id,seat_number,status,joined_at")
+  .select("student_id,display_name,avatar_id,seat_number,status")
   .eq("session_id",classroom.active_session_id)
-  .order("seat_number",{ascending:true,nullsFirst:false})
-  .order("joined_at",{ascending:true})
+  .in("status",["online","offline"])
+  .not("seat_number","is",null)
+  .order("seat_number",{ascending:true})
   .limit(30);
- if(error){console.error("Lỗi tải chỗ ngồi:",error);return;}
+ if(error){
+  console.error("Lỗi tải chỗ ngồi:",error);
+  $("seatOccupancy").textContent="⚠️ Không tải được số ghế.";
+  return;
+ }
 
- (members||[]).forEach((p,i)=>{
+ const occupied=(members||[]).length;
+ $("seatOccupancy").textContent=
+  `🪑 Đang sử dụng ${occupied}/30 chỗ • Còn trống ${30-occupied} chỗ`;
+
+ (members||[]).forEach(p=>{
+  const seat=Number(p.seat_number);
+  if(!Number.isInteger(seat)||seat<1||seat>30)return;
   const character=characters.find(x=>String(x.id)===String(p.avatar_id));
-  const desk=$("students").children[i];
+  const desk=$("students").children[seat-1];
   if(!desk)return;
   desk.querySelector(".avatar-placeholder").outerHTML=character
    ?avatarSVG(character):'<div class="avatar-placeholder">👤</div>';
@@ -1171,10 +1190,14 @@ function subscribeRealtime(){
   event:"*",schema:"public",table:"profiles",
   filter:"classroom_id=eq."+CLASSROOM_ID
  },()=>{
-  loadMembers();
   loadLeaderboard();
   loadClassStats();
  })
+
+ .on("postgres_changes",{
+  event:"*",schema:"public",table:"class_session_members",
+  filter:"classroom_id=eq."+CLASSROOM_ID
+ },()=>loadMembers())
 
  .on("postgres_changes",{
   event:"*",schema:"public",table:"board_questions",
@@ -1208,6 +1231,26 @@ function subscribeRealtime(){
 }
 
 async function leaveClass(){
+ if(!me)return;
+
+ // Giáo viên chỉ thoát tài khoản; học sinh phải xác nhận rời lớp
+ // để máy chủ giải phóng ghế. Mất mạng/tải lại trang không gọi hàm này.
+ if(!isTeacher){
+  if(!confirm("Bạn có chắc muốn rời lớp không? Ghế của bạn sẽ được giải phóng. Khi quay lại, bạn cần chỗ trống.")){
+   return;
+  }
+
+  const {data,error}=await db.rpc("leave_class_session");
+  if(error){
+   alert("Chưa thể rời lớp: "+error.message+"\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
+   return;
+  }
+  if(!data?.success){
+   alert("Máy chủ chưa xác nhận rời lớp. Vui lòng thử lại.");
+   return;
+  }
+ }
+
  if(quizTimerInterval){
   clearInterval(quizTimerInterval);
   quizTimerInterval=null;
