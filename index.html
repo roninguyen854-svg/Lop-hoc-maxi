@@ -760,6 +760,11 @@ let classStatusCheckBusy=false;
 let classActivityItems=[];
 let questionRefreshInterval=null;
 let questionRefreshBusy=false;
+let boardQuestionAccepting=false;
+let boardQuestionStageTimer=null;
+let boardQuestionRevealTimer=null;
+let boardQuestionStage=null;
+let boardQuestionStageId=null;
 
 let activeQuiz=null;
 let quizSubmission=null;
@@ -1373,6 +1378,59 @@ async function subscribePresence(){
   });
 }
 
+
+function clearBoardQuestionTimers(){
+ if(boardQuestionStageTimer){clearTimeout(boardQuestionStageTimer);boardQuestionStageTimer=null;}
+ if(boardQuestionRevealTimer){clearTimeout(boardQuestionRevealTimer);boardQuestionRevealTimer=null;}
+}
+
+async function showBoardQuestionTop3(questionId){
+ boardQuestionAccepting=false;
+ const answerArea=$("studentAnswerArea");
+ const answerBox=$("studentAnswer");
+ if(answerArea)answerArea.classList.add("hidden");
+ if(answerBox){answerBox.disabled=true;answerBox.value="";}
+ const display=$("questionDisplay");
+ if(display)display.textContent="⏰ Đã hết 10 giây. Câu hỏi đã đóng.";
+ const {data,error}=await db.rpc("get_board_question_top3",{p_question_id:questionId});
+ if(error)console.error("Không tải được top 3:",error);
+ const winners=Array.isArray(data)?data:[];
+ const medals=["🥇","🥈","🥉"];
+ const podium=winners.map((p,i)=>
+  '<div style="padding:8px 12px;margin:7px auto;max-width:520px;border:2px solid #d8e9c8;border-radius:12px;background:#fffbe8;color:#355b3e;font-size:clamp(15px,2.8vw,21px)"><b>'+medals[i]+' '+esc(p.display_name)+'</b><span style="display:block;font-size:13px;margin-top:3px">'+Number(p.points_awarded||0)+' điểm</span></div>'
+ ).join("");
+ $("chalkQuestion").innerHTML='<div style="font-style:normal;font-family:inherit"><h2 style="margin:4px 0 12px">🏆 TOP 3 TRẢ LỜI NHANH NHẤT 🏆</h2>'+(podium||'<p style="font-size:17px">Chưa có học sinh trả lời đúng.</p>')+'</div>';
+ $("chalkStatus").textContent="✨ Chúc mừng các em!";
+ boardQuestionStage="ranking";
+ boardQuestionRevealTimer=setTimeout(()=>{
+  boardQuestionStage="home";
+  boardQuestionStageId=null;
+  currentQuestion=null;
+  restoreOriginalBoard();
+  if(display)display.textContent="Cô giáo chưa đăng câu hỏi.";
+ },5000);
+}
+
+function startBoardQuestionTimeline(question){
+ const questionId=String(question.id);
+ if(boardQuestionStageId===questionId)return;
+ clearBoardQuestionTimers();
+ boardQuestionStageId=questionId;
+ boardQuestionAccepting=true;
+ boardQuestionStage="question";
+ const startedAt=new Date(question.created_at).getTime();
+ const remaining=Math.max(0,10000-(Date.now()-startedAt));
+ if(remaining===0){
+  boardQuestionAccepting=false;
+  showBoardQuestionTop3(question.id);
+  return;
+ }
+ boardQuestionStageTimer=setTimeout(()=>{
+  boardQuestionAccepting=false;
+  showBoardQuestionTop3(question.id);
+ },remaining);
+}
+
 async function loadQuestion(){
  if(questionRefreshBusy)return;
  questionRefreshBusy=true;
@@ -1390,6 +1448,13 @@ async function loadQuestion(){
   return;
  }
 
+ if(!data){
+  if(boardQuestionStage==='ranking')return;
+  currentQuestion=null;
+  boardQuestionAccepting=false;
+  clearBoardQuestionTimers();
+  boardQuestionStageId=null;
+ }
  currentQuestion=data;
  const chalkQuestion=$("chalkQuestion");
  const chalkStatus=$("chalkStatus");
@@ -1408,6 +1473,8 @@ async function loadQuestion(){
  }
 
  // Khi có bài tập, thay hoàn toàn khẩu hiệu bằng môn học và đề bài.
+ startBoardQuestionTimeline(data);
+ if(boardQuestionStage==='ranking')return;
  if(chalkQuestion)chalkQuestion.innerHTML=
   `<span class="chalk-subject">📚 ${esc(data.category||"Bài tập")}</span><br><span class="chalk-prompt">${esc(data.question)}</span>`;
  if(chalkStatus)chalkStatus.textContent="";
@@ -1418,7 +1485,7 @@ async function loadQuestion(){
  if(studentAnswerArea){
   studentAnswerArea.classList.toggle("hidden",isTeacher);
   if(answerBox){
-   answerBox.disabled=isTeacher;
+   answerBox.disabled=isTeacher||!boardQuestionAccepting;
    answerBox.placeholder="Nhập đáp án của em tại đây...";
   }
  }
@@ -1473,7 +1540,11 @@ async function postQuestion(){
 }
 
 async function submitAnswer(){
- if(!me||!currentQuestion){
+ if(!me||!currentQuestion||!boardQuestionAccepting){
+  alert('Đã hết thời gian trả lời câu hỏi.');
+  return;
+ }
+ if(!currentQuestion){
   alert("Chưa có câu hỏi.");
   return;
  }
