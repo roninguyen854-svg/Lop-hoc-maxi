@@ -151,6 +151,41 @@ body.dock-active{padding-bottom:85px}
 }
 
 
+
+/* Bảng bài tập cuộn riêng, không chiếm toàn màn hình */
+#boardHomework{
+ max-height:min(72vh,680px);
+ overflow-y:auto;
+ overflow-x:hidden;
+ overscroll-behavior:contain;
+ -webkit-overflow-scrolling:touch;
+ scroll-behavior:smooth;
+}
+#boardHomework>h3{
+ position:sticky;
+ top:-1px;
+ z-index:3;
+ padding:8px 0;
+ background:inherit;
+}
+#teacherQuestionArea{
+ max-height:52vh;
+ overflow-y:auto;
+ overflow-x:hidden;
+ overscroll-behavior:contain;
+ -webkit-overflow-scrolling:touch;
+ padding:2px 3px 10px 0;
+}
+#teacherQuestionArea input,
+#teacherQuestionArea textarea,
+#teacherQuestionArea button{
+ max-width:100%;
+}
+@media(max-width:700px){
+ #boardHomework{max-height:68vh;padding:14px}
+ #teacherQuestionArea{max-height:48vh}
+}
+
 /* BẢNG THỐNG KÊ GỌN CHO ĐIỆN THOẠI VÀ IPAD */
 .top-grid{
  grid-template-columns:repeat(2,minmax(0,1fr));
