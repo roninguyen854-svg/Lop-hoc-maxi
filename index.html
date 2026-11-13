@@ -608,64 +608,49 @@ function createSeats(){
 }
 
 async function joinClass(){
- const name=$("studentName").value.trim();
-
- if(!name){
-  alert("Bạn chưa nhập tên học sinh!");
-  return;
- }
+ const requestedName=$("studentName").value.trim();
+ if(!requestedName){alert("Bạn chưa nhập tên học sinh!");return;}
 
  const {data:sessionData}=await db.auth.getSession();
  let user=sessionData.session?.user;
-
  if(!user){
   const {data,error}=await db.auth.signInAnonymously();
-
-  if(error){
-   alert("Không thể vào lớp: "+error.message);
-   return;
-  }
-
+  if(error){alert("Không thể vào lớp: "+error.message);return;}
   user=data.user;
  }
 
- const c=characters.find(x=>x.id===selectedId);
-
  const {data:old,error:oldError}=await db.from("profiles")
-  .select("*")
-  .eq("id",user.id)
-  .maybeSingle();
-
- if(oldError){
-  alert("Không đọc được hồ sơ: "+oldError.message);
+  .select("id,classroom_id,display_name,avatar_id,role,is_active")
+  .eq("id",user.id).maybeSingle();
+ if(oldError){alert("Không đọc được hồ sơ: "+oldError.message);return;}
+ if(old&&old.is_active===false){
+  alert("Tài khoản học sinh này đã được giáo viên lưu trữ. Hãy liên hệ giáo viên để được mở lại.");
   return;
  }
-
- let result;
-
- if(old){
-  result=await db.from("profiles").update({
-   display_name:name,
-   avatar_id:String(c.id)
-  }).eq("id",user.id);
- }else{
-  result=await db.from("profiles").insert({
-   id:user.id,
-   classroom_id:CLASSROOM_ID,
-   display_name:name,
-   avatar_id:String(c.id),
-   role:"student"
-  });
+ if(old&&(old.role!=="student"||old.classroom_id!==CLASSROOM_ID)){
+  alert("Tài khoản này không thuộc lớp học sinh Gia Tộc.");return;
  }
 
- if(result.error){
-  alert("Không lưu được hồ sơ: "+result.error.message);
+ const chosen=characters.find(x=>x.id===selectedId);
+ const savedName=old?.display_name||requestedName;
+ const savedAvatar=old?.avatar_id||String(chosen.id);
+ const savedCharacter=characters.find(x=>String(x.id)===String(savedAvatar));
+ const avatarId=savedCharacter?savedCharacter.id:chosen.id;
+
+ // Máy chủ giữ vai trò quyết định việc nhận chỗ; không ghi đè hồ sơ cũ.
+ const {error:joinError}=await db.rpc("join_class_session",{
+  p_display_name:savedName,
+  p_gender:old?(savedCharacter?.gender||chosen.gender):chosen.gender,
+  p_avatar_id:String(avatarId)
+ });
+ if(joinError){
+  if(/capacity|seat|full|30|chỗ/i.test(joinError.message||"")){
+   alert("Phòng học đã đủ 30 chỗ ngồi. Khi có chỗ trống, bạn có thể vào lớp.");
+  }else alert("Không thể vào lớp: "+joinError.message);
   return;
  }
-
- me={id:user.id,name,avatarId:c.id};
+ me={id:user.id,name:savedName,avatarId};
  isTeacher=false;
-
  await enterClass();
 }
 
@@ -765,29 +750,31 @@ async function refreshAll(){
 }
 
 async function loadMembers(){
- const {data,error}=await db.from("profiles")
-  .select("id,display_name,avatar_id,role")
-  .eq("classroom_id",CLASSROOM_ID);
-
- if(error){
-  console.error(error);
-  return;
- }
+ const {data:classroom,error:classError}=await db.from("classrooms")
+  .select("active_session_id")
+  .eq("id",CLASSROOM_ID).maybeSingle();
+ if(classError){console.error("Lỗi đọc phiên lớp:",classError);return;}
 
  createSeats();
+ if(!classroom?.active_session_id)return;
 
- (data||[]).slice(0,30).forEach((p,i)=>{
-  const c=characters.find(x=>x.id===Number(p.avatar_id));
+ // 30 bàn chỉ đại diện cho thành viên của phiên học hiện tại.
+ const {data:members,error}=await db.from("class_session_members")
+  .select("student_id,display_name,avatar_id,seat_number,status,joined_at")
+  .eq("session_id",classroom.active_session_id)
+  .order("seat_number",{ascending:true,nullsFirst:false})
+  .order("joined_at",{ascending:true})
+  .limit(30);
+ if(error){console.error("Lỗi tải chỗ ngồi:",error);return;}
+
+ (members||[]).forEach((p,i)=>{
+  const character=characters.find(x=>String(x.id)===String(p.avatar_id));
   const desk=$("students").children[i];
-
   if(!desk)return;
-
-  desk.querySelector(".avatar-placeholder").outerHTML=c
-   ?avatarSVG(c)
-   :`<div class="avatar-placeholder">👤</div>`;
-
+  desk.querySelector(".avatar-placeholder").outerHTML=character
+   ?avatarSVG(character):'<div class="avatar-placeholder">👤</div>';
   desk.querySelector(".student-name").textContent=
-   p.display_name+(p.role==="teacher"?" 👑":"");
+   p.display_name+(p.status==="offline"?" (Ngoại tuyến)":"");
  });
 }
 
