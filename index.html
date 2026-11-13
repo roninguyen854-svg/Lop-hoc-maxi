@@ -818,6 +818,13 @@ body.student-mode.dock-active{padding-bottom:0!important}
     <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
     <div id="chalkQuestion" class="chalk-question">Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết</div>
     <div id="chalkStatus" class="chalk-status">🌸 Chào mừng các em đến với lớp học!</div>
+    <div id="quizBoardDisplay" class="hidden" aria-live="polite">
+     <h2 id="quizBoardTitle">BÀI KIỂM TRA</h2>
+     <div id="quizBoardMeta"></div>
+     <div id="quizBoardQuestion"></div>
+     <div id="quizBoardOptions"></div>
+     <div id="quizBoardNavigation"></div>
+    </div>
    </div>
 
    <div id="boardHomework" class="card section">
@@ -2573,11 +2580,11 @@ function restoreOriginalBoard(){
  $("chalkStatus").classList.remove("hidden");
 
  if(currentQuestion){
-  $("chalkQuestion").textContent=currentQuestion.question;
+  $("chalkQuestion").innerHTML=
+   '<span class="chalk-subject">📚 '+esc(currentQuestion.category||"Bài tập")+'</span><br><span class="chalk-prompt">'+esc(currentQuestion.question||"")+'</span>';
 
   $("chalkStatus").textContent=
-   "📚 "+(currentQuestion.category||"Bài tập")+
-   " • Câu hỏi dành cho cả lớp";
+   "✏️ Câu hỏi dành cho cả lớp • Hãy nhập đáp án bên dưới";
  }else{
   $("chalkQuestion").innerHTML=
    "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
