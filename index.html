@@ -578,7 +578,6 @@ body.student-mode #floatingDock .floating-leave{
      <input id="newQuestion" placeholder="Nhập câu hỏi chung cho cả lớp">
      <input id="questionCategory" placeholder="Môn học (Toán, Văn, Tiếng Anh...)">
      <input id="correctAnswer" placeholder="Đáp án đúng (chỉ giáo viên thấy)">
-     <input id="questionPoints" type="number" value="10" min="0" placeholder="Điểm thưởng">
      <button class="primary" onclick="postQuestion()">📌 ĐĂNG CÂU HỎI LÊN BẢNG</button>
      <div id="answersList"></div>
     </div>
@@ -1446,7 +1445,6 @@ async function postQuestion(){
   created_by:me.id,
   category:$("questionCategory").value.trim()||"Bài tập",
   question,
-  points_award:Math.max(0,Number($("questionPoints").value||10)),
   options:[],
   status:"active",
   explanation:""
@@ -1500,10 +1498,11 @@ async function submitAnswer(){
  const outcome=data||result||{};
  if(outcome.is_correct){
   const pts=Number(outcome.points_awarded||0);
+  const rank=Number(outcome.rank||0);
   $("answerResult").textContent=pts>0
-   ?`🎉 Chính xác! Em được cộng ${pts} điểm!`
-   :"🎉 Chính xác! Em đã nhận điểm cho câu này trước đó rồi.";
-  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng bài tập${pts>0?` và được cộng ${pts} điểm`:""}`);
+   ?`🎉 Chính xác! Em xếp thứ ${rank} và được cộng ${pts} điểm!`
+   :"🎉 Em đã trả lời đúng câu này và đã nhận điểm trước đó rồi.";
+  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng, nhận ${pts} điểm`);
   await loadLeaderboard();
  }else{
   $("answerResult").textContent="Chưa chính xác, em thử lại nhé!";
@@ -1533,8 +1532,6 @@ async function showAnswers(){
   <div class="answer-row">
    <b>${esc(names[a.student_id]||"Học sinh")}</b>
    <p>${esc(a.answer)}</p>
-   <button onclick="gradeAnswer('${a.id}','${a.student_id}',true)">✅ Đúng + điểm</button>
-   <button onclick="gradeAnswer('${a.id}','${a.student_id}',false)">❌ Sai</button>
   </div>
  `).join("")||"Chưa có học sinh trả lời.";
 }
