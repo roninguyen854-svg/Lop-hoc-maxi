@@ -391,6 +391,42 @@ body.dock-active{padding-bottom:85px}
  .students{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+
+/* Luôn hiện thanh hoạt động học sinh trên điện thoại/tablet sau khi vào lớp */
+body.student-mode #floatingDock{
+ display:flex!important;
+ position:fixed!important;
+ left:8px!important;right:8px!important;
+ bottom:calc(8px + env(safe-area-inset-bottom))!important;
+ z-index:10050!important;
+ min-height:54px;
+ border:1px solid #eadcf1;
+ border-radius:18px;
+ padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.98);
+ box-shadow:0 5px 22px #59406b35;
+}
+body.student-mode #floatingDock button:not(.floating-quiz){
+ display:grid!important;
+ width:42px;height:42px;
+ flex:1 1 42px;
+ max-width:54px;
+ border-radius:13px;
+ font-size:21px;
+}
+body.student-mode #floatingDock .floating-quiz{
+ display:block!important;
+ min-width:104px;
+ min-height:42px;
+}
+body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!important}
+body.student-mode.dock-active{padding-bottom:100px!important}
+@media(max-width:380px){
+ body.student-mode #floatingDock{left:5px!important;right:5px!important;gap:4px;padding-left:5px;padding-right:5px}
+ body.student-mode #floatingDock button:not(.floating-quiz){font-size:19px;min-width:0}
+ body.student-mode #floatingDock .floating-quiz{min-width:88px;font-size:10px;padding:0 7px}
+}
+
 </style>
 </head>
 
@@ -961,6 +997,8 @@ async function enterClass(){
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
 
  $("floatingDock").style.display="flex";
+ document.body.classList.toggle("student-mode",!isTeacher);
+ document.body.classList.toggle("teacher-mode",isTeacher);
  document.body.classList.add("dock-active");
 
  $("floatingDock").querySelectorAll("button:not(.floating-quiz)")
@@ -1593,6 +1631,7 @@ async function exitClassView(signOut){
  quizAnswerMap=new Map();
 
  $("floatingDock").style.display="none";
+ document.body.classList.remove("student-mode","teacher-mode");
  document.body.classList.remove("dock-active");
 
  $("classroom").classList.add("hidden");
