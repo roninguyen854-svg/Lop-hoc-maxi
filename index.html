@@ -1252,7 +1252,7 @@ async function leaveClass(){
 
  const {data,error}=await db.rpc("leave_class_session");
  if(error){
-  alert("Chưa thể rời lớp: "+error.message+"\\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
+  alert("Chưa thể rời lớp: "+error.message+"\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
   return;
  }
  if(!data?.success){
