@@ -443,6 +443,21 @@ body.student-mode #floatingDock button:not(.floating-quiz){
 }
 body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!important}
 
+
+body.student-mode #floatingDock .floating-leave{
+ display:grid!important;place-items:center!important;
+ width:42px!important;height:42px!important;min-width:42px!important;
+ flex:0 0 42px!important;border-radius:13px!important;
+ background:#fff0f0!important;border:1px solid #efcaca!important;
+ font-size:20px!important;
+}
+@media(max-width:380px){
+ body.student-mode #floatingDock .floating-leave{
+  width:36px!important;height:38px!important;min-width:36px!important;
+  flex-basis:36px!important;font-size:18px!important;
+ }
+}
+
 </style>
 </head>
 
@@ -671,6 +686,7 @@ body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!importan
  <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
  <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
  <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
+ <button class="floating-leave" title="Rời lớp" aria-label="Rời lớp" onclick="leaveClass()">🚪</button>
 </div>
 
 <div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
