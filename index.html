@@ -1500,19 +1500,25 @@ async function loadStudentPointsProfile(){
   ?avatarSVG(character)
   :"🌸";
  historyBox.textContent="Đang tải lịch sử điểm...";
- const {data,error}=await db.from("score_transactions")
-  .select("amount,reason,created_at")
-  .eq("classroom_id",CLASSROOM_ID)
-  .eq("student_id",me.id)
-  .order("created_at",{ascending:false})
-  .limit(50);
- if(error){
-  console.error("Lỗi tải lịch sử điểm cá nhân:",error);
+ const [{data:history,error},{data:allScores,error:totalError}]=await Promise.all([
+  db.from("score_transactions")
+   .select("amount,reason,created_at")
+   .eq("classroom_id",CLASSROOM_ID)
+   .eq("student_id",me.id)
+   .order("created_at",{ascending:false})
+   .limit(50),
+  db.from("score_transactions")
+   .select("amount")
+   .eq("classroom_id",CLASSROOM_ID)
+   .eq("student_id",me.id)
+ ]);
+ if(error||totalError){
+  console.error("Lỗi tải hồ sơ điểm cá nhân:",error||totalError);
   historyBox.textContent="⚠️ Chưa tải được lịch sử điểm. Vui lòng thử tải lại trang.";
   return;
  }
- const rows=data||[];
- const total=rows.reduce((sum,item)=>sum+Number(item.amount||0),0);
+ const rows=history||[];
+ const total=(allScores||[]).reduce((sum,item)=>sum+Number(item.amount||0),0);
  $("studentPointsTotal").textContent=total.toLocaleString("vi-VN");
  if(!rows.length){
   historyBox.innerHTML='<div class="small" style="text-align:center;padding:15px">🌱 Bạn chưa có giao dịch điểm thưởng nào. Cố gắng học tập để nhận điểm nhé!</div>';
