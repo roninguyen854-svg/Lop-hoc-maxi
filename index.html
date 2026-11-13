@@ -678,12 +678,6 @@ body.student-mode #floatingDock .floating-leave{
    </div>
   </div>
 
-  <div class="card section teacher-only" id="studentActivityHelp">
-   <h3>🌸 HOẠT ĐỘNG TRONG LỚP</h3>
-   <p class="small">Học sinh chọn trạng thái bằng thanh nút nổi phía dưới. Trạng thái sẽ được hiển thị cạnh nhân vật khi hệ thống hoạt động đầy đủ.</p>
-   <div id="behaviorStatus" class="status">Chọn một hoạt động ở thanh công cụ bên dưới.</div>
-  </div>
-
   <div class="actions">
    <button id="endClassBtn" class="action-btn hidden" onclick="endClass()">🔒 KẾT THÚC LỚP HỌC</button>
   </div>
@@ -1666,7 +1660,7 @@ async function reportBehavior(behavior){
  }
 
  addClassActivity(`📣 <b>${esc(me.name)}</b> vừa mách cô: ${esc(behavior)}`);
- $("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
+ if($("behaviorStatus"))$("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
 }
 
 async function loadBehaviors(){
