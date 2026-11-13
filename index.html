@@ -219,6 +219,14 @@ body.dock-active{padding-bottom:85px}
  .classroom-summary .notice p{font-size:11px;line-height:1.35}
 }
 
+/* Thu gọn thẻ bài tập phía học sinh: không lặp đề, không giữ khoảng trống. */
+body.student-mode #boardHomework #questionDisplay{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important}
+body.student-mode #boardHomework{padding:12px 14px!important;margin:10px auto 14px!important;max-height:none!important;overflow:visible!important}
+body.student-mode #boardHomework>h3{position:static;padding:3px 0 8px;margin:0 0 8px}
+body.student-mode #boardHomework #studentAnswerArea{margin:0!important;padding:0!important}
+body.student-mode #boardHomework #studentAnswer{min-height:76px;max-height:120px}
+body.student-mode #boardHomework #answerResult{margin-top:8px;padding:8px 10px}
+
 /* Học sinh chỉ thấy ô nhập và nút gửi; đề bài đã hiển thị trên bảng xanh. */
 body.student-mode #boardHomework #questionDisplay{display:none!important}
 
