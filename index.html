@@ -1096,7 +1096,8 @@ async function enterClass(){
   button.style.setProperty("pointer-events",visible?"auto":"none","important");
  });
 
- $("myStatus").textContent=isTeacher
+ const myStatus=$("myStatus");
+ if(myStatus)myStatus.textContent=isTeacher
  ?"👑 Bạn đang đăng nhập với quyền GIÁO VIÊN"
  :`🌸 Xin chào ${me.name}!`;
 
