@@ -164,8 +164,25 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 }
 #floatingDock button:active{transform:scale(.94)}
 body.dock-active{padding-bottom:85px}
-.classroom-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-.classroom-summary .notice{min-width:0}
+.classroom-summary{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+ align-items:stretch;
+}
+.classroom-summary .notice{
+ min-width:0;
+ aspect-ratio:1/1;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ padding:clamp(8px,2vw,18px);
+ border-width:2px;
+ font-size:clamp(11px,1.4vw,15px);
+}
+.classroom-summary .notice strong{font-size:clamp(13px,1.7vw,18px)}
+.classroom-summary .notice p{margin:7px 0;overflow-wrap:anywhere}
 .no-seat-panel{margin-top:14px}
 .no-seat-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px;max-height:230px;overflow:auto;padding:4px}
 .no-seat-student{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #eadcf1;border-radius:12px;background:#fff9fd;font-size:12px;min-width:0}
@@ -175,8 +192,9 @@ body.dock-active{padding-bottom:85px}
 .desk .activity-tag{font-size:10px;background:#fff4fb;border-radius:10px;padding:3px 5px;margin-top:3px}
 .desk .student-name{min-height:27px}
 @media(max-width:700px){
- .classroom-summary{grid-template-columns:1fr}
- .classroom-summary .notice{min-width:0}
+ .classroom-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .classroom-summary .notice{min-width:0;padding:7px 5px}
+ .classroom-summary .notice p{margin:5px 0}
  .no-seat-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:190px}
 }
 @media(max-width:380px){
