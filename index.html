@@ -350,7 +350,7 @@ body.dock-active{padding-bottom:85px}
 <section id="classroom" class="hidden">
 
  <!-- SĨ SỐ VÀ THÀNH VIÊN ONLINE -->
- <div id="classLiveStats" class="student-only">
+ <div id="classLiveStats" class="teacher-only">
   <h3 style="margin:0 0 12px;color:#895b9b">🏫 SĨ SỐ LỚP HỌC</h3>
   <div class="live-counts">
    <div class="live-count">
@@ -371,7 +371,7 @@ body.dock-active{padding-bottom:85px}
  </div>
 
  <div class="top-grid">
-  <div class="card panel student-only">
+  <div class="card panel teacher-only">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div id="leaderboard"></div>
   </div>
@@ -386,24 +386,6 @@ body.dock-active{padding-bottom:85px}
     <div class="ho-portrait">👨🏻</div>
     <div class="wall-clock">🕘</div>
     <div class="wall-window"></div>
-   </div>
-
-   <div class="chalkboard">
-    <h2>TRƯỜNG HỌC GIA TỘC</h2>
-    <div class="chalk-writing" id="chalkQuestion">
-     Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết
-    </div>
-    <div class="small" style="color:#d9ebc8" id="chalkStatus">
-     🌸 Chào mừng các em đến với lớp học! 🌸
-    </div>
-
-    <div id="quizBoardDisplay" class="hidden">
-     <h2 id="quizBoardTitle"></h2>
-     <div id="quizBoardMeta"></div>
-     <div id="quizBoardQuestion"></div>
-     <div id="quizBoardOptions"></div>
-     <div id="quizBoardNavigation"></div>
-    </div>
    </div>
 
    <div id="boardHomework" class="card section">
@@ -828,6 +810,7 @@ async function enterClass(){
 
  $("endClassBtn").classList.toggle("hidden",!isTeacher);
  document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
+ document.querySelectorAll(".teacher-only").forEach(el=>el.classList.toggle("hidden",!isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
  $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
