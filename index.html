@@ -1773,13 +1773,15 @@ async function showBoardQuestionTop3(questionId){
  const podium=winners.map((p,i)=>
   '<div style="padding:8px 12px;margin:7px auto;max-width:520px;border:2px solid #d8e9c8;border-radius:12px;background:#fffbe8;color:#355b3e;font-size:clamp(15px,2.8vw,21px)"><b>'+medals[i]+' '+esc(p.display_name)+'</b><span style="display:block;font-size:13px;margin-top:3px">'+Number(p.points_awarded||0)+' điểm</span></div>'
  ).join("");
- $("chalkQuestion").innerHTML='<div style="font-style:normal;font-family:inherit"><h2 style="margin:4px 0 12px">🏆 TOP 3 TRẢ LỜI NHANH NHẤT 🏆</h2>'+(podium||'<p style="font-size:17px">Chưa có học sinh trả lời đúng.</p>')+'</div>';
- $("chalkStatus").textContent="✨ Chúc mừng các em!";
+ // Giữ nguyên đề bài trên bảng xanh; bảng xếp hạng hiển thị bên dưới,
+ // không ghi đè nội dung câu hỏi mà học sinh đang cần xem.
+ $("chalkStatus").innerHTML=
+  '<div style="font-weight:bold;margin-bottom:8px">🏆 TOP 3 TRẢ LỜI NHANH NHẤT 🏆</div>'+
+  (podium||'<p style="font-size:17px">Chưa có học sinh trả lời đúng.</p>');
  boardQuestionStage="ranking";
  boardQuestionRevealTimer=setTimeout(()=>{
   boardQuestionStage="home";
-  boardQuestionStageId=null;
-  currentQuestion=null;
+  // Giữ questionId để không kích hoạt lại đồng hồ 40 giây cho cùng một đề.
   restoreOriginalBoard();
   if(display)display.textContent="Cô giáo chưa đăng câu hỏi.";
  },30000);
