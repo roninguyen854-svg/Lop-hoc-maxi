@@ -855,6 +855,14 @@ function goTeacherPanel(id){
  if(!wasOpen){
   target.classList.remove("teacher-panel-collapsed");
   target.classList.add("teacher-panel-open");
+  if(id==="quizSection" && isTeacher){
+   $("teacherQuizArea").classList.remove("hidden");
+   $("studentQuizArea").classList.add("hidden");
+   loadQuizFilters();
+  }
+  if(id==="boardHomework" && isTeacher){
+   $("teacherQuestionArea").classList.remove("hidden");
+  }
   const index=id==="boardHomework"?0:1;
   if(buttons[index])buttons[index].textContent=index===0?"✖ ĐÓNG BÀI TẬP":"✖ ĐÓNG KIỂM TRA";
   target.scrollIntoView({behavior:"smooth",block:"start"});
