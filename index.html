@@ -223,7 +223,7 @@ body.dock-active{padding-bottom:85px}
   <h3>👩🏻‍🏫 KHU VỰC GIÁO VIÊN</h3>
   <input id="teacherEmail" type="email" placeholder="Email giáo viên">
   <input id="teacherPassword" type="password" placeholder="Mật khẩu giáo viên">
-  <button class="primary" onclick="teacherLogin()">ĐĂNG NHẬP GIÁO VIÊN</button>
+  <button class="primary" onclick="teacherLogin()">👩🏻‍🏫 MỞ LỚP HỌC MỚI</button>
  </div>
  <p class="small">Học sinh vào lớp bằng tên và nhân vật. Giáo viên đăng nhập bằng tài khoản riêng.</p>
 </section>
@@ -426,7 +426,7 @@ body.dock-active{padding-bottom:85px}
   </div>
 
   <div class="actions">
-   <button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
+   <button id="endClassBtn" class="action-btn hidden" onclick="endClass()">🔒 KẾT THÚC LỚP HỌC</button>
   </div>
  </div>
 </section>
@@ -705,6 +705,17 @@ async function teacherLogin(){
 
  isTeacher=true;
 
+ // Mỗi lần giáo viên chọn "Mở lớp học mới", máy chủ tạo session mới.
+ const {data:openedSession,error:openError}=await db.rpc("open_classroom");
+ if(openError||!openedSession){
+  console.error("Không mở được lớp học mới:",openError);
+  await db.auth.signOut();
+  me=null;
+  isTeacher=false;
+  alert("Không thể mở lớp học mới: "+(openError?.message||"Máy chủ không trả về phiên lớp học."));
+  return;
+ }
+
  await enterClass();
 }
 
@@ -712,6 +723,7 @@ async function enterClass(){
  $("register").classList.add("hidden");
  $("classroom").classList.remove("hidden");
 
+ $("endClassBtn").classList.toggle("hidden",!isTeacher);
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
  $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
@@ -1231,26 +1243,42 @@ function subscribeRealtime(){
 }
 
 async function leaveClass(){
- if(!me)return;
+ if(!me||isTeacher)return;
 
- // Giáo viên chỉ thoát tài khoản; học sinh phải xác nhận rời lớp
- // để máy chủ giải phóng ghế. Mất mạng/tải lại trang không gọi hàm này.
- if(!isTeacher){
-  if(!confirm("Bạn có chắc muốn rời lớp không? Ghế của bạn sẽ được giải phóng. Khi quay lại, bạn cần chỗ trống.")){
-   return;
-  }
-
-  const {data,error}=await db.rpc("leave_class_session");
-  if(error){
-   alert("Chưa thể rời lớp: "+error.message+"\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
-   return;
-  }
-  if(!data?.success){
-   alert("Máy chủ chưa xác nhận rời lớp. Vui lòng thử lại.");
-   return;
-  }
+ // Học sinh phải xác nhận rời lớp để máy chủ giải phóng ghế.
+ if(!confirm("Bạn có chắc muốn rời lớp không? Ghế của bạn sẽ được giải phóng. Khi quay lại, bạn cần chỗ trống.")){
+  return;
  }
 
+ const {data,error}=await db.rpc("leave_class_session");
+ if(error){
+  alert("Chưa thể rời lớp: "+error.message+"\\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
+  return;
+ }
+ if(!data?.success){
+  alert("Máy chủ chưa xác nhận rời lớp. Vui lòng thử lại.");
+  return;
+ }
+
+ await exitClassView(false);
+}
+
+async function endClass(){
+ if(!me||!isTeacher)return;
+ if(!confirm("Bạn có chắc muốn KẾT THÚC LỚP HỌC không? Tất cả học sinh sẽ rời phiên lớp hiện tại và ghế sẽ được giải phóng.")){
+  return;
+ }
+
+ const {error}=await db.rpc("close_classroom");
+ if(error){
+  alert("Chưa thể kết thúc lớp học: "+error.message);
+  return;
+ }
+
+ await exitClassView(true);
+}
+
+async function exitClassView(signOut){
  if(quizTimerInterval){
   clearInterval(quizTimerInterval);
   quizTimerInterval=null;
@@ -1266,9 +1294,9 @@ async function leaveClass(){
   presenceChannel=null;
  }
 
- // Học sinh giữ nguyên phiên đăng nhập ẩn danh để lần sau dùng lại
- // đúng UID/profile; giáo viên vẫn đăng xuất bình thường.
- if(isTeacher){
+ // Học sinh giữ nguyên phiên đăng nhập ẩn danh để lần sau dùng lại UID/profile.
+ // Giáo viên đăng xuất sau khi kết thúc lớp.
+ if(signOut){
   await db.auth.signOut();
  }
 
