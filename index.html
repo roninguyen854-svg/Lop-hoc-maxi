@@ -427,6 +427,22 @@ body.student-mode.dock-active{padding-bottom:100px!important}
  body.student-mode #floatingDock .floating-quiz{min-width:88px;font-size:10px;padding:0 7px}
 }
 
+
+/* Explicit student activity toolbar visibility */
+body.student-mode #floatingDock,
+body.student-mode #floatingDock[style]{
+ display:flex!important;visibility:visible!important;opacity:1!important;
+ pointer-events:auto!important;
+}
+body.student-mode #floatingDock button{
+ visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+}
+body.student-mode #floatingDock button:not(.floating-quiz){
+ display:grid!important;flex:1 1 0!important;min-width:0!important;
+ max-width:58px!important;height:44px!important;width:auto!important;
+}
+body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!important}
+
 </style>
 </head>
 
@@ -998,7 +1014,9 @@ async function enterClass(){
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
 
- $("floatingDock").style.display="flex";
+ $("floatingDock").style.setProperty("display","flex","important");
+ $("floatingDock").style.setProperty("visibility","visible","important");
+ $("floatingDock").style.setProperty("opacity","1","important");
  document.body.classList.toggle("student-mode",!isTeacher);
  document.body.classList.toggle("teacher-mode",isTeacher);
  document.body.classList.add("dock-active");
