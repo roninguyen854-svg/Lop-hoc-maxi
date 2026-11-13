@@ -254,6 +254,18 @@ body.dock-active{padding-bottom:85px}
  #floatingDock button{width:37px;height:37px;font-size:16px}
  #floatingDock .floating-quiz{min-width:95px;font-size:10px}
 }
+
+.activity-feed-card{margin:0 0 12px;padding:10px 12px;border-radius:14px}
+.activity-feed-card h3{margin:0 0 7px;color:#86568f;font-size:14px}
+#classActivityFeed{display:flex;flex-direction:column;gap:5px;max-height:145px;overflow:auto;font-size:12px;line-height:1.4}
+.activity-item{padding:6px 8px;border-radius:9px;background:#fff5fb;overflow-wrap:anywhere}
+.activity-time{font-size:10px;color:#927d91;margin-left:5px}
+@media(max-width:700px){
+ .activity-feed-card{padding:8px;margin-bottom:8px}
+ .activity-feed-card h3{font-size:12px}
+ #classActivityFeed{max-height:105px;font-size:11px}
+}
+
 </style>
 </head>
 
@@ -316,6 +328,11 @@ body.dock-active{padding-bottom:85px}
    </div>
   </div>
   <div class="online-list" id="onlineMembers">Đang kết nối...</div>
+ </div>
+
+ <div class="card panel activity-feed-card">
+  <h3>📢 HOẠT ĐỘNG TRONG LỚP</h3>
+  <div id="classActivityFeed" aria-live="polite">🌸 Chưa có hoạt động mới.</div>
  </div>
 
  <div class="top-grid">
@@ -536,6 +553,8 @@ let isTeacher=false;
 let currentQuestion=null;
 let channel=null;
 let presenceChannel=null;
+let activityUsersSnapshot=null;
+let classActivityItems=[];
 
 let activeQuiz=null;
 let quizSubmission=null;
@@ -926,6 +945,17 @@ async function loadClassStats(){
  $("wallClassCount").textContent=`👩‍🎓 ${count||0} học sinh trong lớp`;
 }
 
+function addClassActivity(message){
+ const item={message,time:new Date()};
+ classActivityItems.unshift(item);
+ classActivityItems=classActivityItems.slice(0,30);
+ const box=$("classActivityFeed");
+ if(!box)return;
+ box.innerHTML=classActivityItems.map(x=>
+  `<div class="activity-item">${x.message}<span class="activity-time">${x.time.toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})}</span></div>`
+ ).join("");
+}
+
 function renderOnlineMembers(){
  if(!presenceChannel)return;
 
@@ -983,6 +1013,28 @@ async function subscribePresence(){
 
  presenceChannel
   .on("presence",{event:"sync"},()=>{
+   const state=presenceChannel.presenceState();
+   const current=new Map();
+   Object.values(state).flat().forEach(user=>{
+    if(user.user_id)current.set(user.user_id,user);
+   });
+   if(activityUsersSnapshot){
+    current.forEach((user,id)=>{
+     if(!activityUsersSnapshot.has(id)){
+      addClassActivity(`${user.role==="teacher"?"👩🏻‍🏫":"🌸"} <b>${esc(user.name)}</b> vừa vào lớp`);
+     }
+    });
+    activityUsersSnapshot.forEach((user,id)=>{
+     if(!current.has(id)){
+      addClassActivity(`${user.role==="teacher"?"👩🏻‍🏫":"🌸"} <b>${esc(user.name)}</b> vừa rời lớp`);
+     }
+    });
+   }else{
+    current.forEach(user=>{
+     addClassActivity(`${user.role==="teacher"?"👩🏻‍🏫":"🌸"} <b>${esc(user.name)}</b> đang có mặt trong lớp`);
+    });
+   }
+   activityUsersSnapshot=current;
    renderOnlineMembers();
   })
   .subscribe(async status=>{
