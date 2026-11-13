@@ -318,6 +318,11 @@ body.dock-active{padding-bottom:85px}
 #teacherQuickDock button:active{transform:scale(.98)}
 @media(max-width:420px){#teacherQuickDock{gap:5px;padding:6px}#teacherQuickDock button{padding:11px 5px}}
 
+
+/* Teacher panels stay out of the page until opened from the fixed shortcut bar */
+.teacher-panel-collapsed{display:none!important}
+.teacher-panel-open{display:block!important;scroll-margin-top:16px}
+
 </style>
 </head>
 
@@ -829,7 +834,23 @@ async function teacherLogin(){
 function goTeacherPanel(id){
  const target=$(id);
  if(!target)return;
- target.scrollIntoView({behavior:"smooth",block:"start"});
+ const wasOpen=target.classList.contains("teacher-panel-open");
+ ["boardHomework","quizSection"].forEach(panelId=>{
+  const panel=$(panelId);
+  if(panel)panel.classList.remove("teacher-panel-open");
+  if(panel&&isTeacher)panel.classList.add("teacher-panel-collapsed");
+ });
+ const buttons=$("teacherQuickDock").querySelectorAll("button");
+ buttons.forEach((button,index)=>{
+  button.textContent=index===0?"📝 BÀI TẬP TRÊN BẢNG":"📋 KIỂM TRA";
+ });
+ if(!wasOpen){
+  target.classList.remove("teacher-panel-collapsed");
+  target.classList.add("teacher-panel-open");
+  const index=id==="boardHomework"?0:1;
+  if(buttons[index])buttons[index].textContent=index===0?"✖ ĐÓNG BÀI TẬP":"✖ ĐÓNG KIỂM TRA";
+  target.scrollIntoView({behavior:"smooth",block:"start"});
+ }
 }
 
 async function enterClass(){
@@ -838,6 +859,16 @@ async function enterClass(){
 
  $("endClassBtn").classList.toggle("hidden",!isTeacher);
  $("teacherQuickDock").style.display=isTeacher?"flex":"none";
+ ["boardHomework","quizSection"].forEach(panelId=>{
+  const panel=$(panelId);
+  if(panel){
+   panel.classList.remove("teacher-panel-open");
+   panel.classList.toggle("teacher-panel-collapsed",isTeacher);
+  }
+ });
+ $("teacherQuickDock").querySelectorAll("button").forEach((button,index)=>{
+  button.textContent=index===0?"📝 BÀI TẬP TRÊN BẢNG":"📋 KIỂM TRA";
+ });
  document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
  document.querySelectorAll(".teacher-only").forEach(el=>el.classList.toggle("hidden",!isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
