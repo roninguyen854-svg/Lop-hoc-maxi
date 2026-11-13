@@ -429,6 +429,30 @@ body.student-mode #boardHomework #questionDisplay{display:none!important}
  #floatingDock .floating-quiz{min-width:95px;font-size:10px}
 }
 
+.student-points-profile{margin:14px 0;padding:15px;background:linear-gradient(135deg,#fffafd,#f6f1ff);border:2px solid #eadcf1}
+.student-profile-heading{display:flex;align-items:center;gap:11px}
+.student-profile-avatar{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border-radius:16px;background:#fff0f7;border:1px solid #f0d8e9;font-size:32px;overflow:hidden}
+.student-profile-avatar svg{width:100%;height:100%}
+.student-profile-identity{min-width:0;flex:1}
+.student-profile-identity h3{margin:0 0 4px;color:#80558f;font-size:16px;overflow-wrap:anywhere}
+.student-profile-identity p{margin:0;color:#967d9b;font-size:11px}
+.student-profile-total{min-width:78px;padding:9px 11px;border-radius:13px;background:linear-gradient(135deg,#ffe4f1,#eae2ff);text-align:center}
+.student-profile-total strong,.student-profile-total span{display:block}
+.student-profile-total strong{font-size:23px;color:#895b9b;line-height:1.1}
+.student-profile-total span{font-size:9px;font-weight:bold;letter-spacing:1px;color:#967d9b;margin-top:3px}
+.student-history-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:16px 0 8px}
+.student-history-heading h3{margin:0;color:#86568f;font-size:13px}
+.student-history-heading span{font-size:10px;color:#967d9b}
+.student-points-history{display:flex;flex-direction:column;gap:7px;max-height:310px;overflow:auto}
+.student-points-entry{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid #f0e3ef;border-radius:12px;background:#fff}
+.student-points-entry .points-entry-icon{font-size:20px;flex:0 0 25px;text-align:center}
+.student-points-entry .points-entry-info{min-width:0;flex:1}
+.student-points-entry .points-entry-reason{font-size:12px;font-weight:bold;color:#654b70;overflow-wrap:anywhere}
+.student-points-entry .points-entry-date{font-size:10px;color:#a18ca5;margin-top:3px}
+.student-points-entry .points-entry-amount{font-size:14px;font-weight:bold;white-space:nowrap}
+.student-points-entry .points-entry-amount.positive{color:#258653}
+.student-points-entry .points-entry-amount.negative{color:#c45a70}
+@media(max-width:420px){.student-points-profile{padding:11px}.student-profile-avatar{width:49px;height:49px;flex-basis:49px}.student-profile-total{min-width:67px;padding:8px}.student-profile-total strong{font-size:20px}.student-history-heading h3{font-size:12px}}
 .activity-feed-card{margin:0 0 12px;padding:10px 12px;border-radius:14px}
 .activity-feed-card h3{margin:0 0 7px;color:#86568f;font-size:14px}
 #classActivityFeed{display:flex;flex-direction:column;gap:5px;max-height:145px;overflow:auto;font-size:12px;line-height:1.4}
@@ -824,6 +848,27 @@ body.student-mode.dock-active{padding-bottom:0!important}
     <div class="notice"><strong>🏆 BẢNG XẾP HẠNG</strong><p>Top học sinh theo điểm số</p><p id="wallRankSummary">Đang cập nhật...</p></div>
     <div class="notice"><strong>🏫 SĨ SỐ LỚP HỌC</strong><p id="wallClassCount">Đang cập nhật...</p><p>30 bàn cố định • Không giới hạn người học</p></div>
    </div>
+
+   <section id="studentPointsProfile" class="card student-points-profile student-only">
+    <div class="student-profile-heading">
+     <div id="studentProfileAvatar" class="student-profile-avatar">🌸</div>
+     <div class="student-profile-identity">
+      <h3 id="studentProfileName">Hồ sơ học sinh</h3>
+      <p>Hồ sơ điểm cá nhân</p>
+     </div>
+     <div class="student-profile-total">
+      <strong id="studentPointsTotal">0</strong>
+      <span>ĐIỂM</span>
+     </div>
+    </div>
+    <div class="student-history-heading">
+     <h3>🎁 LỊCH SỬ ĐIỂM THƯỞNG</h3>
+     <span>50 giao dịch gần nhất</span>
+    </div>
+    <div id="studentPointsHistory" aria-live="polite" class="student-points-history">
+     Đang tải lịch sử điểm...
+    </div>
+   </section>
   </div>
 
   <div class="room-title">
@@ -1395,7 +1440,8 @@ async function refreshAll(){
  await Promise.all([
   loadMembers(),
   loadLeaderboard(),
-  loadQuestion()
+  loadQuestion(),
+  loadStudentPointsProfile()
  ]);
 }
 
@@ -1442,6 +1488,51 @@ async function loadMembers(){
   return `<div class="no-seat-student"><span class="mini-avatar">${character?"👤":"👤"}</span><span class="no-seat-name">${esc(p.display_name)}${p.status==="offline"?" · Offline":""}</span></div>`;
  }).join(""):"Tất cả học sinh hiện có bàn ngồi.";
  }finally{memberRefreshBusy=false;}
+}
+
+async function loadStudentPointsProfile(){
+ if(!me||isTeacher)return;
+ const historyBox=$("studentPointsHistory");
+ if(!historyBox)return;
+ $("studentProfileName").textContent=me.name||"Học sinh";
+ const character=characters.find(x=>String(x.id)===String(me.avatarId));
+ $("studentProfileAvatar").innerHTML=character
+  ?avatarSVG(character)
+  :"🌸";
+ historyBox.textContent="Đang tải lịch sử điểm...";
+ const {data,error}=await db.from("score_transactions")
+  .select("amount,reason,created_at")
+  .eq("classroom_id",CLASSROOM_ID)
+  .eq("student_id",me.id)
+  .order("created_at",{ascending:false})
+  .limit(50);
+ if(error){
+  console.error("Lỗi tải lịch sử điểm cá nhân:",error);
+  historyBox.textContent="⚠️ Chưa tải được lịch sử điểm. Vui lòng thử tải lại trang.";
+  return;
+ }
+ const rows=data||[];
+ const total=rows.reduce((sum,item)=>sum+Number(item.amount||0),0);
+ $("studentPointsTotal").textContent=total.toLocaleString("vi-VN");
+ if(!rows.length){
+  historyBox.innerHTML='<div class="small" style="text-align:center;padding:15px">🌱 Bạn chưa có giao dịch điểm thưởng nào. Cố gắng học tập để nhận điểm nhé!</div>';
+  return;
+ }
+ historyBox.innerHTML=rows.map(item=>{
+  const amount=Number(item.amount||0);
+  const positive=amount>=0;
+  const date=item.created_at?new Date(item.created_at):null;
+  const dateText=date&&!Number.isNaN(date.getTime())
+   ?date.toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})
+   :"";
+  const icon=positive?"🌟":"📉";
+  return '<div class="student-points-entry">'+
+   '<span class="points-entry-icon">'+icon+'</span>'+
+   '<div class="points-entry-info"><div class="points-entry-reason">'+esc(item.reason||"Điều chỉnh điểm")+'</div>'+
+   '<div class="points-entry-date">'+dateText+'</div></div>'+
+   '<div class="points-entry-amount '+(positive?"positive":"negative")+'">'+(positive?"+":"")+amount.toLocaleString("vi-VN")+'</div>'+
+   '</div>';
+ }).join("");
 }
 
 async function loadLeaderboard(){
@@ -2071,7 +2162,10 @@ function subscribeRealtime(){
  .on("postgres_changes",{
   event:"*",schema:"public",table:"score_transactions",
   filter:"classroom_id=eq."+CLASSROOM_ID
- },()=>loadLeaderboard())
+ },()=>{
+  loadLeaderboard();
+  if(me&&!isTeacher)loadStudentPointsProfile();
+ })
 
  .on("postgres_changes",{
   event:"*",schema:"public",table:"behavior_events",
