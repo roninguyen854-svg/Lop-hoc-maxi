@@ -1108,11 +1108,9 @@ async function enterClass(){
  await loadClassStats();
 
  subscribeRealtime();
- if(memberRefreshInterval)clearInterval(memberRefreshInterval);
- // Dự phòng khi Realtime không gửi sự kiện hoặc kết nối bị gián đoạn.
- memberRefreshInterval=setInterval(()=>{
-  if(me&&!document.hidden)loadMembers();
- },4000);
+ // Không dựng lại danh sách theo chu kỳ 4 giây.
+ // Danh sách, sĩ số và xếp hạng được cập nhật theo sự kiện Realtime
+ // khi học sinh vào lớp hoặc rời lớp.
  await subscribePresence();
 
  await loadQuiz();
@@ -1624,7 +1622,11 @@ function subscribeRealtime(){
  .on("postgres_changes",{
   event:"*",schema:"public",table:"class_session_members",
   filter:"classroom_id=eq."+CLASSROOM_ID
- },()=>loadMembers())
+ },()=>{
+  loadMembers();
+  loadClassStats();
+  loadLeaderboard();
+ })
 
  .on("postgres_changes",{
   event:"*",schema:"public",table:"board_questions",
