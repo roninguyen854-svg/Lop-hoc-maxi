@@ -1380,16 +1380,11 @@ async function loadQuestion(){
  }
 
  currentQuestion=data;
-
- // Một số màn hình/bản bố cục không có các vùng bảng phụ này.
- // Không để thiếu một phần tử tùy chọn làm dừng toàn bộ enterClass().
- const quizBoardDisplay=$("quizBoardDisplay");
- if(quizBoardDisplay&&!quizBoardDisplay.classList.contains("hidden"))return;
-
  const chalkQuestion=$("chalkQuestion");
  const chalkStatus=$("chalkStatus");
  const questionDisplay=$("questionDisplay");
  const studentAnswerArea=$("studentAnswerArea");
+ const answerBox=$("studentAnswer");
 
  if(!data){
   if(chalkQuestion)chalkQuestion.innerHTML=
@@ -1397,15 +1392,25 @@ async function loadQuestion(){
   if(chalkStatus)chalkStatus.textContent="";
   if(questionDisplay)questionDisplay.textContent="Cô giáo chưa đăng câu hỏi.";
   if(studentAnswerArea)studentAnswerArea.classList.add("hidden");
+  if(answerBox){answerBox.value="";answerBox.disabled=true;}
   return;
  }
 
- if(chalkQuestion)chalkQuestion.textContent=data.question;
- if(chalkStatus)chalkStatus.textContent=
-  "📚 "+(data.category||"Bài tập")+" • Câu hỏi dành cho cả lớp";
+ // Khi có bài tập, thay hoàn toàn khẩu hiệu bằng môn học và đề bài.
+ if(chalkQuestion)chalkQuestion.innerHTML=
+  `<span class="chalk-subject">📚 ${esc(data.category||"Bài tập")}</span><br><span class="chalk-prompt">${esc(data.question)}</span>`;
+ if(chalkStatus)chalkStatus.textContent="";
  if(questionDisplay)questionDisplay.innerHTML=
-  `<b>${esc(data.category||"Bài tập")}</b><p>${esc(data.question)}</p>`;
- if(studentAnswerArea)studentAnswerArea.classList.toggle("hidden",isTeacher);
+  `<b>📚 ${esc(data.category||"Bài tập")}</b><p>${esc(data.question)}</p>`;
+
+ // Chỉ học sinh mới được nhập và gửi câu trả lời.
+ if(studentAnswerArea){
+  studentAnswerArea.classList.toggle("hidden",isTeacher);
+  if(answerBox){
+   answerBox.disabled=isTeacher;
+   answerBox.placeholder="Nhập đáp án của em tại đây...";
+  }
+ }
 }
 async function postQuestion(){
  const question=$("newQuestion").value.trim();
