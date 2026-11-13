@@ -908,15 +908,16 @@ async function joinClass(){
  }
 
  const chosen=characters.find(x=>x.id===selectedId);
- const savedName=old?.display_name||requestedName;
- const savedAvatar=old?.avatar_id||String(chosen.id);
- const savedCharacter=characters.find(x=>String(x.id)===String(savedAvatar));
- const avatarId=savedCharacter?savedCharacter.id:chosen.id;
+ if(!chosen){alert("Bạn chưa chọn nhân vật.");return;}
 
- // Máy chủ giữ vai trò quyết định việc nhận chỗ; không ghi đè hồ sơ cũ.
- const {error:joinError}=await db.rpc("join_class_session",{
-  p_display_name:savedName,
-  p_gender:old?(savedCharacter?.gender||chosen.gender):chosen.gender,
+ // Mỗi phiên lớp mới phải dùng tên và nhân vật học sinh vừa chọn.
+ // Không lấy display_name/avatar_id cũ từ profiles để ghi đè lựa chọn hiện tại.
+ const selectedName=requestedName;
+ const avatarId=chosen.id;
+
+ const {data:joinedMember,error:joinError}=await db.rpc("join_class_session",{
+  p_display_name:selectedName,
+  p_gender:chosen.gender,
   p_avatar_id:String(avatarId)
  });
  if(joinError){
@@ -925,7 +926,7 @@ async function joinClass(){
   }else alert("Không thể vào lớp: "+joinError.message);
   return;
  }
- me={id:user.id,name:savedName,avatarId};
+ me={id:user.id,name:joinedMember?.display_name||selectedName,avatarId:joinedMember?.avatar_id||String(avatarId)};
  isTeacher=false;
  await enterClass();
  const dock=$("floatingDock");
