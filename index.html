@@ -1336,6 +1336,13 @@ async function subscribePresence(){
    }
    activityUsersSnapshot=current;
    renderOnlineMembers();
+
+   // Presence sync fires when a student enters or leaves, including when
+   // the database event subscription is delayed or unavailable.
+   // Refresh the authoritative roster once per actual presence change.
+   loadMembers();
+   loadClassStats();
+   loadLeaderboard();
   })
   .subscribe(async status=>{
    if(status==="SUBSCRIBED"){
