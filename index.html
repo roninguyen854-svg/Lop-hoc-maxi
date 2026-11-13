@@ -203,6 +203,22 @@ body.dock-active{padding-bottom:85px}
 
 
 
+/* Tăng chiều cao bảng xanh và thu gọn hai thẻ thông tin bên dưới */
+.chalkboard{min-height:225px}
+.classroom-summary .notice{
+ width:100%;
+ max-width:260px;
+ justify-self:center;
+ aspect-ratio:1/1;
+ padding:8px;
+}
+@media(max-width:700px){
+ .chalkboard{min-height:230px;padding:15px 12px}
+ .classroom-summary .notice{max-width:245px;padding:7px 5px}
+ .classroom-summary .notice strong{font-size:14px}
+ .classroom-summary .notice p{font-size:11px;line-height:1.35}
+}
+
 /* Học sinh chỉ thấy ô nhập và nút gửi; đề bài đã hiển thị trên bảng xanh. */
 body.student-mode #boardHomework #questionDisplay{display:none!important}
 
