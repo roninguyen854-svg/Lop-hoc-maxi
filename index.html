@@ -365,7 +365,7 @@ body.dock-active{padding-bottom:85px}
   <div class="online-list" id="onlineMembers">Đang kết nối...</div>
  </div>
 
- <div class="card panel activity-feed-card student-only">
+ <div class="card panel activity-feed-card teacher-only">
   <h3>📢 HOẠT ĐỘNG TRONG LỚP</h3>
   <div id="classActivityFeed" aria-live="polite">🌸 Chưa có hoạt động mới.</div>
  </div>
@@ -1189,6 +1189,7 @@ async function submitAnswer(){
  }
 
  $("studentAnswer").value="";
+ addClassActivity(`✏️ <b>${esc(me.name)}</b> vừa gửi câu trả lời`);
  $("answerResult").textContent="📨 Đã gửi câu trả lời cho cô giáo!";
 }
 
@@ -1237,6 +1238,7 @@ async function gradeAnswer(answerId,studentId,correct){
  }
 
  if(correct){
+  addClassActivity(`✅ <b>${esc(names?.[studentId]||"Học sinh")}</b> trả lời đúng và được cộng ${pts} điểm`);
   const {error:e}=await db.from("score_transactions").insert({
    classroom_id:CLASSROOM_ID,
    student_id:studentId,
@@ -1279,6 +1281,7 @@ async function reportBehavior(behavior){
   return;
  }
 
+ addClassActivity(`📣 <b>${esc(me.name)}</b> vừa mách cô: ${esc(behavior)}`);
  $("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
 }
 
