@@ -131,6 +131,24 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 }
 #floatingDock button:active{transform:scale(.94)}
 body.dock-active{padding-bottom:85px}
+.classroom-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.classroom-summary .notice{min-width:0}
+.no-seat-panel{margin-top:14px}
+.no-seat-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px;max-height:230px;overflow:auto;padding:4px}
+.no-seat-student{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #eadcf1;border-radius:12px;background:#fff9fd;font-size:12px;min-width:0}
+.no-seat-student .mini-avatar{font-size:24px;flex-shrink:0}
+.no-seat-student .no-seat-name{overflow-wrap:anywhere}
+.desk.has-student{cursor:default}
+.desk .activity-tag{font-size:10px;background:#fff4fb;border-radius:10px;padding:3px 5px;margin-top:3px}
+.desk .student-name{min-height:27px}
+@media(max-width:700px){
+ .classroom-summary{grid-template-columns:1fr}
+ .classroom-summary .notice{min-width:0}
+ .no-seat-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:190px}
+}
+@media(max-width:380px){
+ .no-seat-list{grid-template-columns:1fr}
+}
 
 /* SĨ SỐ VÀ THÀNH VIÊN ONLINE */
 #classLiveStats{
@@ -324,10 +342,10 @@ body.dock-active{padding-bottom:85px}
     <div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div>
    </div>
 
-   <div class="wall-board">
-    <div class="notice"><strong>📌 NỘI QUY LỚP</strong><p>Đi học đúng giờ</p><p>Lễ phép, đoàn kết</p><p>Giữ gìn vệ sinh</p></div>
-    <div class="notice"><strong>🏆 BẢNG THI ĐUA</strong><p>🌟 Tuần học tốt</p><p>🌸 Hoa điểm 10</p><p>👏 Bé chăm ngoan</p></div>
-    <div class="notice"><strong>🧹 PHÂN CÔNG TRỰC NHẬT</strong><p>Tổ 1: Thứ 2</p><p>Tổ 2: Thứ 3</p><p>Tổ 3: Thứ 4</p></div>
+   <div class="wall-board classroom-summary">
+    <div class="notice"><strong>🏆 BẢNG XẾP HẠNG</strong><p>Top học sinh theo điểm số</p><p id="wallRankSummary">Đang cập nhật...</p></div>
+    <div class="notice"><strong>🏫 SĨ SỐ LỚP HỌC</strong><p id="wallClassCount">Đang cập nhật...</p><p>30 bàn cố định • Không giới hạn người học</p></div>
+    <div class="notice"><strong>👑 CHỨC VỤ LỚP</strong><p>👑 Lớp trưởng: Roni</p><p>⭐ Lớp phó: Trang</p><p>🌷 Tổ trưởng: Joy</p></div>
    </div>
   </div>
 
@@ -337,6 +355,11 @@ body.dock-active{padding-bottom:85px}
    <p id="seatOccupancy" aria-live="polite">🪑 Đang tải số ghế...</p>
   </div>
   <div class="student-zone"><div class="students" id="students"></div></div>
+  <section class="card no-seat-panel" id="noSeatPanel">
+   <h3>👥 HỌC SINH CHƯA CÓ CHỖ NGỒI <span id="noSeatCount">(0)</span></h3>
+   <p class="small">Các em vẫn tham gia bài học và hoạt động bình thường dù chưa có bàn riêng.</p>
+   <div class="no-seat-list" id="noSeatStudents">Đang tải danh sách học sinh...</div>
+  </section>
 
   <div class="card quiz-section" id="quizSection">
    <div class="quiz-intro">
@@ -409,20 +432,10 @@ body.dock-active{padding-bottom:85px}
    </div>
   </div>
 
-  <div class="card section">
-   <h3>😈 HOẠT ĐỘNG RIÊNG CỦA HỌC SINH</h3>
-   <p class="small">Chọn hành vi của mình. Giáo viên có thể kiểm tra và ghi nhận.</p>
-   <div class="actions">
-    <button class="action-btn" onclick="reportBehavior('Ăn vụng')">🍪 Ăn vụng</button>
-    <button class="action-btn" onclick="reportBehavior('Chơi điện thoại')">📱 Chơi điện thoại</button>
-    <button class="action-btn" onclick="reportBehavior('Nói chuyện riêng')">💬 Nói chuyện</button>
-    <button class="action-btn" onclick="reportBehavior('Đang ngoan')">😇 Đang ngoan</button>
-   </div>
-   <div id="behaviorStatus" class="status"></div>
-   <div id="teacherBehaviorArea" class="hidden">
-    <button class="action-btn" onclick="loadBehaviors()">🔎 KIỂM TRA LỚP</button>
-    <div id="behaviorList"></div>
-   </div>
+  <div class="card section" id="studentActivityHelp">
+   <h3>🌸 HOẠT ĐỘNG TRONG LỚP</h3>
+   <p class="small">Học sinh chọn trạng thái bằng thanh nút nổi phía dưới. Trạng thái sẽ được hiển thị cạnh nhân vật khi hệ thống hoạt động đầy đủ.</p>
+   <div id="behaviorStatus" class="status">Chọn một hoạt động ở thanh công cụ bên dưới.</div>
   </div>
 
   <div class="actions">
@@ -432,11 +445,11 @@ body.dock-active{padding-bottom:85px}
 </section>
 </main>
 
-<div id="floatingDock">
- <button title="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍪</button>
- <button title="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
- <button title="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
- <button title="Đang ngoan" onclick="reportBehavior('Đang ngoan')">😇</button>
+<div id="floatingDock" aria-label="Hoạt động học sinh">
+ <button title="Ăn vụng" aria-label="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍿</button>
+ <button title="Chơi điện thoại" aria-label="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
+ <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
+ <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
  <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
 </div>
 
@@ -773,40 +786,53 @@ async function loadMembers(){
  }
 
  createSeats();
+ $("noSeatStudents").textContent="Đang tải danh sách học sinh...";
  if(!classroom?.active_session_id){
   $("seatOccupancy").textContent="🪑 0/30 chỗ đang sử dụng";
+  $("noSeatCount").textContent="(0)";
+  $("noSeatStudents").textContent="Chưa có học sinh.";
   return;
  }
 
- // Chỉ online/offline mới giữ ghế; left đã giải phóng ghế.
  const {data:members,error}=await db.from("class_session_members")
   .select("student_id,display_name,avatar_id,seat_number,status")
   .eq("session_id",classroom.active_session_id)
   .in("status",["online","offline"])
-  .not("seat_number","is",null)
   .order("seat_number",{ascending:true})
-  .limit(30);
+  .limit(1000);
  if(error){
-  console.error("Lỗi tải chỗ ngồi:",error);
-  $("seatOccupancy").textContent="⚠️ Không tải được số ghế.";
+  console.error("Lỗi tải danh sách lớp:",error);
+  $("seatOccupancy").textContent="⚠️ Không tải được sĩ số.";
+  $("noSeatStudents").textContent="Không tải được danh sách.";
   return;
  }
 
- const occupied=(members||[]).length;
+ const all=members||[];
+ const seated=all.filter(p=>p.seat_number!==null&&p.seat_number!==undefined);
+ const noSeat=all.filter(p=>p.seat_number===null||p.seat_number===undefined);
+ const occupied=seated.length;
  $("seatOccupancy").textContent=
-  `🪑 Đang sử dụng ${occupied}/30 chỗ • Còn trống ${30-occupied} chỗ`;
+  `🪑 Đang sử dụng ${occupied}/30 chỗ • Còn trống ${Math.max(0,30-occupied)} chỗ`;
+ $("noSeatCount").textContent=`(${noSeat.length})`;
 
- (members||[]).forEach(p=>{
+ seated.forEach(p=>{
   const seat=Number(p.seat_number);
   if(!Number.isInteger(seat)||seat<1||seat>30)return;
   const character=characters.find(x=>String(x.id)===String(p.avatar_id));
   const desk=$("students").children[seat-1];
   if(!desk)return;
+  desk.classList.add("has-student");
   desk.querySelector(".avatar-placeholder").outerHTML=character
    ?avatarSVG(character):'<div class="avatar-placeholder">👤</div>';
   desk.querySelector(".student-name").textContent=
    p.display_name+(p.status==="offline"?" (Ngoại tuyến)":"");
  });
+
+ $("noSeatStudents").innerHTML=noSeat.length?noSeat.map(p=>{
+  const character=characters.find(x=>String(x.id)===String(p.avatar_id));
+  const avatar=character?avatarSVG(character):"👤";
+  return `<div class="no-seat-student"><span class="mini-avatar">${character?"👤":"👤"}</span><span class="no-seat-name">${esc(p.display_name)}${p.status==="offline"?" · Offline":""}</span></div>`;
+ }).join(""):"Tất cả học sinh hiện có bàn ngồi.";
 }
 
 async function loadLeaderboard(){
@@ -833,6 +859,9 @@ async function loadLeaderboard(){
   score:totals[p.id]||0
  })).sort((a,b)=>b.score-a.score);
 
+ $("wallRankSummary").textContent=rows.length
+  ?`🥇 ${rows[0].name} · ${rows[0].score} điểm`
+  :"Chưa có dữ liệu xếp hạng";
  $("leaderboard").innerHTML=rows.slice(0,10).map((p,i)=>
   `<div class="rank">
    <span>${["🥇","🥈","🥉"][i]||`${i+1}.`} ${esc(p.name)}</span>
@@ -857,6 +886,7 @@ async function loadClassStats(){
  }
 
  $("totalStudents").textContent=count||0;
+ $("wallClassCount").textContent=`👩‍🎓 ${count||0} học sinh trong lớp`;
 }
 
 function renderOnlineMembers(){
