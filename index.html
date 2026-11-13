@@ -1456,7 +1456,7 @@ async function showBoardQuestionTop3(questionId){
  if(answerArea)answerArea.classList.add("hidden");
  if(answerBox){answerBox.disabled=true;answerBox.value="";}
  const display=$("questionDisplay");
- if(display)display.textContent="⏰ Đã hết 10 giây. Câu hỏi đã đóng.";
+ if(display)display.textContent="⏰ Đã hết 40 giây. Câu hỏi đã đóng.";
  const {data,error}=await db.rpc("get_board_question_top3",{p_question_id:questionId});
  if(error)console.error("Không tải được top 3:",error);
  const winners=Array.isArray(data)?data:[];
@@ -1473,7 +1473,7 @@ async function showBoardQuestionTop3(questionId){
   currentQuestion=null;
   restoreOriginalBoard();
   if(display)display.textContent="Cô giáo chưa đăng câu hỏi.";
- },5000);
+ },30000);
 }
 
 function startBoardQuestionTimeline(question){
@@ -1484,7 +1484,7 @@ function startBoardQuestionTimeline(question){
  boardQuestionAccepting=true;
  boardQuestionStage="question";
  const startedAt=new Date(question.created_at).getTime();
- const remaining=Math.max(0,10000-(Date.now()-startedAt));
+ const remaining=Math.max(0,40000-(Date.now()-startedAt));
  if(remaining===0){
   boardQuestionAccepting=false;
   showBoardQuestionTop3(question.id);
