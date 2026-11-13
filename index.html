@@ -1266,7 +1266,11 @@ async function leaveClass(){
   presenceChannel=null;
  }
 
- await db.auth.signOut();
+ // Học sinh giữ nguyên phiên đăng nhập ẩn danh để lần sau dùng lại
+ // đúng UID/profile; giáo viên vẫn đăng xuất bình thường.
+ if(isTeacher){
+  await db.auth.signOut();
+ }
 
  me=null;
  isTeacher=false;
