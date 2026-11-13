@@ -467,6 +467,11 @@ body.student-mode #floatingDock .floating-leave{
  color:inherit;
 }
 
+
+/* Thanh công cụ học sinh: hiển thị chắc chắn sau khi vào lớp */
+#floatingDock.student-toolbar-active{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:10050!important}
+#floatingDock.student-toolbar-active button{display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+#floatingDock.student-toolbar-active .floating-quiz{display:block!important}
 </style>
 </head>
 
@@ -1056,17 +1061,22 @@ async function enterClass(){
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
 
- $("floatingDock").style.setProperty("display","flex","important");
- $("floatingDock").style.setProperty("visibility","visible","important");
- $("floatingDock").style.setProperty("opacity","1","important");
+ const studentDock=$("floatingDock");
  document.body.classList.toggle("student-mode",!isTeacher);
  document.body.classList.toggle("teacher-mode",isTeacher);
  document.body.classList.add("dock-active");
 
- $("floatingDock").querySelectorAll("button:not(.floating-quiz)")
-  .forEach(button=>{
-   button.style.display=isTeacher?"none":"grid";
-  });
+ // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
+ studentDock.classList.toggle("student-toolbar-active",!isTeacher);
+ studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
+ studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
+ studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
+ studentDock.querySelectorAll("button").forEach(button=>{
+  const visible=!isTeacher;
+  button.style.setProperty("display",visible?"grid":"none","important");
+  button.style.setProperty("visibility",visible?"visible":"hidden","important");
+  button.style.setProperty("pointer-events",visible?"auto":"none","important");
+ });
 
  $("myStatus").textContent=isTeacher
  ?"👑 Bạn đang đăng nhập với quyền GIÁO VIÊN"
