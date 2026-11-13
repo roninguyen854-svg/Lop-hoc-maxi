@@ -1431,6 +1431,7 @@ async function postQuestion(){
   created_by:me.id,
   category:$("questionCategory").value.trim()||"Bài tập",
   question,
+  points_award:Math.max(0,Number($("questionPoints").value||10)),
   options:[],
   status:"active",
   explanation:""
@@ -1465,30 +1466,34 @@ async function submitAnswer(){
  }
 
  const answer=$("studentAnswer").value.trim();
-
  if(!answer){
-  alert("Bạn chưa nhập câu trả lời.");
+  alert("Bạn chưa nhập đáp án.");
   return;
  }
 
- const {error}=await db.from("student_answers").insert({
-  question_id:currentQuestion.id,
-  student_id:me.id,
-  answer,
-  is_correct:false,
-  points_awarded:0
+ const {data,result,error}=await db.rpc("submit_and_grade_board_answer",{
+  p_question_id:currentQuestion.id,
+  p_answer:answer
  });
 
  if(error){
-  alert("Không gửi được: "+error.message);
+  alert("Không chấm được đáp án: "+error.message);
   return;
  }
 
  $("studentAnswer").value="";
- addClassActivity(`✏️ <b>${esc(me.name)}</b> vừa gửi câu trả lời`);
- $("answerResult").textContent="📨 Đã gửi câu trả lời cho cô giáo!";
+ const outcome=data||result||{};
+ if(outcome.is_correct){
+  const pts=Number(outcome.points_awarded||0);
+  $("answerResult").textContent=pts>0
+   ?`🎉 Chính xác! Em được cộng ${pts} điểm!`
+   :"🎉 Chính xác! Em đã nhận điểm cho câu này trước đó rồi.";
+  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng bài tập${pts>0?` và được cộng ${pts} điểm`:""});
+  await loadLeaderboard();
+ }else{
+  $("answerResult").textContent="Chưa chính xác, em thử lại nhé!";
+ }
 }
-
 async function showAnswers(){
  if(!isTeacher||!currentQuestion)return;
 
