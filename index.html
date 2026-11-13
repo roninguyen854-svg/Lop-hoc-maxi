@@ -752,6 +752,9 @@ let presenceChannel=null;
 let activityUsersSnapshot=null;
 let memberRefreshInterval=null;
 let memberRefreshBusy=false;
+let classStatusInterval=null;
+let joinedSessionId=null;
+let classStatusCheckBusy=false;
 let classActivityItems=[];
 
 let activeQuiz=null;
@@ -1017,6 +1020,20 @@ function goTeacherPanel(id){
 }
 
 async function enterClass(){
+ if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
+ joinedSessionId=null;
+ if(!isTeacher){
+  const {data:activeClass,error:activeClassError}=await db.from("classrooms")
+   .select("is_open,active_session_id")
+   .eq("id",CLASSROOM_ID).maybeSingle();
+  if(activeClassError||!activeClass?.is_open||!activeClass?.active_session_id){
+   alert("Lớp học hiện đã kết thúc hoặc chưa mở. Vui lòng chờ cô giáo mở lớp mới.");
+   await exitClassView(false);
+   return;
+  }
+  joinedSessionId=activeClass.active_session_id;
+  classStatusInterval=setInterval(checkClassStatus,4000);
+ }
  $("register").classList.add("hidden");
  $("classroom").classList.remove("hidden");
 
@@ -1639,6 +1656,21 @@ async function leaveClass(){
  await exitClassView(false);
 }
 
+async function checkClassStatus(){
+ if(isTeacher||!me||!joinedSessionId||classStatusCheckBusy)return;
+ classStatusCheckBusy=true;
+ try{
+  const {data:state,error}=await db.from("classrooms")
+   .select("is_open,active_session_id")
+   .eq("id",CLASSROOM_ID).maybeSingle();
+  if(error){console.warn("Chưa kiểm tra được trạng thái lớp:",error);return;}
+  if(!state?.is_open||!state?.active_session_id||state.active_session_id!==joinedSessionId){
+   await exitClassView(false);
+   alert("Cô giáo đã kết thúc lớp học. Em đã được đưa ra khỏi lớp. Hãy chờ cô mở lớp mới nhé! 🌸");
+  }
+ }finally{classStatusCheckBusy=false;}
+}
+
 async function endClass(){
  if(!me||!isTeacher)return;
  if(!confirm("Bạn có chắc muốn KẾT THÚC LỚP HỌC không? Tất cả học sinh sẽ rời phiên lớp hiện tại và ghế sẽ được giải phóng.")){
@@ -1655,6 +1687,8 @@ async function endClass(){
 }
 
 async function exitClassView(signOut){
+ if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
+ joinedSessionId=null;
  if(memberRefreshInterval){clearInterval(memberRefreshInterval);memberRefreshInterval=null;}
  if(quizTimerInterval){
   clearInterval(quizTimerInterval);
