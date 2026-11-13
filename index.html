@@ -1075,7 +1075,7 @@ async function enterClass(){
  document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
  document.querySelectorAll(".teacher-only").forEach(el=>el.classList.toggle("hidden",!isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
- $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
+ $("teacherBehaviorArea")?.classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
 
