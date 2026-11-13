@@ -759,6 +759,8 @@ let classStatusInterval=null;
 let joinedSessionId=null;
 let classStatusCheckBusy=false;
 let classActivityItems=[];
+let questionRefreshInterval=null;
+let questionRefreshBusy=false;
 
 let activeQuiz=null;
 let quizSubmission=null;
@@ -1106,6 +1108,13 @@ async function enterClass(){
  await loadClassStats();
 
  subscribeRealtime();
+ if(!isTeacher){
+  if(questionRefreshInterval)clearInterval(questionRefreshInterval);
+  // Chỉ kiểm tra câu hỏi, không tải lại danh sách học sinh hay 30 bàn.
+  questionRefreshInterval=setInterval(()=>{
+   if(me&&!isTeacher)loadQuestion();
+  },3000);
+ }
  // Không dựng lại danh sách theo chu kỳ 4 giây.
  // Danh sách, sĩ số và xếp hạng được cập nhật theo sự kiện Realtime
  // khi học sinh vào lớp hoặc rời lớp.
@@ -1366,6 +1375,9 @@ async function subscribePresence(){
 }
 
 async function loadQuestion(){
+ if(questionRefreshBusy)return;
+ questionRefreshBusy=true;
+ try{
  const {data,error}=await db.from("board_questions")
   .select("*")
   .eq("classroom_id",CLASSROOM_ID)
@@ -1410,6 +1422,9 @@ async function loadQuestion(){
    answerBox.disabled=isTeacher;
    answerBox.placeholder="Nhập đáp án của em tại đây...";
   }
+ }
+ }finally{
+  questionRefreshBusy=false;
  }
 }
 async function postQuestion(){
@@ -1739,6 +1754,7 @@ async function endClass(){
 }
 
 async function exitClassView(signOut){
+ if(questionRefreshInterval){clearInterval(questionRefreshInterval);questionRefreshInterval=null;}
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
  if(memberRefreshInterval){clearInterval(memberRefreshInterval);memberRefreshInterval=null;}
