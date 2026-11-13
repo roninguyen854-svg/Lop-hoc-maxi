@@ -1488,7 +1488,7 @@ async function submitAnswer(){
   $("answerResult").textContent=pts>0
    ?`🎉 Chính xác! Em được cộng ${pts} điểm!`
    :"🎉 Chính xác! Em đã nhận điểm cho câu này trước đó rồi.";
-  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng bài tập${pts>0?` và được cộng ${pts} điểm`:""});
+  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng bài tập${pts>0?` và được cộng ${pts} điểm`:""}`);
   await loadLeaderboard();
  }else{
   $("answerResult").textContent="Chưa chính xác, em thử lại nhé!";
