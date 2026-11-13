@@ -688,6 +688,21 @@ body.student-mode.dock-active{padding-bottom:0!important}
 #floatingDock.student-toolbar-active{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:10050!important}
 #floatingDock.student-toolbar-active button{display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
 #floatingDock.student-toolbar-active .floating-quiz{display:block!important}
+
+#snackShopModal{position:fixed;inset:0;z-index:20000;background:#24172c99;display:none;align-items:center;justify-content:center;padding:16px}
+#snackShopModal.open{display:flex}
+#snackShopModal .snack-panel{width:min(560px,100%);max-height:85vh;overflow:auto;background:#fffaf0;border:3px solid #d8b777;border-radius:22px;padding:18px;color:#59445f;box-shadow:0 15px 45px #0003}
+#snackShopModal h2{text-align:center;margin:2px 0 8px;color:#85568b}
+#snackShopModal .snack-balance{text-align:center;background:#f1eafa;border-radius:14px;padding:10px;margin:12px 0;font-weight:700}
+#snackShopModal .snack-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#snackShopModal .snack-item{background:white;border:1px solid #ead8ef;border-radius:15px;padding:12px;text-align:center}
+#snackShopModal .snack-item .emoji{font-size:30px}
+#snackShopModal .snack-item button{width:100%;margin-top:8px;border:0;border-radius:12px;padding:9px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:700}
+#snackShopModal .snack-footer{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+#snackShopModal .snack-footer button{border:0;border-radius:12px;padding:10px 16px;background:#eee3f4;color:#59445f;font-weight:700}
+#snackShopModal .snack-inventory{background:#f6f0fa;border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+@media(max-width:430px){#snackShopModal .snack-panel{padding:13px}#snackShopModal .snack-item{padding:9px}}
+
 </style>
 </head>
 
@@ -903,6 +918,7 @@ body.student-mode.dock-active{padding-bottom:0!important}
 
 <div id="floatingDock" aria-label="Hoạt động học sinh">
  <button title="Ăn vụng" aria-label="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍿</button>
+ <button title="Cửa hàng đồ ăn" aria-label="Cửa hàng đồ ăn" onclick="openSnackShop()">🛍️</button>
  <button title="Chơi điện thoại" aria-label="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
  <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
  <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
@@ -910,6 +926,21 @@ body.student-mode.dock-active{padding-bottom:0!important}
  <button class="floating-leave" title="Rời lớp" aria-label="Rời lớp" onclick="leaveClass()">🚪</button>
 </div>
 
+<div id="snackShopModal" role="dialog" aria-modal="true" aria-label="Cửa hàng đồ ăn"><div class="snack-panel">
+<h2>🍿 CỬA HÀNG ĐỒ ĂN 🥤</h2><p style="text-align:center;margin:0">Nạp năng lượng để học tập thật vui!</p>
+<div class="snack-balance">⭐ Điểm hiện có: <span id="snackBalance">0</span></div>
+<div id="snackStarterInfo" class="snack-inventory">🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 nước ngọt.</div>
+<h3>🛒 Món ngon trong cửa hàng</h3><div class="snack-grid" id="snackMenu">
+<div class="snack-item"><div class="emoji">🍿</div><b>Bim bim</b><div>10 điểm</div><button onclick="buySnack('bim_bim')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🥤</div><b>Nước ngọt</b><div>10 điểm</div><button onclick="buySnack('drink')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍬</div><b>Kẹo</b><div>15 điểm</div><button onclick="buySnack('candy')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍪</div><b>Bánh quy</b><div>20 điểm</div><button onclick="buySnack('cookie')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🥪</div><b>Bánh mì</b><div>30 điểm</div><button onclick="buySnack('sandwich')">Mua ngay</button></div></div>
+<div id="snackInventory" class="snack-inventory">🎒 Túi đồ: Đang tải...</div>
+<div class="snack-inventory">🏆 Top 3 học sinh theo điểm số được tặng 1 bim bim miễn phí mỗi 5 phút.</div>
+<div id="snackShopMessage" role="status" style="min-height:22px;margin-top:8px"></div>
+<div class="snack-footer"><button onclick="closeSnackShop()">Đóng</button><button onclick="refreshSnackShop()">🔄 Cập nhật</button></div>
+</div></div>
 <div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
  <button type="button" onclick="goTeacherPanel('boardHomework')">📝 BÀI TẬP TRÊN BẢNG</button>
  <button type="button" onclick="goTeacherPanel('quizSection')">📋 KIỂM TRA</button>
@@ -1303,6 +1334,7 @@ async function enterClass(){
  // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
  studentDock.classList.toggle("student-toolbar-active",!isTeacher);
  studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
+ if(!isTeacher){checkSnackTop3Reward();if(snackRewardInterval)clearInterval(snackRewardInterval);snackRewardInterval=setInterval(checkSnackTop3Reward,30000);}
  studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
  studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
  studentDock.querySelectorAll("button").forEach(button=>{
@@ -1854,6 +1886,49 @@ async function gradeAnswer(answerId,studentId,correct){
  await loadLeaderboard();
 }
 
+
+let snackRewardInterval=null;
+let snackShopState=null;
+const snackLabels={bim_bim:"🍿 Bim bim",drink:"🥤 Nước ngọt",candy:"🍬 Kẹo",cookie:"🍪 Bánh quy",sandwich:"🥪 Bánh mì"};
+async function refreshSnackShop(){
+ if(!me||isTeacher)return;
+ const {data,error}=await db.rpc("get_snack_shop_state");
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ snackShopState=data||{};$("snackBalance").textContent=Number(snackShopState.balance||0);
+ const inv=snackShopState.inventory||{};
+ $("snackInventory").innerHTML="🎒 <b>Túi đồ của em:</b> "+Object.keys(snackLabels).map(k=>snackLabels[k]+" × "+Number(inv[k]||0)).join(" · ");
+ $("snackStarterInfo").textContent=snackShopState.starter_claimed?"🎁 Em đã nhận phần quà miễn phí ban đầu.":"🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 nước ngọt!";
+}
+async function openSnackShop(){
+ if(!me||isTeacher){alert("Cửa hàng chỉ dành cho học sinh đang ở trong lớp.");return;}
+ $("snackShopModal").classList.add("open");$("snackShopMessage").textContent="Đang tải cửa hàng...";
+ const {data,error}=await db.rpc("claim_snack_starter");
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ if(data&&data.claimed)$("snackShopMessage").textContent="🎉 Em nhận được 1 bim bim và 1 nước ngọt miễn phí!";
+ await refreshSnackShop();
+}
+function closeSnackShop(){$("snackShopModal").classList.remove("open");}
+async function buySnack(itemKey){
+ if(!me||isTeacher)return;
+ $("snackShopMessage").textContent="Đang xử lý đơn mua...";
+ const {data,error}=await db.rpc("buy_snack",{p_item_key:itemKey});
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ $("snackShopMessage").textContent="🎉 Mua thành công "+(snackLabels[itemKey]||"món ăn")+"!";
+ await refreshSnackShop();await loadLeaderboard();
+}
+async function checkSnackTop3Reward(){
+ if(!me||isTeacher)return;
+ const {data,error}=await db.rpc("claim_snack_top3_reward");
+ if(error){console.warn("Không kiểm tra được quà top 3:",error.message);return;}
+ if(data&&data.you_are_top3&&data.rewarded_count>0){
+  const msg="🏆 Chúc mừng! Em thuộc top 3 và được tặng 1 bim bim miễn phí!";
+  if($("snackShopModal").classList.contains("open"))$("snackShopMessage").textContent=msg;
+  else console.info(msg);
+  await loadLeaderboard();
+  if($("snackShopModal").classList.contains("open"))await refreshSnackShop();
+ }
+}
+
 async function reportBehavior(behavior){
  if(!me)return;
  if(isTeacher){
@@ -2038,6 +2113,8 @@ async function endClass(){
 
 async function exitClassView(signOut){
  if(questionRefreshInterval){clearInterval(questionRefreshInterval);questionRefreshInterval=null;}
+ if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
+ closeSnackShop();
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
  if(memberRefreshInterval){clearInterval(memberRefreshInterval);memberRefreshInterval=null;}
