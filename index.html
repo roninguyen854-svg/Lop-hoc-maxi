@@ -1866,7 +1866,7 @@ async function reportBehavior(behavior){
   classroom_id:CLASSROOM_ID,
   student_id:me.id,
   behavior,
-  status:"reported",
+  status:"pending",
   detected_by:"student",
   note:""
  });
@@ -1876,8 +1876,8 @@ async function reportBehavior(behavior){
   return;
  }
 
- addClassActivity(`📣 <b>${esc(me.name)}</b> vừa mách cô: ${esc(behavior)}`);
- if($("behaviorStatus"))$("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
+ if($("behaviorStatus"))$("behaviorStatus").textContent="✅ Cô đã nhận báo cáo: "+behavior;
+ alert("Đã gửi báo cáo cho cô giáo. Cảm ơn em!");
 }
 
 async function loadBehaviors(){
@@ -1904,8 +1904,8 @@ async function loadBehaviors(){
  $("behaviorList").innerHTML=(data||[]).map(b=>`
   <div class="answer-row">
    <b>${esc(names[b.student_id]||"Học sinh")}</b> — ${esc(b.behavior)}
-   <p class="small">Trạng thái: ${esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
-   <button onclick="resolveBehavior('${b.id}')">Đã xử lý</button>
+   <p class="small">Trạng thái: ${b.status==="pending"?"Chờ xử lý":b.status==="resolved"?"Đã xử lý":esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
+   ${b.status==="pending"?`<button onclick="resolveBehavior('${b.id}')">Đánh dấu đã xử lý</button>`:"<span class='small'>✅ Đã hoàn tất</span>"}
   </div>
  `).join("")||"Chưa có ghi nhận.";
 }
