@@ -694,7 +694,7 @@ body.student-mode.dock-active{padding-bottom:0!important}
 #snackShopModal .snack-panel{width:min(560px,100%);max-height:85vh;overflow:auto;background:#fffaf0;border:3px solid #d8b777;border-radius:22px;padding:18px;color:#59445f;box-shadow:0 15px 45px #0003}
 #snackShopModal h2{text-align:center;margin:2px 0 8px;color:#85568b}
 #snackShopModal .snack-balance{text-align:center;background:#f1eafa;border-radius:14px;padding:10px;margin:12px 0;font-weight:700}
-#snackShopModal .snack-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#snackShopModal .snack-section-title{margin:18px 0 10px;padding:9px 12px;background:#f2eafa;border-left:4px solid #c58bbd;border-radius:10px;color:#76517d;font-size:17px}.snack-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 #snackShopModal .snack-item{background:white;border:1px solid #ead8ef;border-radius:15px;padding:12px;text-align:center}
 #snackShopModal .snack-item .emoji{font-size:30px}
 #snackShopModal .snack-item button{width:100%;margin-top:8px;border:0;border-radius:12px;padding:9px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:700}
@@ -929,21 +929,26 @@ body.student-mode.dock-active{padding-bottom:0!important}
 <div id="snackShopModal" role="dialog" aria-modal="true" aria-label="Cửa hàng đồ ăn"><div class="snack-panel">
 <h2>🍿 CỬA HÀNG ĐỒ ĂN 🥤</h2><p style="text-align:center;margin:0">Nạp năng lượng để học tập thật vui!</p>
 <div class="snack-balance">⭐ Điểm hiện có: <span id="snackBalance">0</span></div>
-<div id="snackStarterInfo" class="snack-inventory">🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 nước ngọt.</div>
-<h3>🛒 Món ngon trong cửa hàng</h3><div class="snack-grid" id="snackMenu">
+<div id="snackStarterInfo" class="snack-inventory">🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 Sting.</div>
+<h3 class="snack-section-title">🍡 ĐỒ ĂN</h3>
+<div class="snack-grid" id="snackFoodMenu">
 <div class="snack-item"><div class="emoji">🍬</div><b>Kẹo</b><div>1 điểm</div><button onclick="buySnack('candy')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🍪</div><b>Bánh quy</b><div>2 điểm</div><button onclick="buySnack('cookie')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🍿</div><b>Bim bim</b><div>3 điểm</div><button onclick="buySnack('bim_bim')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">⚡</div><b>Sting</b><div>3 điểm</div><button onclick="buySnack('sting')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">🍊</div><b>Nước cam</b><div>3 điểm</div><button onclick="buySnack('orange_juice')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">💧</div><b>Nước lọc</b><div>1 điểm</div><button onclick="buySnack('water')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">🍵</div><b>C2</b><div>3 điểm</div><button onclick="buySnack('c2')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">🌿</div><b>Dr.Thanh</b><div>3 điểm</div><button onclick="buySnack('dr_thanh')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🥭</div><b>BT me</b><div>4 điểm</div><button onclick="buySnack('bt_me')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🌶️</div><b>BT trộn</b><div>5 điểm</div><button onclick="buySnack('bt_tron')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🌯</div><b>BT cuộn</b><div>5 điểm</div><button onclick="buySnack('bt_cuon')">Mua ngay</button></div>
 <div class="snack-item"><div class="emoji">🧋</div><b>Tà tưa</b><div>6 điểm</div><button onclick="buySnack('milk_tea')">Mua ngay</button></div>
-<div class="snack-item"><div class="emoji">🥪</div><b>Bánh mì</b><div>6 điểm</div><button onclick="buySnack('sandwich')">Mua ngay</button></div></div>
+<div class="snack-item"><div class="emoji">🥪</div><b>Bánh mì</b><div>6 điểm</div><button onclick="buySnack('sandwich')">Mua ngay</button></div>
+</div>
+<h3 class="snack-section-title">🥤 NƯỚC UỐNG</h3>
+<div class="snack-grid" id="snackDrinkMenu">
+<div class="snack-item"><div class="emoji">💧</div><b>Nước lọc</b><div>1 điểm</div><button onclick="buySnack('water')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">⚡</div><b>Sting</b><div>3 điểm</div><button onclick="buySnack('sting')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍊</div><b>Nước cam</b><div>3 điểm</div><button onclick="buySnack('orange_juice')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍵</div><b>C2</b><div>3 điểm</div><button onclick="buySnack('c2')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌿</div><b>Dr.Thanh</b><div>3 điểm</div><button onclick="buySnack('dr_thanh')">Mua ngay</button></div>
+</div>
 <div id="snackInventory" class="snack-inventory">🎒 Túi đồ: Đang tải...</div>
 <div class="snack-inventory">🏆 Top 3 học sinh theo điểm số được tặng 1 bim bim miễn phí mỗi 5 phút.</div>
 <div id="snackShopMessage" role="status" style="min-height:22px;margin-top:8px"></div>
