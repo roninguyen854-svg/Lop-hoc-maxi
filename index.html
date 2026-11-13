@@ -301,6 +301,23 @@ body.dock-active{padding-bottom:85px}
  #classActivityFeed{max-height:105px;font-size:11px}
 }
 
+
+#teacherQuickDock{
+ display:none;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));
+ transform:translateX(-50%);z-index:10001;
+ width:min(94vw,560px);gap:8px;padding:8px;
+ border:1px solid #ead7ef;border-radius:18px;
+ background:rgba(255,250,255,.96);box-shadow:0 5px 22px rgba(75,45,80,.22);
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+#teacherQuickDock button{
+ flex:1;min-width:0;border:0;border-radius:12px;padding:12px 8px;
+ background:linear-gradient(110deg,#e66bb2,#9278dc);color:#fff;
+ font-weight:700;font-size:clamp(11px,2.4vw,14px);line-height:1.25;
+}
+#teacherQuickDock button:active{transform:scale(.98)}
+@media(max-width:420px){#teacherQuickDock{gap:5px;padding:6px}#teacherQuickDock button{padding:11px 5px}}
+
 </style>
 </head>
 
@@ -521,6 +538,11 @@ body.dock-active{padding-bottom:85px}
  <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
  <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
  <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
+</div>
+
+<div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
+ <button type="button" onclick="goTeacherPanel('boardHomework')">📝 BÀI TẬP TRÊN BẢNG</button>
+ <button type="button" onclick="goTeacherPanel('quizSection')">📋 KIỂM TRA</button>
 </div>
 
 <footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
@@ -804,11 +826,18 @@ async function teacherLogin(){
  await enterClass();
 }
 
+function goTeacherPanel(id){
+ const target=$(id);
+ if(!target)return;
+ target.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 async function enterClass(){
  $("register").classList.add("hidden");
  $("classroom").classList.remove("hidden");
 
  $("endClassBtn").classList.toggle("hidden",!isTeacher);
+ $("teacherQuickDock").style.display=isTeacher?"flex":"none";
  document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
  document.querySelectorAll(".teacher-only").forEach(el=>el.classList.toggle("hidden",!isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
