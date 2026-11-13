@@ -53,13 +53,45 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .wall-clock{width:55px;height:55px;border:5px solid #8e6a45;border-radius:50%;background:white;display:grid;place-items:center}
 .chalkboard{width:min(720px,100%);min-height:190px;margin:15px auto;padding:17px;border:12px solid #97643d;background:#24613d;color:#fffbe2;text-align:center}
 .chalkboard h2{font-size:22px}
-.chalk-writing{font-family:Georgia,serif;font-style:italic;font-size:17px;line-height:1.7}
+.chalk-question{font-family:Georgia,serif;font-style:italic;font-size:clamp(17px,3vw,24px);font-weight:700;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;margin:12px auto;color:#fffbe2}.chalk-status{font-size:clamp(12px,2.2vw,16px);line-height:1.45;margin:10px auto;color:#e8f3d8;overflow-wrap:anywhere}
 .teacher-area{display:flex;justify-content:center;align-items:flex-end;gap:18px;margin:20px auto}
 .teacher-person{font-size:48px}
 .teacher-desk{width:180px;background:#b9783e;color:white;padding:12px;text-align:center;border:4px solid #87572f}
 .wall-board{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
 .notice{flex:1;min-width:135px;padding:10px;background:#fff9df;border:3px solid #d6b66f;text-align:center;font-size:12px}
 .room-title{text-align:center;background:#fff9eb;border:3px solid #d5b48a;padding:12px;margin-top:15px}
+/* Khu vực tiêu đề phòng học: gọn, tiết kiệm chiều cao */
+.room-title{
+ max-width:1050px;
+ margin:10px auto 8px;
+ padding:7px 14px;
+ border:2px solid #d5b48a;
+ border-radius:12px;
+}
+.room-title h2{
+ margin:0 0 3px;
+ font-size:clamp(16px,2.2vw,21px);
+ line-height:1.25;
+}
+.room-title p{
+ margin:3px 0;
+ font-size:clamp(12px,1.6vw,15px);
+ line-height:1.35;
+}
+.room-title #seatOccupancy{
+ display:inline-block;
+ margin:4px 0 0;
+ padding:3px 10px;
+ border-radius:20px;
+ background:#f4e7d3;
+ font-size:clamp(11px,1.5vw,14px);
+}
+@media(max-width:600px){
+ .room-title{margin:7px 8px 6px;padding:6px 9px}
+ .room-title h2{font-size:17px}
+ .room-title p{font-size:12px}
+ .room-title #seatOccupancy{font-size:11px;padding:3px 8px}
+}
 .student-zone{padding:18px 10px 25px;background:repeating-linear-gradient(90deg,#d4a36b 0,#d4a36b 48px,#c58d58 49px,#c58d58 51px);border:5px solid #9c663a}
 .students{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 12px;max-width:1050px;margin:auto}
 .desk{text-align:center;min-width:0}
@@ -78,6 +110,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .small{font-size:12px;color:#967d9b}
 footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 
+.student-quiz-collapsed{display:none!important}
 .quiz-section{margin-top:16px}
 .quiz-section h3{color:#86568f}
 .quiz-intro{background:linear-gradient(120deg,#fff0f7,#f0edff);padding:15px;border-radius:15px;margin-bottom:15px}
@@ -131,6 +164,219 @@ footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 }
 #floatingDock button:active{transform:scale(.94)}
 body.dock-active{padding-bottom:85px}
+.classroom-summary{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+ align-items:stretch;
+}
+.classroom-summary .notice{
+ min-width:0;
+ aspect-ratio:1/1;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ padding:clamp(8px,2vw,18px);
+ border-width:2px;
+ font-size:clamp(11px,1.4vw,15px);
+}
+.classroom-summary .notice strong{font-size:clamp(13px,1.7vw,18px)}
+.classroom-summary .notice p{margin:7px 0;overflow-wrap:anywhere}
+.no-seat-panel{margin-top:14px}
+.no-seat-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px;max-height:230px;overflow:auto;padding:4px}
+.no-seat-student{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #eadcf1;border-radius:12px;background:#fff9fd;font-size:12px;min-width:0}
+.no-seat-student .mini-avatar{font-size:24px;flex-shrink:0}
+.no-seat-student .no-seat-name{overflow-wrap:anywhere}
+.desk.has-student{cursor:default}
+.desk .activity-tag{font-size:10px;background:#fff4fb;border-radius:10px;padding:3px 5px;margin-top:3px}
+.desk .student-name{min-height:27px}
+@media(max-width:700px){
+ .classroom-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .classroom-summary .notice{min-width:0;padding:7px 5px}
+ .classroom-summary .notice p{margin:5px 0}
+ .no-seat-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:190px}
+}
+@media(max-width:380px){
+ .no-seat-list{grid-template-columns:1fr}
+}
+
+
+
+/* Tăng chiều cao bảng xanh và thu gọn hai thẻ thông tin bên dưới */
+.chalkboard{min-height:225px}
+.classroom-summary .notice{
+ width:100%;
+ max-width:260px;
+ justify-self:center;
+ aspect-ratio:1/1;
+ padding:8px;
+}
+@media(max-width:700px){
+ .chalkboard{min-height:230px;padding:15px 12px}
+ .classroom-summary .notice{max-width:245px;padding:7px 5px}
+ .classroom-summary .notice strong{font-size:14px}
+ .classroom-summary .notice p{font-size:11px;line-height:1.35}
+}
+
+/* Cân đối môn học và đề bài ở chính giữa bảng xanh. */
+.chalkboard{
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+}
+.chalkboard h2{
+ width:100%;
+ margin:0 0 18px!important;
+ line-height:1.3;
+}
+.chalk-question{
+ width:100%;
+ margin:0 auto!important;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:12px;
+ line-height:1.5;
+}
+.chalk-subject{
+ display:block;
+ font-family:Georgia,serif;
+ font-size:clamp(17px,2.4vw,21px);
+ font-weight:700;
+ line-height:1.35;
+}
+.chalk-prompt{
+ display:block;
+ width:min(94%,620px);
+ margin:0 auto;
+ font-size:clamp(21px,3.2vw,27px);
+ line-height:1.5;
+ text-align:center;
+ overflow-wrap:anywhere;
+}
+@media(max-width:700px){
+ .chalkboard h2{font-size:21px;margin-bottom:20px!important}
+ .chalk-question{gap:12px}
+ .chalk-subject{font-size:19px}
+ .chalk-prompt{width:94%;font-size:23px;line-height:1.45}
+}
+
+/* Kéo dài bảng xanh theo chiều dọc để có nhiều không gian hiển thị nội dung. */
+.chalkboard{
+ min-height:255px!important;
+ padding-top:22px!important;
+ padding-bottom:22px!important;
+}
+@media(max-width:700px){
+ .chalkboard{
+  min-height:270px!important;
+  padding:22px 16px!important;
+ }
+ .chalkboard h2{margin:8px 0 20px}
+ .chalk-question{margin:22px auto;font-size:clamp(18px,4vw,25px);line-height:1.65}
+ .chalk-status{margin:20px auto 8px;line-height:1.6}
+}
+
+/* Thu gọn thẻ bài tập phía học sinh: không lặp đề, không giữ khoảng trống. */
+body.student-mode #boardHomework #questionDisplay{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important}
+body.student-mode #boardHomework{padding:12px 14px!important;margin:10px auto 14px!important;max-height:none!important;overflow:visible!important}
+body.student-mode #boardHomework>h3{position:static;padding:3px 0 8px;margin:0 0 8px}
+body.student-mode #boardHomework #studentAnswerArea{margin:0!important;padding:0!important}
+body.student-mode #boardHomework #studentAnswer{min-height:76px;max-height:120px}
+body.student-mode #boardHomework #answerResult{margin-top:8px;padding:8px 10px}
+
+/* Học sinh chỉ thấy ô nhập và nút gửi; đề bài đã hiển thị trên bảng xanh. */
+body.student-mode #boardHomework #questionDisplay{display:none!important}
+
+/* Bảng bài tập cuộn riêng, không chiếm toàn màn hình */
+#boardHomework{
+ max-height:min(72vh,680px);
+ overflow-y:auto;
+ overflow-x:hidden;
+ overscroll-behavior:contain;
+ -webkit-overflow-scrolling:touch;
+ scroll-behavior:smooth;
+}
+#boardHomework>h3{
+ position:sticky;
+ top:-1px;
+ z-index:3;
+ padding:8px 0;
+ background:inherit;
+}
+#teacherQuestionArea{
+ max-height:52vh;
+ overflow-y:auto;
+ overflow-x:hidden;
+ overscroll-behavior:contain;
+ -webkit-overflow-scrolling:touch;
+ padding:2px 3px 10px 0;
+}
+#teacherQuestionArea input,
+#teacherQuestionArea textarea,
+#teacherQuestionArea button{
+ max-width:100%;
+}
+@media(max-width:700px){
+ #boardHomework{max-height:68vh;padding:14px}
+ #teacherQuestionArea{max-height:48vh}
+}
+
+/* BẢNG THỐNG KÊ GỌN CHO ĐIỆN THOẠI VÀ IPAD */
+.top-grid{
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+ align-items:stretch;
+}
+.top-grid .panel{
+ min-width:0;
+ padding:10px;
+ border-radius:13px;
+}
+.top-grid .panel h3{
+ font-size:clamp(12px,2vw,16px);
+ margin-bottom:7px;
+}
+.top-grid .rank{
+ gap:5px;
+ padding:6px 0;
+ font-size:clamp(10px,1.5vw,13px);
+}
+#classLiveStats{
+ padding:9px 12px;
+ margin-bottom:9px;
+ border-radius:13px;
+}
+#classLiveStats h3{
+ font-size:14px;
+ margin-bottom:7px!important;
+}
+.live-counts{gap:7px}
+.live-count{padding:7px;border-radius:10px;font-size:11px}
+.live-number{font-size:22px}
+.online-list{
+ margin-top:6px;
+ max-height:58px;
+ overflow:auto;
+ font-size:11px;
+ line-height:1.45;
+}
+@media(max-width:700px){
+ .top-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .top-grid .panel{padding:8px}
+ .top-grid .panel h3{font-size:11px}
+ .top-grid .rank{font-size:10px;padding:5px 0}
+ #classLiveStats{padding:8px}
+ .live-number{font-size:20px}
+}
+@media(max-width:380px){
+ .top-grid{gap:5px}
+ .top-grid .panel{padding:6px}
+ .top-grid .rank{font-size:9px}
+}
 
 /* SĨ SỐ VÀ THÀNH VIÊN ONLINE */
 #classLiveStats{
@@ -182,6 +428,305 @@ body.dock-active{padding-bottom:85px}
  #floatingDock button{width:37px;height:37px;font-size:16px}
  #floatingDock .floating-quiz{min-width:95px;font-size:10px}
 }
+
+.student-points-profile{margin:14px 0;padding:15px;background:linear-gradient(135deg,#fffafd,#f6f1ff);border:2px solid #eadcf1}
+.student-profile-heading{display:flex;align-items:center;gap:11px}
+.student-profile-avatar{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border-radius:16px;background:#fff0f7;border:1px solid #f0d8e9;font-size:32px;overflow:hidden}
+.student-profile-avatar svg{width:100%;height:100%}
+.student-profile-identity{min-width:0;flex:1}
+.student-profile-identity h3{margin:0 0 4px;color:#80558f;font-size:16px;overflow-wrap:anywhere}
+.student-profile-identity p{margin:0;color:#967d9b;font-size:11px}
+.student-profile-total{min-width:78px;padding:9px 11px;border-radius:13px;background:linear-gradient(135deg,#ffe4f1,#eae2ff);text-align:center}
+.student-profile-total strong,.student-profile-total span{display:block}
+.student-profile-total strong{font-size:23px;color:#895b9b;line-height:1.1}
+.student-profile-total span{font-size:9px;font-weight:bold;letter-spacing:1px;color:#967d9b;margin-top:3px}
+.student-history-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:16px 0 8px}
+.student-history-heading h3{margin:0;color:#86568f;font-size:13px}
+.student-history-heading span{font-size:10px;color:#967d9b}
+.student-points-history{display:flex;flex-direction:column;gap:7px;max-height:310px;overflow:auto}
+.student-points-entry{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid #f0e3ef;border-radius:12px;background:#fff}
+.student-points-entry .points-entry-icon{font-size:20px;flex:0 0 25px;text-align:center}
+.student-points-entry .points-entry-info{min-width:0;flex:1}
+.student-points-entry .points-entry-reason{font-size:12px;font-weight:bold;color:#654b70;overflow-wrap:anywhere}
+.student-points-entry .points-entry-date{font-size:10px;color:#a18ca5;margin-top:3px}
+.student-points-entry .points-entry-amount{font-size:14px;font-weight:bold;white-space:nowrap}
+.student-points-entry .points-entry-amount.positive{color:#258653}
+.student-points-entry .points-entry-amount.negative{color:#c45a70}
+@media(max-width:420px){.student-points-profile{padding:11px}.student-profile-avatar{width:49px;height:49px;flex-basis:49px}.student-profile-total{min-width:67px;padding:8px}.student-profile-total strong{font-size:20px}.student-history-heading h3{font-size:12px}}
+.activity-feed-card{margin:0 0 12px;padding:10px 12px;border-radius:14px}
+.activity-feed-card h3{margin:0 0 7px;color:#86568f;font-size:14px}
+#classActivityFeed{display:flex;flex-direction:column;gap:5px;max-height:145px;overflow:auto;font-size:12px;line-height:1.4}
+.activity-item{padding:6px 8px;border-radius:9px;background:#fff5fb;overflow-wrap:anywhere}
+.activity-time{font-size:10px;color:#927d91;margin-left:5px}
+@media(max-width:700px){
+ .activity-feed-card{padding:8px;margin-bottom:8px}
+ .activity-feed-card h3{font-size:12px}
+ #classActivityFeed{max-height:105px;font-size:11px}
+}
+
+
+#teacherQuickDock{
+ display:none;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));
+ transform:translateX(-50%);z-index:10001;
+ width:min(94vw,560px);gap:8px;padding:8px;
+ border:1px solid #ead7ef;border-radius:18px;
+ background:rgba(255,250,255,.96);box-shadow:0 5px 22px rgba(75,45,80,.22);
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+#teacherQuickDock button{
+ flex:1;min-width:0;border:0;border-radius:12px;padding:12px 8px;
+ background:linear-gradient(110deg,#e66bb2,#9278dc);color:#fff;
+ font-weight:700;font-size:clamp(11px,2.4vw,14px);line-height:1.25;
+}
+#teacherQuickDock button:active{transform:scale(.98)}
+@media(max-width:420px){#teacherQuickDock{gap:5px;padding:6px}#teacherQuickDock button{padding:11px 5px}}
+
+
+/* Teacher panels stay out of the page until opened from the fixed shortcut bar */
+.teacher-panel-collapsed{display:none!important}
+.teacher-panel-open{display:block!important;scroll-margin-top:16px}
+
+
+/* MOBILE REDESIGN: gọn, cân đối và không bị tràn trên iPhone */
+@media(max-width:600px){
+ body{font-size:14px}
+ header{padding:14px 8px 12px;border-bottom-width:3px}
+ header h1{font-size:22px;line-height:1.2}
+ header p{font-size:10px;letter-spacing:1.3px}
+ main{padding:8px}
+ #classroom{padding:0}
+ .room{margin-top:10px;padding:7px;border-width:6px;border-radius:12px}
+ .classroom-wall{padding:8px;min-height:0;border-width:3px}
+ .wall-decor{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:center;justify-items:center;gap:5px;
+ }
+ .wall-window{width:100%;height:auto;aspect-ratio:1.35;border-width:3px}
+ .flag{width:100%;height:auto;aspect-ratio:1.5;font-size:20px}
+ .ho-portrait{width:100%;height:auto;aspect-ratio:1;max-width:52px;font-size:27px}
+ .wall-clock{width:100%;height:auto;aspect-ratio:1;max-width:52px;border-width:4px;font-size:19px}
+ .chalkboard{
+  width:100%;min-height:0;margin:9px auto;padding:12px 9px;
+  border-width:6px;border-radius:3px;
+ }
+ .chalkboard .teacher-person{font-size:30px!important}
+ .chalkboard h2{font-size:clamp(17px,5vw,21px);line-height:1.25;margin:8px 0}
+ .chalkboard h3{font-size:16px;line-height:1.25;margin:8px 0}
+ .chalk-writing{font-size:clamp(13px,3.8vw,16px);line-height:1.55}
+ .chalkboard p{font-size:13px;line-height:1.4;margin:10px 0 2px}
+ .teacher-area{gap:9px;margin:10px auto 6px;align-items:flex-end}
+ .teacher-area .teacher-person{font-size:34px}
+ .teacher-desk{width:auto;min-width:130px;padding:8px;font-size:12px;border-width:3px}
+ .wall-board{gap:6px;margin-top:8px}
+ .wall-board .notice{min-width:0;padding:7px;font-size:10px;border-width:2px}
+ .room-title{margin-top:8px;padding:9px;border-width:2px}
+ .room-title h2{font-size:18px;margin:3px}
+ .room-title p{font-size:12px;margin:5px}
+ .student-zone{padding:10px 6px 16px;border-width:3px}
+ .students{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 8px}
+ .desk-top{min-height:112px;padding:4px}
+ .desk-top svg{width:68px;height:85px}
+ .avatar-placeholder{height:85px;font-size:32px}
+ .student-name{font-size:10px;padding:5px 2px;min-height:24px}
+ .seat-label{padding:6px;font-size:9px}
+ .card{padding:13px;border-radius:16px}
+ #boardHomework{margin:9px auto 12px;padding:12px;max-height:62vh}
+ #boardHomework>h3{font-size:16px}
+ #questionDisplay{font-size:14px;line-height:1.45}
+ #studentAnswerArea textarea{min-height:76px}
+ .no-seat-panel{margin-top:9px}
+ .no-seat-panel h3{font-size:15px}
+ .no-seat-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:160px}
+ #floatingDock{gap:5px;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
+ #floatingDock button{width:38px;height:38px;font-size:17px}
+ #floatingDock .floating-quiz{min-width:94px;font-size:10px;padding:0 8px}
+ body.dock-active{padding-bottom:76px}
+ #teacherQuickDock{bottom:calc(8px + env(safe-area-inset-bottom));width:calc(100vw - 20px);gap:6px;padding:6px}
+ #teacherQuickDock button{font-size:11px;padding:10px 5px}
+ footer{font-size:11px;padding:12px 6px}
+}
+@media(max-width:380px){
+ header h1{font-size:19px}
+ .chalkboard{padding:10px 7px;border-width:5px}
+ .chalkboard h2{font-size:17px}
+ .chalkboard h3{font-size:14px}
+ .teacher-desk{min-width:115px;font-size:11px}
+ .students{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* Luôn hiện thanh hoạt động học sinh trên điện thoại/tablet sau khi vào lớp */
+body.student-mode #floatingDock{
+ display:flex!important;
+ position:fixed!important;
+ left:8px!important;right:8px!important;
+ bottom:calc(8px + env(safe-area-inset-bottom))!important;
+ z-index:10050!important;
+ min-height:54px;
+ border:1px solid #eadcf1;
+ border-radius:18px;
+ padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.98);
+ box-shadow:0 5px 22px #59406b35;
+}
+body.student-mode #floatingDock button:not(.floating-quiz){
+ display:grid!important;
+ width:42px;height:42px;
+ flex:1 1 42px;
+ max-width:54px;
+ border-radius:13px;
+ font-size:21px;
+}
+body.student-mode #floatingDock .floating-quiz{
+ display:block!important;
+ min-width:104px;
+ min-height:42px;
+}
+body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!important}
+body.student-mode.dock-active{padding-bottom:100px!important}
+@media(max-width:380px){
+ body.student-mode #floatingDock{left:5px!important;right:5px!important;gap:4px;padding-left:5px;padding-right:5px}
+ body.student-mode #floatingDock button:not(.floating-quiz){font-size:19px;min-width:0}
+ body.student-mode #floatingDock .floating-quiz{min-width:88px;font-size:10px;padding:0 7px}
+}
+
+
+/* Explicit student activity toolbar visibility */
+body.student-mode #floatingDock,
+body.student-mode #floatingDock[style]{
+ display:flex!important;visibility:visible!important;opacity:1!important;
+ pointer-events:auto!important;
+}
+body.student-mode #floatingDock button{
+ visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+}
+body.student-mode #floatingDock button:not(.floating-quiz){
+ display:grid!important;flex:1 1 0!important;min-width:0!important;
+ max-width:58px!important;height:44px!important;width:auto!important;
+}
+body.teacher-mode #floatingDock button:not(.floating-quiz){display:none!important}
+
+
+body.student-mode #floatingDock .floating-leave{
+ display:grid!important;place-items:center!important;
+ width:42px!important;height:42px!important;min-width:42px!important;
+ flex:0 0 42px!important;border-radius:13px!important;
+ background:#fff0f0!important;border:1px solid #efcaca!important;
+ font-size:20px!important;
+}
+@media(max-width:380px){
+ body.student-mode #floatingDock .floating-leave{
+  width:36px!important;height:38px!important;min-width:36px!important;
+  flex-basis:36px!important;font-size:18px!important;
+ }
+}
+
+
+.creator-credit{
+ margin-top:6px;
+ font-size:.9em;
+ font-weight:600;
+ letter-spacing:.3px;
+ color:inherit;
+}
+
+
+/* Thanh công cụ dọc bên phải, căn giữa màn hình cho cả học sinh và giáo viên. */
+body.student-mode #floatingDock{
+ left:auto!important;
+ right:8px!important;
+ top:50%!important;
+ bottom:auto!important;
+ transform:translateY(-50%)!important;
+ width:62px!important;
+ max-height:78vh!important;
+ overflow-y:auto!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:center!important;
+ gap:7px!important;
+ padding:9px 6px!important;
+ border:1px solid #eadcf1!important;
+ border-radius:20px!important;
+}
+body.student-mode #floatingDock button:not(.floating-quiz),
+body.student-mode #floatingDock .floating-leave{
+ width:46px!important;
+ height:46px!important;
+ min-width:46px!important;
+ max-width:46px!important;
+ flex:0 0 46px!important;
+ border-radius:13px!important;
+}
+body.student-mode #floatingDock .floating-quiz{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ width:48px!important;
+ min-width:48px!important;
+ max-width:48px!important;
+ min-height:76px!important;
+ padding:7px 4px!important;
+ white-space:normal!important;
+ overflow-wrap:anywhere!important;
+ text-align:center!important;
+ line-height:1.25!important;
+ font-size:10px!important;
+ border-radius:14px!important;
+}
+body.teacher-mode #teacherQuickDock{
+ left:auto!important;
+ right:8px!important;
+ top:50%!important;
+ bottom:auto!important;
+ transform:translateY(-50%)!important;
+ width:66px!important;
+ max-height:78vh!important;
+ overflow-y:auto!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:stretch!important;
+ gap:8px!important;
+ padding:8px 6px!important;
+ border-radius:18px!important;
+}
+body.teacher-mode #teacherQuickDock button{
+ width:100%!important;
+ min-height:78px!important;
+ flex:0 0 auto!important;
+ padding:8px 4px!important;
+ font-size:10px!important;
+ line-height:1.25!important;
+ overflow-wrap:anywhere!important;
+}
+body.student-mode.dock-active{padding-bottom:0!important}
+@media(max-width:700px){
+ body.student-mode #floatingDock{right:5px!important;width:58px!important}
+ body.student-mode #floatingDock button:not(.floating-quiz),
+ body.student-mode #floatingDock .floating-leave{width:42px!important;height:42px!important;min-width:42px!important;max-width:42px!important;flex-basis:42px!important}
+ body.student-mode #floatingDock .floating-quiz{width:46px!important;min-width:46px!important;max-width:46px!important}
+ body.teacher-mode #teacherQuickDock{right:5px!important;width:60px!important}
+}
+
+/* Thanh công cụ học sinh: hiển thị chắc chắn sau khi vào lớp */
+#floatingDock.student-toolbar-active{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:10050!important}
+#floatingDock.student-toolbar-active button{display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+#floatingDock.student-toolbar-active .floating-quiz{display:block!important}
+
+#snackShopModal{position:fixed;inset:0;z-index:20000;background:#24172c99;display:none;align-items:center;justify-content:center;padding:16px}
+#snackShopModal.open{display:flex}
+#snackShopModal .snack-panel{width:min(560px,100%);max-height:85vh;overflow:auto;background:#fffaf0;border:3px solid #d8b777;border-radius:22px;padding:18px;color:#59445f;box-shadow:0 15px 45px #0003}
+#snackShopModal h2{text-align:center;margin:2px 0 8px;color:#85568b}
+#snackShopModal .snack-balance{text-align:center;background:#f1eafa;border-radius:14px;padding:10px;margin:12px 0;font-weight:700}
+#snackShopModal .snack-section-title{margin:18px 0 10px;padding:9px 12px;background:#f2eafa;border-left:4px solid #c58bbd;border-radius:10px;color:#76517d;font-size:17px}.snack-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#snackShopModal .snack-item{background:white;border:1px solid #ead8ef;border-radius:15px;padding:12px;text-align:center}
+#snackShopModal .snack-item .emoji{font-size:30px}
+#snackShopModal .snack-item button{width:100%;margin-top:8px;border:0;border-radius:12px;padding:9px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:700}
+#snackShopModal .snack-footer{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+#snackShopModal .snack-footer button{border:0;border-radius:12px;padding:10px 16px;background:#eee3f4;color:#59445f;font-weight:700}
+#snackShopModal .snack-inventory{background:#f6f0fa;border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+@media(max-width:430px){#snackShopModal .snack-panel{padding:13px}#snackShopModal .snack-item{padding:9px}}
+
 </style>
 </head>
 
@@ -223,7 +768,7 @@ body.dock-active{padding-bottom:85px}
   <h3>👩🏻‍🏫 KHU VỰC GIÁO VIÊN</h3>
   <input id="teacherEmail" type="email" placeholder="Email giáo viên">
   <input id="teacherPassword" type="password" placeholder="Mật khẩu giáo viên">
-  <button class="primary" onclick="teacherLogin()">ĐĂNG NHẬP GIÁO VIÊN</button>
+  <button class="primary" onclick="teacherLogin()">👩🏻‍🏫 MỞ LỚP HỌC MỚI</button>
  </div>
  <p class="small">Học sinh vào lớp bằng tên và nhân vật. Giáo viên đăng nhập bằng tài khoản riêng.</p>
 </section>
@@ -231,7 +776,7 @@ body.dock-active{padding-bottom:85px}
 <section id="classroom" class="hidden">
 
  <!-- SĨ SỐ VÀ THÀNH VIÊN ONLINE -->
- <div id="classLiveStats">
+ <div id="classLiveStats" class="teacher-only">
   <h3 style="margin:0 0 12px;color:#895b9b">🏫 SĨ SỐ LỚP HỌC</h3>
   <div class="live-counts">
    <div class="live-count">
@@ -246,28 +791,17 @@ body.dock-active{padding-bottom:85px}
   <div class="online-list" id="onlineMembers">Đang kết nối...</div>
  </div>
 
+ <div class="card panel activity-feed-card">
+  <h3>📢 THÔNG BÁO TRONG LỚP</h3>
+  <div id="classActivityFeed" aria-live="polite">🌸 Chưa có hoạt động mới.</div>
+ </div>
+
  <div class="top-grid">
-  <div class="card panel">
+  <div class="card panel teacher-only">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div id="leaderboard"></div>
   </div>
 
-  <div class="board">
-   <div class="teacher">👩🏻‍🏫</div>
-   <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
-   <h3 id="boardTitle">🎁 CÔ PHÁT QUÀ NÈ!</h3>
-   <p id="boardMessage">Chăm ngoan – Học giỏi – Đoàn kết</p>
-   <p>💗 Chào cô, thả tim để được quà nhé!</p>
-  </div>
-
-  <div class="card panel">
-   <h3>👑 CHỨC VỤ LỚP</h3>
-   <div class="rank">👑 Lớp trưởng <b>Roni</b></div>
-   <div class="rank">⭐ Lớp phó <b>Trang</b></div>
-   <div class="rank">🌷 Tổ trưởng <b>Joy</b></div>
-   <div class="rank">🧹 LP vệ sinh <b>NHƯ Ý</b></div>
-   <div id="myStatus" class="status"></div>
-  </div>
  </div>
 
  <div class="room">
@@ -281,16 +815,11 @@ body.dock-active{padding-bottom:85px}
    </div>
 
    <div class="chalkboard">
-    <h2>TRƯỜNG HỌC GIA TỘC</h2>
-    <div class="chalk-writing" id="chalkQuestion">
-     Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết
-    </div>
-    <div class="small" style="color:#d9ebc8" id="chalkStatus">
-     🌸 Chào mừng các em đến với lớp học! 🌸
-    </div>
-
-    <div id="quizBoardDisplay" class="hidden">
-     <h2 id="quizBoardTitle"></h2>
+    <h2>🌸 LỚP HỌC GIA TỘC 🌸</h2>
+    <div id="chalkQuestion" class="chalk-question">Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết</div>
+    <div id="chalkStatus" class="chalk-status">🌸 Chào mừng các em đến với lớp học!</div>
+    <div id="quizBoardDisplay" class="hidden" aria-live="polite">
+     <h2 id="quizBoardTitle">BÀI KIỂM TRA</h2>
      <div id="quizBoardMeta"></div>
      <div id="quizBoardQuestion"></div>
      <div id="quizBoardOptions"></div>
@@ -311,9 +840,7 @@ body.dock-active{padding-bottom:85px}
      <input id="newQuestion" placeholder="Nhập câu hỏi chung cho cả lớp">
      <input id="questionCategory" placeholder="Môn học (Toán, Văn, Tiếng Anh...)">
      <input id="correctAnswer" placeholder="Đáp án đúng (chỉ giáo viên thấy)">
-     <input id="questionPoints" type="number" value="10" min="0" placeholder="Điểm thưởng">
      <button class="primary" onclick="postQuestion()">📌 ĐĂNG CÂU HỎI LÊN BẢNG</button>
-     <button class="action-btn" onclick="showAnswers()">👀 XEM BÀI LÀM HỌC SINH</button>
      <div id="answersList"></div>
     </div>
     <div id="answerResult" class="status"></div>
@@ -324,22 +851,48 @@ body.dock-active{padding-bottom:85px}
     <div class="teacher-desk">BÀN GIÁO VIÊN<br>📚 📖 ✏️</div>
    </div>
 
-   <div class="wall-board">
-    <div class="notice"><strong>📌 NỘI QUY LỚP</strong><p>Đi học đúng giờ</p><p>Lễ phép, đoàn kết</p><p>Giữ gìn vệ sinh</p></div>
-    <div class="notice"><strong>🏆 BẢNG THI ĐUA</strong><p>🌟 Tuần học tốt</p><p>🌸 Hoa điểm 10</p><p>👏 Bé chăm ngoan</p></div>
-    <div class="notice"><strong>🧹 PHÂN CÔNG TRỰC NHẬT</strong><p>Tổ 1: Thứ 2</p><p>Tổ 2: Thứ 3</p><p>Tổ 3: Thứ 4</p></div>
+   <div class="wall-board classroom-summary student-only">
+    <div class="notice"><strong>🏆 BẢNG XẾP HẠNG</strong><p>Top học sinh theo điểm số</p><p id="wallRankSummary">Đang cập nhật...</p></div>
+    <div class="notice"><strong>🏫 SĨ SỐ LỚP HỌC</strong><p id="wallClassCount">Đang cập nhật...</p><p>30 bàn cố định • Không giới hạn người học</p></div>
    </div>
+
+   <section id="studentPointsProfile" class="card student-points-profile student-only">
+    <div class="student-profile-heading">
+     <div id="studentProfileAvatar" class="student-profile-avatar">🌸</div>
+     <div class="student-profile-identity">
+      <h3 id="studentProfileName">Hồ sơ học sinh</h3>
+      <p>Hồ sơ điểm cá nhân</p>
+     </div>
+     <div class="student-profile-total">
+      <strong id="studentPointsTotal">0</strong>
+      <span>ĐIỂM</span>
+     </div>
+    </div>
+    <div class="student-history-heading">
+     <h3>🎁 LỊCH SỬ ĐIỂM THƯỞNG</h3>
+     <span>50 giao dịch gần nhất</span>
+    </div>
+    <div id="studentPointsHistory" aria-live="polite" class="student-points-history">
+     Đang tải lịch sử điểm...
+    </div>
+   </section>
   </div>
 
   <div class="room-title">
    <h2>🏫 PHÒNG HỌC GIA TỘC</h2>
    <p>30 chỗ ngồi • Mỗi thành viên một chiếc bàn!</p>
+   <p id="seatOccupancy" aria-live="polite">🪑 Đang tải số ghế...</p>
   </div>
   <div class="student-zone"><div class="students" id="students"></div></div>
+  <section class="card no-seat-panel" id="noSeatPanel">
+   <h3>👥 HỌC SINH CHƯA CÓ CHỖ NGỒI <span id="noSeatCount">(0)</span></h3>
+   <p class="small">Các em vẫn tham gia bài học và hoạt động bình thường dù chưa có bàn riêng.</p>
+   <div class="no-seat-list" id="noSeatStudents">Đang tải danh sách học sinh...</div>
+  </section>
 
   <div class="card quiz-section" id="quizSection">
-   <div class="quiz-intro">
-    <h2>🇻🇳 KIỂM TRA KIẾN THỨC VIỆT NAM</h2>
+   <div class="quiz-intro teacher-only">
+    <h2>📝 KIỂM TRA</h2>
     <p>📚 Ngân hàng 200 câu hỏi • Trắc nghiệm A, B, C, D</p>
     <p class="small">Giáo viên tạo đề; học sinh làm bài và nhận kết quả sau khi nộp.</p>
    </div>
@@ -387,7 +940,7 @@ body.dock-active{padding-bottom:85px}
      </div>
     </div>
 
-    <button class="primary" id="createQuizBtn" onclick="createQuiz()">📚 TẠO VÀ GIAO BÀI KIỂM TRA</button>
+    <button class="primary" id="createQuizBtn" onclick="createQuiz()">📌 ĐĂNG KIỂM TRA</button>
     <div class="actions">
      <button class="action-btn" onclick="loadQuizResults()">📊 XEM KẾT QUẢ HỌC SINH</button>
      <button class="action-btn" onclick="endQuiz()">🔒 KẾT THÚC BÀI KIỂM TRA</button>
@@ -408,38 +961,63 @@ body.dock-active{padding-bottom:85px}
    </div>
   </div>
 
-  <div class="card section">
-   <h3>😈 HOẠT ĐỘNG RIÊNG CỦA HỌC SINH</h3>
-   <p class="small">Chọn hành vi của mình. Giáo viên có thể kiểm tra và ghi nhận.</p>
-   <div class="actions">
-    <button class="action-btn" onclick="reportBehavior('Ăn vụng')">🍪 Ăn vụng</button>
-    <button class="action-btn" onclick="reportBehavior('Chơi điện thoại')">📱 Chơi điện thoại</button>
-    <button class="action-btn" onclick="reportBehavior('Nói chuyện riêng')">💬 Nói chuyện</button>
-    <button class="action-btn" onclick="reportBehavior('Đang ngoan')">😇 Đang ngoan</button>
-   </div>
-   <div id="behaviorStatus" class="status"></div>
-   <div id="teacherBehaviorArea" class="hidden">
-    <button class="action-btn" onclick="loadBehaviors()">🔎 KIỂM TRA LỚP</button>
-    <div id="behaviorList"></div>
-   </div>
-  </div>
-
   <div class="actions">
-   <button class="action-btn" onclick="leaveClass()">↩ Rời lớp</button>
+   <button id="endClassBtn" class="action-btn hidden" onclick="endClass()">🔒 KẾT THÚC LỚP HỌC</button>
   </div>
  </div>
 </section>
 </main>
 
-<div id="floatingDock">
- <button title="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍪</button>
- <button title="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
- <button title="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
- <button title="Đang ngoan" onclick="reportBehavior('Đang ngoan')">😇</button>
+<div id="floatingDock" aria-label="Hoạt động học sinh">
+ <button title="Ăn vụng" aria-label="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍿</button>
+ <button title="Cửa hàng đồ ăn" aria-label="Cửa hàng đồ ăn" onclick="openSnackShop()">🛍️</button>
+ <button title="Chơi điện thoại" aria-label="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
+ <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
+ <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
  <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
+ <button class="floating-leave" title="Rời lớp" aria-label="Rời lớp" onclick="leaveClass()">🚪</button>
 </div>
 
-<footer>© 2026 LỚP HỌC GIA TỘC 🌸</footer>
+<div id="snackShopModal" role="dialog" aria-modal="true" aria-label="Cửa hàng đồ ăn"><div class="snack-panel">
+<h2>🍿 CỬA HÀNG ĐỒ ĂN 🥤</h2><p style="text-align:center;margin:0">Nạp năng lượng để học tập thật vui!</p>
+<div class="snack-balance">⭐ Điểm hiện có: <span id="snackBalance">0</span></div>
+<div id="snackStarterInfo" class="snack-inventory">🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 Sting.</div>
+<h3 class="snack-section-title">🍡 ĐỒ ĂN</h3>
+<div class="snack-grid" id="snackFoodMenu">
+<div class="snack-item"><div class="emoji">🍬</div><b>Kẹo</b><div>1 điểm</div><button onclick="buySnack('candy')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍪</div><b>Bánh quy</b><div>2 điểm</div><button onclick="buySnack('cookie')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍿</div><b>Bim bim</b><div>3 điểm</div><button onclick="buySnack('bim_bim')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🥭</div><b>BT me</b><div>4 điểm</div><button onclick="buySnack('bt_me')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌶️</div><b>BT trộn</b><div>5 điểm</div><button onclick="buySnack('bt_tron')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌯</div><b>BT cuộn</b><div>5 điểm</div><button onclick="buySnack('bt_cuon')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🥪</div><b>Bánh mì</b><div>6 điểm</div><button onclick="buySnack('sandwich')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍜</div><b>Mì gói</b><div>5 điểm</div><button onclick="buySnack('instant_noodles')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌭</div><b>Xúc xích</b><div>4 điểm</div><button onclick="buySnack('sausage')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🥚</div><b>Trứng</b><div>3 điểm</div><button onclick="buySnack('egg')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🧂</div><b>Muối</b><div>1 điểm</div><button onclick="buySnack('salt')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🟤</div><b>Me</b><div>2 điểm</div><button onclick="buySnack('tamarind')">Mua ngay</button></div>
+
+</div>
+<h3 class="snack-section-title">🥤 NƯỚC UỐNG</h3>
+<div class="snack-grid" id="snackDrinkMenu">
+<div class="snack-item"><div class="emoji">💧</div><b>Nước lọc</b><div>1 điểm</div><button onclick="buySnack('water')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">⚡</div><b>Sting</b><div>3 điểm</div><button onclick="buySnack('sting')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍊</div><b>Nước cam</b><div>3 điểm</div><button onclick="buySnack('orange_juice')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🍵</div><b>C2</b><div>3 điểm</div><button onclick="buySnack('c2')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🌿</div><b>Dr.Thanh</b><div>3 điểm</div><button onclick="buySnack('dr_thanh')">Mua ngay</button></div>
+<div class="snack-item"><div class="emoji">🧋</div><b>Tà tưa</b><div>6 điểm</div><button onclick="buySnack('milk_tea')">Mua ngay</button></div>
+</div>
+<div id="snackInventory" class="snack-inventory">🎒 Túi đồ: Đang tải...</div>
+<div class="snack-inventory">🏆 Top 3 học sinh theo điểm số được tặng 1 bim bim miễn phí mỗi 5 phút.</div>
+<div id="snackShopMessage" role="status" style="min-height:22px;margin-top:8px"></div>
+<div class="snack-footer"><button onclick="closeSnackShop()">Đóng</button><button onclick="refreshSnackShop()">🔄 Cập nhật</button></div>
+</div></div>
+<div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
+ <button type="button" onclick="goTeacherPanel('boardHomework')">📝 BÀI TẬP TRÊN BẢNG</button>
+ <button type="button" onclick="goTeacherPanel('quizSection')">📋 KIỂM TRA</button>
+</div>
+
+<footer>© 2026 LỚP HỌC GIA TỘC 🌸<div class="creator-credit">Người Tạo Ra: Roni Luong</div></footer>
 
  <script>
 const SUPABASE_URL="https://cikmdggrlgjuyeejyxtj.supabase.co";
@@ -485,6 +1063,20 @@ let isTeacher=false;
 let currentQuestion=null;
 let channel=null;
 let presenceChannel=null;
+let activityUsersSnapshot=null;
+let memberRefreshInterval=null;
+let memberRefreshBusy=false;
+let classStatusInterval=null;
+let joinedSessionId=null;
+let classStatusCheckBusy=false;
+let classActivityItems=[];
+let questionRefreshInterval=null;
+let questionRefreshBusy=false;
+let boardQuestionAccepting=false;
+let boardQuestionStageTimer=null;
+let boardQuestionRevealTimer=null;
+let boardQuestionStage=null;
+let boardQuestionStageId=null;
 
 let activeQuiz=null;
 let quizSubmission=null;
@@ -608,65 +1200,69 @@ function createSeats(){
 }
 
 async function joinClass(){
- const name=$("studentName").value.trim();
-
- if(!name){
-  alert("Bạn chưa nhập tên học sinh!");
-  return;
- }
+ const requestedName=$("studentName").value.trim();
+ if(!requestedName){alert("Bạn chưa nhập tên học sinh!");return;}
 
  const {data:sessionData}=await db.auth.getSession();
  let user=sessionData.session?.user;
-
  if(!user){
   const {data,error}=await db.auth.signInAnonymously();
-
-  if(error){
-   alert("Không thể vào lớp: "+error.message);
-   return;
-  }
-
+  if(error){alert("Không thể vào lớp: "+error.message);return;}
   user=data.user;
  }
 
- const c=characters.find(x=>x.id===selectedId);
-
  const {data:old,error:oldError}=await db.from("profiles")
-  .select("*")
-  .eq("id",user.id)
-  .maybeSingle();
-
- if(oldError){
-  alert("Không đọc được hồ sơ: "+oldError.message);
+  .select("id,classroom_id,display_name,avatar_id,role,is_active")
+  .eq("id",user.id).maybeSingle();
+ if(oldError){alert("Không đọc được hồ sơ: "+oldError.message);return;}
+ if(old&&old.is_active===false){
+  alert("Tài khoản học sinh này đã được giáo viên lưu trữ. Hãy liên hệ giáo viên để được mở lại.");
   return;
  }
-
- let result;
-
- if(old){
-  result=await db.from("profiles").update({
-   display_name:name,
-   avatar_id:String(c.id)
-  }).eq("id",user.id);
- }else{
-  result=await db.from("profiles").insert({
-   id:user.id,
-   classroom_id:CLASSROOM_ID,
-   display_name:name,
-   avatar_id:String(c.id),
-   role:"student"
-  });
+ if(old&&(old.role!=="student"||old.classroom_id!==CLASSROOM_ID)){
+  alert("Tài khoản này không thuộc lớp học sinh Gia Tộc.");return;
  }
 
- if(result.error){
-  alert("Không lưu được hồ sơ: "+result.error.message);
+ const chosen=characters.find(x=>x.id===selectedId);
+ if(!chosen){alert("Bạn chưa chọn nhân vật.");return;}
+
+ // Mỗi phiên lớp mới phải dùng tên và nhân vật học sinh vừa chọn.
+ // Không lấy display_name/avatar_id cũ từ profiles để ghi đè lựa chọn hiện tại.
+ const selectedName=requestedName;
+ const avatarId=chosen.id;
+
+ const {data:joinedMember,error:joinError}=await db.rpc("join_class_session",{
+  p_display_name:selectedName,
+  p_gender:chosen.gender,
+  p_avatar_id:String(avatarId)
+ });
+ if(joinError){
+  if(/capacity|seat|full|30|chỗ/i.test(joinError.message||"")){
+   alert("Phòng học đã đủ 30 chỗ ngồi. Khi có chỗ trống, bạn có thể vào lớp.");
+  }else alert("Không thể vào lớp: "+joinError.message);
   return;
  }
-
- me={id:user.id,name,avatarId:c.id};
+ me={id:user.id,name:joinedMember?.display_name||selectedName,avatarId:joinedMember?.avatar_id||String(avatarId)};
  isTeacher=false;
-
  await enterClass();
+ const dock=$("floatingDock");
+ document.body.classList.remove("teacher-mode");
+ document.body.classList.add("student-mode","dock-active");
+ dock.classList.add("student-toolbar-active");
+ dock.removeAttribute("hidden");
+ dock.classList.remove("hidden");
+ dock.style.setProperty("display","flex","important");
+ dock.style.setProperty("visibility","visible","important");
+ dock.style.setProperty("opacity","1","important");
+ dock.style.setProperty("position","fixed","important");
+ dock.style.setProperty("bottom","calc(8px + env(safe-area-inset-bottom))","important");
+ dock.style.setProperty("z-index","10050","important");
+ dock.querySelectorAll("button").forEach(button=>{
+  button.style.setProperty("display","grid","important");
+  button.style.setProperty("visibility","visible","important");
+  button.style.setProperty("opacity","1","important");
+  button.style.setProperty("pointer-events","auto","important");
+ });
 }
 
 async function teacherLogin(){
@@ -719,27 +1315,108 @@ async function teacherLogin(){
 
  isTeacher=true;
 
+ // Mỗi lần giáo viên chọn "Mở lớp học mới", máy chủ tạo session mới.
+ const {data:openedSession,error:openError}=await db.rpc("open_classroom");
+ if(openError||!openedSession){
+  console.error("Không mở được lớp học mới:",openError);
+  await db.auth.signOut();
+  me=null;
+  isTeacher=false;
+  alert("Không thể mở lớp học mới: "+(openError?.message||"Máy chủ không trả về phiên lớp học."));
+  return;
+ }
+
  await enterClass();
 }
 
+function goTeacherPanel(id){
+ const target=$(id);
+ if(!target)return;
+ const wasOpen=target.classList.contains("teacher-panel-open");
+ ["boardHomework","quizSection"].forEach(panelId=>{
+  const panel=$(panelId);
+  if(panel)panel.classList.remove("teacher-panel-open");
+  if(panel&&isTeacher)panel.classList.add("teacher-panel-collapsed");
+ });
+ const buttons=$("teacherQuickDock").querySelectorAll("button");
+ buttons.forEach((button,index)=>{
+  button.textContent=index===0?"📝 BÀI TẬP TRÊN BẢNG":"📋 KIỂM TRA";
+ });
+ if(!wasOpen){
+  target.classList.remove("teacher-panel-collapsed");
+  target.classList.add("teacher-panel-open");
+  if(id==="quizSection" && isTeacher){
+   $("teacherQuizArea").classList.remove("hidden");
+   $("studentQuizArea").classList.add("hidden");
+   loadQuizFilters();
+  }
+  if(id==="boardHomework" && isTeacher){
+   $("teacherQuestionArea").classList.remove("hidden");
+  }
+  const index=id==="boardHomework"?0:1;
+  if(buttons[index])buttons[index].textContent=index===0?"✖ ĐÓNG BÀI TẬP":"✖ ĐÓNG KIỂM TRA";
+  target.scrollIntoView({behavior:"smooth",block:"start"});
+ }
+}
+
 async function enterClass(){
+ if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
+ joinedSessionId=null;
+ if(!isTeacher){
+  const {data:activeClass,error:activeClassError}=await db.from("classrooms")
+   .select("is_open,active_session_id")
+   .eq("id",CLASSROOM_ID).maybeSingle();
+  if(activeClassError||!activeClass?.is_open||!activeClass?.active_session_id){
+   alert("Lớp học hiện đã kết thúc hoặc chưa mở. Vui lòng chờ cô giáo mở lớp mới.");
+   await exitClassView(false);
+   return;
+  }
+  joinedSessionId=activeClass.active_session_id;
+  classStatusInterval=setInterval(checkClassStatus,4000);
+ }
  $("register").classList.add("hidden");
  $("classroom").classList.remove("hidden");
 
+ $("endClassBtn").classList.toggle("hidden",!isTeacher);
+ $("teacherQuickDock").style.display=isTeacher?"flex":"none";
+ ["boardHomework","quizSection"].forEach(panelId=>{
+  const panel=$(panelId);
+  if(panel){
+   panel.classList.remove("teacher-panel-open");
+   panel.classList.toggle("teacher-panel-collapsed",isTeacher);
+  }
+ });
+ $("teacherQuickDock").querySelectorAll("button").forEach((button,index)=>{
+  button.textContent=index===0?"📝 BÀI TẬP TRÊN BẢNG":"📋 KIỂM TRA";
+ });
+ document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
+ document.querySelectorAll(".teacher-only").forEach(el=>el.classList.toggle("hidden",!isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
- $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
+ $("teacherBehaviorArea")?.classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
+ if(!isTeacher)$("studentQuizArea").classList.add("student-quiz-collapsed");
 
- $("floatingDock").style.display="flex";
+ const studentDock=$("floatingDock");
+ document.body.classList.toggle("student-mode",!isTeacher);
+ document.body.classList.toggle("teacher-mode",isTeacher);
  document.body.classList.add("dock-active");
 
- $("floatingDock").querySelectorAll("button:not(.floating-quiz)")
-  .forEach(button=>{
-   button.style.display=isTeacher?"none":"grid";
-  });
+ // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
+ studentDock.classList.toggle("student-toolbar-active",!isTeacher);
+ studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
+ if(!isTeacher){checkSnackTop3Reward();if(snackRewardInterval)clearInterval(snackRewardInterval);snackRewardInterval=setInterval(checkSnackTop3Reward,30000);}
+ studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
+ studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
+ studentDock.querySelectorAll("button").forEach(button=>{
+  const visible=!isTeacher;
+  button.style.setProperty("display",visible?"grid":"none","important");
+  button.style.setProperty("visibility",visible?"visible":"hidden","important");
+  button.style.setProperty("pointer-events",visible?"auto":"none","important");
+ });
 
- $("myStatus").textContent=isTeacher
+ const myStatus=$("myStatus");
+ if(myStatus)myStatus.textContent=isTeacher
  ?"👑 Bạn đang đăng nhập với quyền GIÁO VIÊN"
  :`🌸 Xin chào ${me.name}!`;
 
@@ -749,6 +1426,16 @@ async function enterClass(){
  await loadClassStats();
 
  subscribeRealtime();
+ if(!isTeacher){
+  if(questionRefreshInterval)clearInterval(questionRefreshInterval);
+  // Chỉ kiểm tra câu hỏi, không tải lại danh sách học sinh hay 30 bàn.
+  questionRefreshInterval=setInterval(()=>{
+   if(me&&!isTeacher)loadQuestion();
+  },3000);
+ }
+ // Không dựng lại danh sách theo chu kỳ 4 giây.
+ // Danh sách, sĩ số và xếp hạng được cập nhật theo sự kiện Realtime
+ // khi học sinh vào lớp hoặc rời lớp.
  await subscribePresence();
 
  await loadQuiz();
@@ -760,67 +1447,148 @@ async function refreshAll(){
  await Promise.all([
   loadMembers(),
   loadLeaderboard(),
-  loadQuestion()
+  loadQuestion(),
+  loadStudentPointsProfile()
  ]);
 }
 
 async function loadMembers(){
- const {data,error}=await db.from("profiles")
-  .select("id,display_name,avatar_id,role")
-  .eq("classroom_id",CLASSROOM_ID);
-
+ if(memberRefreshBusy)return;
+ memberRefreshBusy=true;
+ try{
+ createSeats();
+ $("noSeatStudents").textContent="Đang tải danh sách học sinh...";
+ // Dùng RPC bảo mật để cả giáo viên và học sinh đều đọc cùng danh sách
+ // của phiên đang mở, không bị bộ lọc RLS làm mất bạn cùng lớp.
+ const {data:members,error}=await db.rpc("get_active_class_members");
  if(error){
-  console.error(error);
+  console.error("Lỗi tải danh sách lớp:",error);
+  $("seatOccupancy").textContent="⚠️ Không tải được sĩ số.";
+  $("noSeatStudents").textContent="Không tải được danh sách.";
   return;
  }
 
- createSeats();
+ const all=members||[];
+ const seated=all.filter(p=>p.seat_number!==null&&p.seat_number!==undefined);
+ const noSeat=all.filter(p=>p.seat_number===null||p.seat_number===undefined);
+ const occupied=seated.length;
+ $("seatOccupancy").textContent=
+  `🪑 Đang sử dụng ${occupied}/30 chỗ • Còn trống ${Math.max(0,30-occupied)} chỗ`;
+ $("noSeatCount").textContent=`(${noSeat.length})`;
 
- (data||[]).slice(0,30).forEach((p,i)=>{
-  const c=characters.find(x=>x.id===Number(p.avatar_id));
-  const desk=$("students").children[i];
-
+ seated.forEach(p=>{
+  const seat=Number(p.seat_number);
+  if(!Number.isInteger(seat)||seat<1||seat>30)return;
+  const character=characters.find(x=>String(x.id)===String(p.avatar_id));
+  const desk=$("students").children[seat-1];
   if(!desk)return;
-
-  desk.querySelector(".avatar-placeholder").outerHTML=c
-   ?avatarSVG(c)
-   :`<div class="avatar-placeholder">👤</div>`;
-
+  desk.classList.add("has-student");
+  desk.querySelector(".avatar-placeholder").outerHTML=character
+   ?avatarSVG(character):'<div class="avatar-placeholder">👤</div>';
   desk.querySelector(".student-name").textContent=
-   p.display_name+(p.role==="teacher"?" 👑":"");
+   p.display_name+(p.status==="offline"?" (Ngoại tuyến)":"");
  });
+
+ $("noSeatStudents").innerHTML=noSeat.length?noSeat.map(p=>{
+  const character=characters.find(x=>String(x.id)===String(p.avatar_id));
+  const avatar=character?avatarSVG(character):"👤";
+  return `<div class="no-seat-student"><span class="mini-avatar">${character?"👤":"👤"}</span><span class="no-seat-name">${esc(p.display_name)}${p.status==="offline"?" · Offline":""}</span></div>`;
+ }).join(""):"Tất cả học sinh hiện có bàn ngồi.";
+ }finally{memberRefreshBusy=false;}
+}
+
+async function loadStudentPointsProfile(){
+ if(!me||isTeacher)return;
+ const historyBox=$("studentPointsHistory");
+ if(!historyBox)return;
+ $("studentProfileName").textContent=me.name||"Học sinh";
+ const character=characters.find(x=>String(x.id)===String(me.avatarId));
+ $("studentProfileAvatar").innerHTML=character
+  ?avatarSVG(character)
+  :"🌸";
+ historyBox.textContent="Đang tải lịch sử điểm...";
+ const [{data:history,error},{data:allScores,error:totalError}]=await Promise.all([
+  db.from("score_transactions")
+   .select("amount,reason,created_at")
+   .eq("classroom_id",CLASSROOM_ID)
+   .eq("student_id",me.id)
+   .order("created_at",{ascending:false})
+   .limit(50),
+  db.from("score_transactions")
+   .select("amount")
+   .eq("classroom_id",CLASSROOM_ID)
+   .eq("student_id",me.id)
+ ]);
+ if(error||totalError){
+  console.error("Lỗi tải hồ sơ điểm cá nhân:",error||totalError);
+  historyBox.textContent="⚠️ Chưa tải được lịch sử điểm. Vui lòng thử tải lại trang.";
+  return;
+ }
+ const rows=history||[];
+ const total=(allScores||[]).reduce((sum,item)=>sum+Number(item.amount||0),0);
+ $("studentPointsTotal").textContent=total.toLocaleString("vi-VN");
+ if(!rows.length){
+  historyBox.innerHTML='<div class="small" style="text-align:center;padding:15px">🌱 Bạn chưa có giao dịch điểm thưởng nào. Cố gắng học tập để nhận điểm nhé!</div>';
+  return;
+ }
+ historyBox.innerHTML=rows.map(item=>{
+  const amount=Number(item.amount||0);
+  const positive=amount>=0;
+  const date=item.created_at?new Date(item.created_at):null;
+  const dateText=date&&!Number.isNaN(date.getTime())
+   ?date.toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})
+   :"";
+  const icon=positive?"🌟":"📉";
+  return '<div class="student-points-entry">'+
+   '<span class="points-entry-icon">'+icon+'</span>'+
+   '<div class="points-entry-info"><div class="points-entry-reason">'+esc(item.reason||"Điều chỉnh điểm")+'</div>'+
+   '<div class="points-entry-date">'+dateText+'</div></div>'+
+   '<div class="points-entry-amount '+(positive?"positive":"negative")+'">'+(positive?"+":"")+amount.toLocaleString("vi-VN")+'</div>'+
+   '</div>';
+ }).join("");
 }
 
 async function loadLeaderboard(){
- const {data,error}=await db.from("score_transactions")
-  .select("student_id,amount");
+ // Chỉ xếp hạng học sinh thuộc phiên lớp đang mở.
+ // Không đọc toàn bộ profiles vì bảng này chứa cả hồ sơ cũ/đã lưu trữ.
+ const [{data:members,error:membersError},{data:scores,error:scoresError}]=await Promise.all([
+  db.rpc("get_active_class_members"),
+  db.from("score_transactions").select("student_id,amount")
+ ]);
 
- if(error){
-  console.error(error);
+ if(membersError){
+  console.error("Lỗi tải học sinh để xếp hạng:",membersError);
+  return;
+ }
+ if(scoresError){
+  console.error("Lỗi tải điểm:",scoresError);
   return;
  }
 
  const totals={};
-
- (data||[]).forEach(x=>{
+ (scores||[]).forEach(x=>{
   totals[x.student_id]=(totals[x.student_id]||0)+Number(x.amount||0);
  });
 
- const {data:people}=await db.from("profiles")
-  .select("id,display_name")
-  .eq("classroom_id",CLASSROOM_ID);
-
- const rows=(people||[]).map(p=>({
+ // Khử trùng lặp theo ID học sinh, đồng thời loại mọi hồ sơ không thuộc phiên hiện tại.
+ const uniqueMembers=new Map();
+ (members||[]).forEach(p=>{
+  if(p.student_id)uniqueMembers.set(p.student_id,p);
+ });
+ const rows=[...uniqueMembers.values()].map(p=>({
   name:p.display_name,
-  score:totals[p.id]||0
- })).sort((a,b)=>b.score-a.score);
+  score:totals[p.student_id]||0
+ })).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,"vi"));
 
+ $("wallRankSummary").textContent=rows.length
+  ?`🥇 ${rows[0].name} · ${rows[0].score} điểm`
+  :"Chưa có dữ liệu xếp hạng";
  $("leaderboard").innerHTML=rows.slice(0,10).map((p,i)=>
   `<div class="rank">
    <span>${["🥇","🥈","🥉"][i]||`${i+1}.`} ${esc(p.name)}</span>
    <b>${p.score}</b>
   </div>`
- ).join("")||"Chưa có điểm";
+ ).join("")||"Chưa có học sinh trong lớp.";
 }
 
 /* =========================
@@ -828,17 +1596,47 @@ async function loadLeaderboard(){
 ========================= */
 
 async function loadClassStats(){
- const {count,error}=await db.from("profiles")
-  .select("id",{count:"exact",head:true})
-  .eq("classroom_id",CLASSROOM_ID)
-  .eq("role","student");
+ // Lấy tổng sĩ số và online từ cùng một snapshot của phiên lớp.
+ // Tránh lệch giữa bảng ghế (database) và Presence (kênh realtime).
+ const {data:members,error}=await db.rpc("get_active_class_members");
+ const totalEl=$("totalStudents");
+ const onlineEl=$("onlineStudents");
+ const wallCountEl=$("wallClassCount");
 
  if(error){
-  console.error("Lỗi tải sĩ số:",error);
+  console.error("Lỗi tải sĩ số lớp hiện tại:",error);
+  if(totalEl)totalEl.textContent="—";
+  if(wallCountEl)wallCountEl.textContent="⚠️ Không tải được sĩ số lớp";
   return;
  }
 
- $("totalStudents").textContent=count||0;
+ const unique=new Map();
+ (members||[]).forEach(member=>{
+  if(member.student_id)unique.set(member.student_id,member);
+ });
+ const students=[...unique.values()];
+ const total=students.length;
+ const online=students.filter(member=>member.status==="online").length;
+
+ if(totalEl)totalEl.textContent=String(total);
+ if(onlineEl)onlineEl.textContent=String(online);
+ if(wallCountEl)wallCountEl.textContent=`👩‍🎓 ${total} học sinh trong lớp`;
+}
+function renderClassActivity(message){
+ const item={message,time:new Date()};
+ classActivityItems.unshift(item);
+ classActivityItems=classActivityItems.slice(0,30);
+ const box=$("classActivityFeed");
+ if(!box)return;
+ box.innerHTML=classActivityItems.map(x=>
+  `<div class="activity-item">${x.message}<span class="activity-time">${x.time.toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})}</span></div>`
+ ).join("");
+}
+function addClassActivity(message,broadcast=true){
+ renderClassActivity(message);
+ if(broadcast&&presenceChannel){
+  presenceChannel.send({type:"broadcast",event:"class_activity",payload:{message}});
+ }
 }
 
 function renderOnlineMembers(){
@@ -897,8 +1695,36 @@ async function subscribePresence(){
  );
 
  presenceChannel
+  .on("broadcast",{event:"class_activity"},({payload})=>{
+   if(payload?.message)renderClassActivity(payload.message);
+  })
   .on("presence",{event:"sync"},()=>{
+   const state=presenceChannel.presenceState();
+   const current=new Map();
+   Object.values(state).flat().forEach(user=>{
+    if(user.user_id)current.set(user.user_id,user);
+   });
+   if(activityUsersSnapshot instanceof Map){
+    current.forEach((user,id)=>{
+     if(!activityUsersSnapshot.has(id)&&id!==me.id){
+      addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
+     }
+    });
+    activityUsersSnapshot.forEach((user,id)=>{
+     if(!current.has(id)&&id!==me.id){
+      addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
+     }
+    });
+   }
+   activityUsersSnapshot=current;
    renderOnlineMembers();
+
+   // Presence sync fires when a student enters or leaves, including when
+   // the database event subscription is delayed or unavailable.
+   // Refresh the authoritative roster once per actual presence change.
+   loadMembers();
+   loadClassStats();
+   loadLeaderboard();
   })
   .subscribe(async status=>{
    if(status==="SUBSCRIBED"){
@@ -923,7 +1749,66 @@ async function subscribePresence(){
   });
 }
 
+
+function clearBoardQuestionTimers(){
+ if(boardQuestionStageTimer){clearTimeout(boardQuestionStageTimer);boardQuestionStageTimer=null;}
+ if(boardQuestionRevealTimer){clearTimeout(boardQuestionRevealTimer);boardQuestionRevealTimer=null;}
+}
+
+async function showBoardQuestionTop3(questionId){
+ boardQuestionAccepting=false;
+ const answerArea=$("studentAnswerArea");
+ const answerBox=$("studentAnswer");
+ if(answerArea)answerArea.classList.add("hidden");
+ if(answerBox){answerBox.disabled=true;answerBox.value="";}
+ const display=$("questionDisplay");
+ if(display)display.textContent="⏰ Đã hết 40 giây. Câu hỏi đã đóng.";
+ const {data,error}=await db.rpc("get_board_question_top3",{p_question_id:questionId});
+ if(error)console.error("Không tải được top 3:",error);
+ const winners=Array.isArray(data)?data:[];
+ const medals=["🥇","🥈","🥉"];
+ winners.forEach((p,i)=>{
+  addClassActivity(`${medals[i]} <b>${esc(p.display_name||"Học sinh")}</b> thắng lượt trả lời nhanh, nhận ${Number(p.points_awarded||0)} điểm`);
+ });
+ const podium=winners.map((p,i)=>
+  '<div style="padding:8px 12px;margin:7px auto;max-width:520px;border:2px solid #d8e9c8;border-radius:12px;background:#fffbe8;color:#355b3e;font-size:clamp(15px,2.8vw,21px)"><b>'+medals[i]+' '+esc(p.display_name)+'</b><span style="display:block;font-size:13px;margin-top:3px">'+Number(p.points_awarded||0)+' điểm</span></div>'
+ ).join("");
+ $("chalkQuestion").innerHTML='<div style="font-style:normal;font-family:inherit"><h2 style="margin:4px 0 12px">🏆 TOP 3 TRẢ LỜI NHANH NHẤT 🏆</h2>'+(podium||'<p style="font-size:17px">Chưa có học sinh trả lời đúng.</p>')+'</div>';
+ $("chalkStatus").textContent="✨ Chúc mừng các em!";
+ boardQuestionStage="ranking";
+ boardQuestionRevealTimer=setTimeout(()=>{
+  boardQuestionStage="home";
+  boardQuestionStageId=null;
+  currentQuestion=null;
+  restoreOriginalBoard();
+  if(display)display.textContent="Cô giáo chưa đăng câu hỏi.";
+ },30000);
+}
+
+function startBoardQuestionTimeline(question){
+ const questionId=String(question.id);
+ if(boardQuestionStageId===questionId)return;
+ clearBoardQuestionTimers();
+ boardQuestionStageId=questionId;
+ boardQuestionAccepting=true;
+ boardQuestionStage="question";
+ const startedAt=new Date(question.created_at).getTime();
+ const remaining=Math.max(0,40000-(Date.now()-startedAt));
+ if(remaining===0){
+  boardQuestionAccepting=false;
+  showBoardQuestionTop3(question.id);
+  return;
+ }
+ boardQuestionStageTimer=setTimeout(()=>{
+  boardQuestionAccepting=false;
+  showBoardQuestionTop3(question.id);
+ },remaining);
+}
+
 async function loadQuestion(){
+ if(questionRefreshBusy)return;
+ questionRefreshBusy=true;
+ try{
  const {data,error}=await db.from("board_questions")
   .select("*")
   .eq("classroom_id",CLASSROOM_ID)
@@ -933,34 +1818,55 @@ async function loadQuestion(){
   .maybeSingle();
 
  if(error){
-  console.error(error);
+  console.error("Lỗi tải câu hỏi:",error);
   return;
  }
-
- currentQuestion=data;
-
- if(!$("quizBoardDisplay").classList.contains("hidden"))return;
 
  if(!data){
-  $("chalkQuestion").innerHTML=
-   "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
+  if(boardQuestionStage==='ranking')return;
+  currentQuestion=null;
+  boardQuestionAccepting=false;
+  clearBoardQuestionTimers();
+  boardQuestionStageId=null;
+ }
+ currentQuestion=data;
+ const chalkQuestion=$("chalkQuestion");
+ const chalkStatus=$("chalkStatus");
+ const questionDisplay=$("questionDisplay");
+ const studentAnswerArea=$("studentAnswerArea");
+ const answerBox=$("studentAnswer");
 
-  $("chalkStatus").textContent="🌸 Chào mừng các em đến với lớp học!";
-  $("questionDisplay").textContent="Cô giáo chưa đăng câu hỏi.";
-  $("studentAnswerArea").classList.add("hidden");
+ if(!data){
+  if(chalkQuestion)chalkQuestion.innerHTML=
+   "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
+  if(chalkStatus)chalkStatus.textContent="";
+  if(questionDisplay)questionDisplay.textContent="Cô giáo chưa đăng câu hỏi.";
+  if(studentAnswerArea)studentAnswerArea.classList.add("hidden");
+  if(answerBox){answerBox.value="";answerBox.disabled=true;}
   return;
  }
 
- $("chalkQuestion").textContent=data.question;
- $("chalkStatus").textContent=
-  "📚 "+(data.category||"Bài tập")+" • Câu hỏi dành cho cả lớp";
+ // Khi có bài tập, thay hoàn toàn khẩu hiệu bằng môn học và đề bài.
+ startBoardQuestionTimeline(data);
+ if(boardQuestionStage==='ranking')return;
+ if(chalkQuestion)chalkQuestion.innerHTML=
+  `<span class="chalk-subject">📚 ${esc(data.category||"Bài tập")}</span><br><span class="chalk-prompt">${esc(data.question)}</span>`;
+ if(chalkStatus)chalkStatus.textContent="";
+ if(questionDisplay)questionDisplay.innerHTML=
+  `<b>📚 ${esc(data.category||"Bài tập")}</b><p>${esc(data.question)}</p>`;
 
- $("questionDisplay").innerHTML=
-  `<b>${esc(data.category||"Bài tập")}</b><p>${esc(data.question)}</p>`;
-
- $("studentAnswerArea").classList.toggle("hidden",isTeacher);
+ // Chỉ học sinh mới được nhập và gửi câu trả lời.
+ if(studentAnswerArea){
+  studentAnswerArea.classList.toggle("hidden",isTeacher);
+  if(answerBox){
+   answerBox.disabled=isTeacher||!boardQuestionAccepting;
+   answerBox.placeholder="Nhập đáp án của em tại đây...";
+  }
+ }
+ }finally{
+  questionRefreshBusy=false;
+ }
 }
-
 async function postQuestion(){
  const question=$("newQuestion").value.trim();
  const answer=$("correctAnswer").value.trim();
@@ -1008,35 +1914,45 @@ async function postQuestion(){
 }
 
 async function submitAnswer(){
- if(!me||!currentQuestion){
+ if(!me||!currentQuestion||!boardQuestionAccepting){
+  alert('Đã hết thời gian trả lời câu hỏi.');
+  return;
+ }
+ if(!currentQuestion){
   alert("Chưa có câu hỏi.");
   return;
  }
 
  const answer=$("studentAnswer").value.trim();
-
  if(!answer){
-  alert("Bạn chưa nhập câu trả lời.");
+  alert("Bạn chưa nhập đáp án.");
   return;
  }
 
- const {error}=await db.from("student_answers").insert({
-  question_id:currentQuestion.id,
-  student_id:me.id,
-  answer,
-  is_correct:false,
-  points_awarded:0
+ const {data,result,error}=await db.rpc("submit_and_grade_board_answer",{
+  p_question_id:currentQuestion.id,
+  p_answer:answer
  });
 
  if(error){
-  alert("Không gửi được: "+error.message);
+  alert("Không chấm được đáp án: "+error.message);
   return;
  }
 
  $("studentAnswer").value="";
- $("answerResult").textContent="📨 Đã gửi câu trả lời cho cô giáo!";
+ const outcome=data||result||{};
+ if(outcome.is_correct){
+  const pts=Number(outcome.points_awarded||0);
+  const rank=Number(outcome.rank||0);
+  $("answerResult").textContent=pts>0
+   ?`🎉 Chính xác! Em xếp thứ ${rank} và được cộng ${pts} điểm!`
+   :"🎉 Em đã trả lời đúng câu này và đã nhận điểm trước đó rồi.";
+  addClassActivity(`🏅 <b>${esc(me.name)}</b> trả lời đúng, nhận ${pts} điểm`);
+  await loadLeaderboard();
+ }else{
+  $("answerResult").textContent="Chưa chính xác, em thử lại nhé!";
+ }
 }
-
 async function showAnswers(){
  if(!isTeacher||!currentQuestion)return;
 
@@ -1061,8 +1977,6 @@ async function showAnswers(){
   <div class="answer-row">
    <b>${esc(names[a.student_id]||"Học sinh")}</b>
    <p>${esc(a.answer)}</p>
-   <button onclick="gradeAnswer('${a.id}','${a.student_id}',true)">✅ Đúng + điểm</button>
-   <button onclick="gradeAnswer('${a.id}','${a.student_id}',false)">❌ Sai</button>
   </div>
  `).join("")||"Chưa có học sinh trả lời.";
 }
@@ -1082,6 +1996,7 @@ async function gradeAnswer(answerId,studentId,correct){
  }
 
  if(correct){
+  addClassActivity(`✅ <b>${esc(names?.[studentId]||"Học sinh")}</b> trả lời đúng và được cộng ${pts} điểm`);
   const {error:e}=await db.from("score_transactions").insert({
    classroom_id:CLASSROOM_ID,
    student_id:studentId,
@@ -1102,29 +2017,78 @@ async function gradeAnswer(answerId,studentId,correct){
  await loadLeaderboard();
 }
 
+
+let snackRewardInterval=null;
+let snackShopState=null;
+const snackLabels={candy:"🍬 Kẹo",water:"💧 Nước lọc",salt:"🧂 Muối",cookie:"🍪 Bánh quy",tamarind:"🟤 Me",bim_bim:"🍿 Bim bim",sting:"⚡ Sting",orange_juice:"🍊 Nước cam",c2:"🍵 C2",dr_thanh:"🌿 Dr.Thanh",egg:"🥚 Trứng",sausage:"🌭 Xúc xích",bt_me:"🥭 BT me",bt_tron:"🌶️ BT trộn",bt_cuon:"🌯 BT cuộn",instant_noodles:"🍜 Mì gói",milk_tea:"🧋 Tà tưa",sandwich:"🥪 Bánh mì"};
+async function refreshSnackShop(){
+ if(!me||isTeacher)return;
+ const {data,error}=await db.rpc("get_snack_shop_state");
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ snackShopState=data||{};$("snackBalance").textContent=Number(snackShopState.balance||0);
+ const inv=snackShopState.inventory||{};
+ $("snackInventory").innerHTML="🎒 <b>Túi đồ của em:</b> "+Object.keys(snackLabels).map(k=>snackLabels[k]+" × "+Number(inv[k]||0)).join(" · ");
+ $("snackStarterInfo").textContent=snackShopState.starter_claimed?"🎁 Em đã nhận phần quà miễn phí ban đầu.":"🎁 Lần đầu mở cửa hàng, em nhận miễn phí 1 bim bim và 1 Sting!";
+}
+async function openSnackShop(){
+ if(!me||isTeacher){alert("Cửa hàng chỉ dành cho học sinh đang ở trong lớp.");return;}
+ $("snackShopModal").classList.add("open");$("snackShopMessage").textContent="Đang tải cửa hàng...";
+ const {data,error}=await db.rpc("claim_snack_starter");
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ if(data&&data.claimed)$("snackShopMessage").textContent="🎉 Em nhận được 1 bim bim và 1 nước ngọt miễn phí!";
+ await refreshSnackShop();
+}
+function closeSnackShop(){$("snackShopModal").classList.remove("open");}
+async function buySnack(itemKey){
+ if(!me||isTeacher)return;
+ $("snackShopMessage").textContent="Đang xử lý đơn mua...";
+ const {data,error}=await db.rpc("buy_snack",{p_item_key:itemKey});
+ if(error){$("snackShopMessage").textContent=error.message;return;}
+ $("snackShopMessage").textContent="🎉 Mua thành công "+(snackLabels[itemKey]||"món ăn")+"!";
+ await refreshSnackShop();await loadLeaderboard();
+}
+async function checkSnackTop3Reward(){
+ if(!me||isTeacher)return;
+ const {data,error}=await db.rpc("claim_snack_top3_reward");
+ if(error){console.warn("Không kiểm tra được quà top 3:",error.message);return;}
+ if(data&&data.you_are_top3&&data.rewarded_count>0){
+  const msg="🏆 Chúc mừng! Em thuộc top 3 và được tặng 1 bim bim miễn phí!";
+  if($("snackShopModal").classList.contains("open"))$("snackShopMessage").textContent=msg;
+  else console.info(msg);
+  await loadLeaderboard();
+  if($("snackShopModal").classList.contains("open"))await refreshSnackShop();
+ }
+}
+
 async function reportBehavior(behavior){
  if(!me)return;
-
  if(isTeacher){
   alert("Tài khoản giáo viên không thể gửi báo cáo hành vi học sinh.");
   return;
  }
-
+ const behaviorKeys={
+  "Ăn vụng":"snacking",
+  "Chơi điện thoại":"phone",
+  "Nói chuyện riêng":"talking",
+  "Đang ngoan":"studying"
+ };
+ const behaviorKey=behaviorKeys[behavior]||behavior;
  const {error}=await db.from("behavior_events").insert({
   classroom_id:CLASSROOM_ID,
   student_id:me.id,
-  behavior,
-  status:"reported",
+  behavior:behaviorKey,
+  status:"pending",
   detected_by:"student",
   note:""
  });
-
  if(error){
+  console.error("Gửi hoạt động học sinh thất bại:",error);
   alert("Không gửi được: "+error.message);
   return;
  }
-
- $("behaviorStatus").textContent="Đã ghi nhận: "+behavior;
+ addClassActivity(`🙋 <b>${esc(me.name)}</b> vừa mách cô: ${esc(behavior)}`);
+ if($("behaviorStatus"))$("behaviorStatus").textContent="✅ Đã ghi nhận: "+behavior;
+ alert("Đã ghi nhận hoạt động của em!");
 }
 
 async function loadBehaviors(){
@@ -1150,9 +2114,9 @@ async function loadBehaviors(){
 
  $("behaviorList").innerHTML=(data||[]).map(b=>`
   <div class="answer-row">
-   <b>${esc(names[b.student_id]||"Học sinh")}</b> — ${esc(b.behavior)}
-   <p class="small">Trạng thái: ${esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
-   <button onclick="resolveBehavior('${b.id}')">Đã xử lý</button>
+   <b>${esc(names[b.student_id]||"Học sinh")}</b> — ${esc(({snacking:"Ăn vụng",phone:"Chơi điện thoại",talking:"Nói chuyện riêng",studying:"Đang học"})[b.behavior]||b.behavior)}
+   <p class="small">Trạng thái: ${b.status==="pending"?"Chờ xử lý":b.status==="cleared"?"Đã xử lý":esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
+   ${b.status==="pending"?`<button onclick="resolveBehavior('${b.id}')">Đánh dấu đã xử lý</button>`:"<span class='small'>✅ Đã hoàn tất</span>"}
   </div>
  `).join("")||"Chưa có ghi nhận.";
 }
@@ -1162,7 +2126,7 @@ async function resolveBehavior(id){
 
  const {error}=await db.from("behavior_events")
   .update({
-   status:"resolved",
+   status:"cleared",
    resolved_at:new Date().toISOString()
   })
   .eq("id",id);
@@ -1184,9 +2148,17 @@ function subscribeRealtime(){
   event:"*",schema:"public",table:"profiles",
   filter:"classroom_id=eq."+CLASSROOM_ID
  },()=>{
-  loadMembers();
   loadLeaderboard();
   loadClassStats();
+ })
+
+ .on("postgres_changes",{
+  event:"*",schema:"public",table:"class_session_members",
+  filter:"classroom_id=eq."+CLASSROOM_ID
+ },()=>{
+  loadMembers();
+  loadClassStats();
+  loadLeaderboard();
  })
 
  .on("postgres_changes",{
@@ -1203,7 +2175,10 @@ function subscribeRealtime(){
  .on("postgres_changes",{
   event:"*",schema:"public",table:"score_transactions",
   filter:"classroom_id=eq."+CLASSROOM_ID
- },()=>loadLeaderboard())
+ },()=>{
+  loadLeaderboard();
+  if(me&&!isTeacher)loadStudentPointsProfile();
+ })
 
  .on("postgres_changes",{
   event:"*",schema:"public",table:"behavior_events",
@@ -1221,6 +2196,63 @@ function subscribeRealtime(){
 }
 
 async function leaveClass(){
+ if(!me||isTeacher)return;
+
+ // Học sinh phải xác nhận rời lớp để máy chủ giải phóng ghế.
+ if(!confirm("Bạn có chắc muốn rời lớp không? Ghế của bạn sẽ được giải phóng. Khi quay lại, bạn cần chỗ trống.")){
+  return;
+ }
+
+ const {data,error}=await db.rpc("leave_class_session");
+ if(error){
+  alert("Chưa thể rời lớp: "+error.message+"\nGhế của bạn vẫn được giữ để tránh mất chỗ ngoài ý muốn.");
+  return;
+ }
+ if(!data?.success){
+  alert("Máy chủ chưa xác nhận rời lớp. Vui lòng thử lại.");
+  return;
+ }
+
+ await exitClassView(false);
+}
+
+async function checkClassStatus(){
+ if(isTeacher||!me||!joinedSessionId||classStatusCheckBusy)return;
+ classStatusCheckBusy=true;
+ try{
+  const {data:state,error}=await db.from("classrooms")
+   .select("is_open,active_session_id")
+   .eq("id",CLASSROOM_ID).maybeSingle();
+  if(error){console.warn("Chưa kiểm tra được trạng thái lớp:",error);return;}
+  if(!state?.is_open||!state?.active_session_id||state.active_session_id!==joinedSessionId){
+   await exitClassView(false);
+   alert("Cô giáo đã kết thúc lớp học. Em đã được đưa ra khỏi lớp. Hãy chờ cô mở lớp mới nhé! 🌸");
+  }
+ }finally{classStatusCheckBusy=false;}
+}
+
+async function endClass(){
+ if(!me||!isTeacher)return;
+ if(!confirm("Bạn có chắc muốn KẾT THÚC LỚP HỌC không? Tất cả học sinh sẽ rời phiên lớp hiện tại và ghế sẽ được giải phóng.")){
+  return;
+ }
+
+ const {error}=await db.rpc("close_classroom");
+ if(error){
+  alert("Chưa thể kết thúc lớp học: "+error.message);
+  return;
+ }
+
+ await exitClassView(true);
+}
+
+async function exitClassView(signOut){
+ if(questionRefreshInterval){clearInterval(questionRefreshInterval);questionRefreshInterval=null;}
+ if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
+ closeSnackShop();
+ if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
+ joinedSessionId=null;
+ if(memberRefreshInterval){clearInterval(memberRefreshInterval);memberRefreshInterval=null;}
  if(quizTimerInterval){
   clearInterval(quizTimerInterval);
   quizTimerInterval=null;
@@ -1236,7 +2268,11 @@ async function leaveClass(){
   presenceChannel=null;
  }
 
- await db.auth.signOut();
+ // Học sinh giữ nguyên phiên đăng nhập ẩn danh để lần sau dùng lại UID/profile.
+ // Giáo viên đăng xuất sau khi kết thúc lớp.
+ if(signOut){
+  await db.auth.signOut();
+ }
 
  me=null;
  isTeacher=false;
@@ -1247,6 +2283,7 @@ async function leaveClass(){
  quizAnswerMap=new Map();
 
  $("floatingDock").style.display="none";
+ document.body.classList.remove("student-mode","teacher-mode");
  document.body.classList.remove("dock-active");
 
  $("classroom").classList.add("hidden");
@@ -1308,6 +2345,8 @@ function floatingQuizAction(){
   return;
  }
 
+ $("studentQuizArea").classList.remove("student-quiz-collapsed");
+
  if(quizSubmission&&quizSubmission.status==="submitted"){
   alert("Bạn đã hoàn thành bài kiểm tra này rồi!");
 
@@ -1319,6 +2358,7 @@ function floatingQuizAction(){
  }
 
  if(quizSubmission&&quizQuestionRows.length){
+  $("studentQuizArea").classList.remove("student-quiz-collapsed");
   $("quizSection").scrollIntoView({
    behavior:"smooth",
    block:"start"
@@ -1328,6 +2368,7 @@ function floatingQuizAction(){
   return;
  }
 
+ $("studentQuizArea").classList.remove("student-quiz-collapsed");
  $("quizSection").scrollIntoView({
   behavior:"smooth",
   block:"start"
@@ -1539,11 +2580,11 @@ function restoreOriginalBoard(){
  $("chalkStatus").classList.remove("hidden");
 
  if(currentQuestion){
-  $("chalkQuestion").textContent=currentQuestion.question;
+  $("chalkQuestion").innerHTML=
+   '<span class="chalk-subject">📚 '+esc(currentQuestion.category||"Bài tập")+'</span><br><span class="chalk-prompt">'+esc(currentQuestion.question||"")+'</span>';
 
   $("chalkStatus").textContent=
-   "📚 "+(currentQuestion.category||"Bài tập")+
-   " • Câu hỏi dành cho cả lớp";
+   "✏️ Câu hỏi dành cho cả lớp • Hãy nhập đáp án bên dưới";
  }else{
   $("chalkQuestion").innerHTML=
    "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
@@ -1950,6 +2991,7 @@ async function finishQuiz(autoSubmit=false){
 
  $("studentQuizStatus").textContent=
   "✅ Đã hoàn thành bài kiểm tra.";
+ addClassActivity("📝 <b>"+esc(me.name)+"</b> đã hoàn thành bài kiểm tra: "+Number(data.correct||0)+"/"+Number(data.total||0)+" câu đúng, "+Number(data.score||0)+"/100 điểm");
 
  restoreOriginalBoard();
 }
