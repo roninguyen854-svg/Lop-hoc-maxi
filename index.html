@@ -1359,34 +1359,38 @@ async function loadQuestion(){
   .maybeSingle();
 
  if(error){
-  console.error(error);
+  console.error("Lỗi tải câu hỏi:",error);
   return;
  }
 
  currentQuestion=data;
 
- if(!$("quizBoardDisplay").classList.contains("hidden"))return;
+ // Một số màn hình/bản bố cục không có các vùng bảng phụ này.
+ // Không để thiếu một phần tử tùy chọn làm dừng toàn bộ enterClass().
+ const quizBoardDisplay=$("quizBoardDisplay");
+ if(quizBoardDisplay&&!quizBoardDisplay.classList.contains("hidden"))return;
+
+ const chalkQuestion=$("chalkQuestion");
+ const chalkStatus=$("chalkStatus");
+ const questionDisplay=$("questionDisplay");
+ const studentAnswerArea=$("studentAnswerArea");
 
  if(!data){
-  $("chalkQuestion").innerHTML=
+  if(chalkQuestion)chalkQuestion.innerHTML=
    "Tiên học lễ – Hậu học văn<br>Chăm ngoan • Học giỏi • Đoàn kết";
-
-  $("chalkStatus").textContent="🌸 Chào mừng các em đến với lớp học!";
-  $("questionDisplay").textContent="Cô giáo chưa đăng câu hỏi.";
-  $("studentAnswerArea").classList.add("hidden");
+  if(chalkStatus)chalkStatus.textContent="🌸 Chào mừng các em đến với lớp học!";
+  if(questionDisplay)questionDisplay.textContent="Cô giáo chưa đăng câu hỏi.";
+  if(studentAnswerArea)studentAnswerArea.classList.add("hidden");
   return;
  }
 
- $("chalkQuestion").textContent=data.question;
- $("chalkStatus").textContent=
+ if(chalkQuestion)chalkQuestion.textContent=data.question;
+ if(chalkStatus)chalkStatus.textContent=
   "📚 "+(data.category||"Bài tập")+" • Câu hỏi dành cho cả lớp";
-
- $("questionDisplay").innerHTML=
+ if(questionDisplay)questionDisplay.innerHTML=
   `<b>${esc(data.category||"Bài tập")}</b><p>${esc(data.question)}</p>`;
-
- $("studentAnswerArea").classList.toggle("hidden",isTeacher);
+ if(studentAnswerArea)studentAnswerArea.classList.toggle("hidden",isTeacher);
 }
-
 async function postQuestion(){
  const question=$("newQuestion").value.trim();
  const answer=$("correctAnswer").value.trim();
