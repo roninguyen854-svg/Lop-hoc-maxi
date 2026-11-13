@@ -315,7 +315,7 @@ body.dock-active{padding-bottom:85px}
 <section id="classroom" class="hidden">
 
  <!-- SĨ SỐ VÀ THÀNH VIÊN ONLINE -->
- <div id="classLiveStats">
+ <div id="classLiveStats" class="student-only">
   <h3 style="margin:0 0 12px;color:#895b9b">🏫 SĨ SỐ LỚP HỌC</h3>
   <div class="live-counts">
    <div class="live-count">
@@ -336,7 +336,7 @@ body.dock-active{padding-bottom:85px}
  </div>
 
  <div class="top-grid">
-  <div class="card panel">
+  <div class="card panel student-only">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div id="leaderboard"></div>
   </div>
@@ -792,6 +792,7 @@ async function enterClass(){
  $("classroom").classList.remove("hidden");
 
  $("endClassBtn").classList.toggle("hidden",!isTeacher);
+ document.querySelectorAll(".student-only").forEach(el=>el.classList.toggle("hidden",isTeacher));
  $("teacherQuestionArea").classList.toggle("hidden",!isTeacher);
  $("teacherBehaviorArea").classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
