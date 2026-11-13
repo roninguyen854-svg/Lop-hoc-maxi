@@ -1856,28 +1856,32 @@ async function gradeAnswer(answerId,studentId,correct){
 
 async function reportBehavior(behavior){
  if(!me)return;
-
  if(isTeacher){
   alert("Tài khoản giáo viên không thể gửi báo cáo hành vi học sinh.");
   return;
  }
-
+ const behaviorKeys={
+  "Ăn vụng":"snacking",
+  "Chơi điện thoại":"phone",
+  "Nói chuyện riêng":"talking",
+  "Đang ngoan":"studying"
+ };
+ const behaviorKey=behaviorKeys[behavior]||behavior;
  const {error}=await db.from("behavior_events").insert({
   classroom_id:CLASSROOM_ID,
   student_id:me.id,
-  behavior,
+  behavior:behaviorKey,
   status:"pending",
   detected_by:"student",
   note:""
  });
-
  if(error){
+  console.error("Gửi hoạt động học sinh thất bại:",error);
   alert("Không gửi được: "+error.message);
   return;
  }
-
- if($("behaviorStatus"))$("behaviorStatus").textContent="✅ Cô đã nhận báo cáo: "+behavior;
- alert("Đã gửi báo cáo cho cô giáo. Cảm ơn em!");
+ if($("behaviorStatus"))$("behaviorStatus").textContent="✅ Đã ghi nhận: "+behavior;
+ alert("Đã ghi nhận hoạt động của em!");
 }
 
 async function loadBehaviors(){
@@ -1903,8 +1907,8 @@ async function loadBehaviors(){
 
  $("behaviorList").innerHTML=(data||[]).map(b=>`
   <div class="answer-row">
-   <b>${esc(names[b.student_id]||"Học sinh")}</b> — ${esc(b.behavior)}
-   <p class="small">Trạng thái: ${b.status==="pending"?"Chờ xử lý":b.status==="resolved"?"Đã xử lý":esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
+   <b>${esc(names[b.student_id]||"Học sinh")}</b> — ${esc(({snacking:"Ăn vụng",phone:"Chơi điện thoại",talking:"Nói chuyện riêng",studying:"Đang học"})[b.behavior]||b.behavior)}
+   <p class="small">Trạng thái: ${b.status==="pending"?"Chờ xử lý":b.status==="cleared"?"Đã xử lý":esc(b.status)} • ${new Date(b.created_at).toLocaleString("vi-VN")}</p>
    ${b.status==="pending"?`<button onclick="resolveBehavior('${b.id}')">Đánh dấu đã xử lý</button>`:"<span class='small'>✅ Đã hoàn tất</span>"}
   </div>
  `).join("")||"Chưa có ghi nhận.";
@@ -1915,7 +1919,7 @@ async function resolveBehavior(id){
 
  const {error}=await db.from("behavior_events")
   .update({
-   status:"resolved",
+   status:"cleared",
    resolved_at:new Date().toISOString()
   })
   .eq("id",id);
