@@ -1219,19 +1219,32 @@ async function loadLeaderboard(){
 ========================= */
 
 async function loadClassStats(){
- // Sĩ số phải lấy từ đúng phiên lớp đang mở, giống danh sách bàn học.
- // Không đếm profiles vì có thể còn hồ sơ cũ hoặc học sinh đã lưu trữ.
+ // Lấy tổng sĩ số và online từ cùng một snapshot của phiên lớp.
+ // Tránh lệch giữa bảng ghế (database) và Presence (kênh realtime).
  const {data:members,error}=await db.rpc("get_active_class_members");
+ const totalEl=$("totalStudents");
+ const onlineEl=$("onlineStudents");
+ const wallCountEl=$("wallClassCount");
+
  if(error){
   console.error("Lỗi tải sĩ số lớp hiện tại:",error);
+  if(totalEl)totalEl.textContent="—";
+  if(wallCountEl)wallCountEl.textContent="⚠️ Không tải được sĩ số lớp";
   return;
  }
- const uniqueStudents=new Set((members||[]).map(p=>p.student_id).filter(Boolean));
- const count=uniqueStudents.size;
- $("totalStudents").textContent=count;
- $("wallClassCount").textContent=`👩‍🎓 ${count} học sinh trong lớp`;
-}
 
+ const unique=new Map();
+ (members||[]).forEach(member=>{
+  if(member.student_id)unique.set(member.student_id,member);
+ });
+ const students=[...unique.values()];
+ const total=students.length;
+ const online=students.filter(member=>member.status==="online").length;
+
+ if(totalEl)totalEl.textContent=String(total);
+ if(onlineEl)onlineEl.textContent=String(online);
+ if(wallCountEl)wallCountEl.textContent=`👩‍🎓 ${total} học sinh trong lớp`;
+}
 function addClassActivity(message){
  const item={message,time:new Date()};
  classActivityItems.unshift(item);
