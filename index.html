@@ -60,6 +60,38 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .wall-board{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
 .notice{flex:1;min-width:135px;padding:10px;background:#fff9df;border:3px solid #d6b66f;text-align:center;font-size:12px}
 .room-title{text-align:center;background:#fff9eb;border:3px solid #d5b48a;padding:12px;margin-top:15px}
+/* Khu vực tiêu đề phòng học: gọn, tiết kiệm chiều cao */
+.room-title{
+ max-width:1050px;
+ margin:10px auto 8px;
+ padding:7px 14px;
+ border:2px solid #d5b48a;
+ border-radius:12px;
+}
+.room-title h2{
+ margin:0 0 3px;
+ font-size:clamp(16px,2.2vw,21px);
+ line-height:1.25;
+}
+.room-title p{
+ margin:3px 0;
+ font-size:clamp(12px,1.6vw,15px);
+ line-height:1.35;
+}
+.room-title #seatOccupancy{
+ display:inline-block;
+ margin:4px 0 0;
+ padding:3px 10px;
+ border-radius:20px;
+ background:#f4e7d3;
+ font-size:clamp(11px,1.5vw,14px);
+}
+@media(max-width:600px){
+ .room-title{margin:7px 8px 6px;padding:6px 9px}
+ .room-title h2{font-size:17px}
+ .room-title p{font-size:12px}
+ .room-title #seatOccupancy{font-size:11px;padding:3px 8px}
+}
 .student-zone{padding:18px 10px 25px;background:repeating-linear-gradient(90deg,#d4a36b 0,#d4a36b 48px,#c58d58 49px,#c58d58 51px);border:5px solid #9c663a}
 .students{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 12px;max-width:1050px;margin:auto}
 .desk{text-align:center;min-width:0}
