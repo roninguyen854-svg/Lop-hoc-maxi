@@ -767,7 +767,7 @@ body.student-mode.dock-active{padding-bottom:0!important}
   <div class="online-list" id="onlineMembers">Đang kết nối...</div>
  </div>
 
- <div class="card panel activity-feed-card teacher-only">
+ <div class="card panel activity-feed-card">
   <h3>📢 THÔNG BÁO TRONG LỚP</h3>
   <div id="classActivityFeed" aria-live="polite">🌸 Chưa có hoạt động mới.</div>
  </div>
@@ -1193,7 +1193,6 @@ async function joinClass(){
  me={id:user.id,name:joinedMember?.display_name||selectedName,avatarId:joinedMember?.avatar_id||String(avatarId)};
  isTeacher=false;
  await enterClass();
- addClassActivity(`🌸 <b>${esc(me.name)}</b> vừa vào lớp`);
  const dock=$("floatingDock");
  document.body.classList.remove("teacher-mode");
  document.body.classList.add("student-mode","dock-active");
@@ -1601,6 +1600,18 @@ async function subscribePresence(){
    Object.values(state).flat().forEach(user=>{
     if(user.user_id)current.set(user.user_id,user);
    });
+   if(activityUsersSnapshot instanceof Map){
+    current.forEach((user,id)=>{
+     if(!activityUsersSnapshot.has(id)&&id!==me.id){
+      addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
+     }
+    });
+    activityUsersSnapshot.forEach((user,id)=>{
+     if(!current.has(id)&&id!==me.id){
+      addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
+     }
+    });
+   }
    activityUsersSnapshot=current;
    renderOnlineMembers();
 
@@ -2095,7 +2106,6 @@ async function leaveClass(){
   return;
  }
 
- addClassActivity(`🚪 <b>${esc(me.name)}</b> vừa rời lớp`);
  await exitClassView(false);
 }
 
@@ -2874,6 +2884,7 @@ async function finishQuiz(autoSubmit=false){
 
  $("studentQuizStatus").textContent=
   "✅ Đã hoàn thành bài kiểm tra.";
+ addClassActivity("📝 <b>"+esc(me.name)+"</b> đã hoàn thành bài kiểm tra: "+Number(data.correct||0)+"/"+Number(data.total||0)+" câu đúng, "+Number(data.score||0)+"/100 điểm");
 
  restoreOriginalBoard();
 }
