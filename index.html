@@ -1172,28 +1172,36 @@ async function loadMembers(){
 }
 
 async function loadLeaderboard(){
- const {data,error}=await db.from("score_transactions")
-  .select("student_id,amount");
+ // Chỉ xếp hạng học sinh thuộc phiên lớp đang mở.
+ // Không đọc toàn bộ profiles vì bảng này chứa cả hồ sơ cũ/đã lưu trữ.
+ const [{data:members,error:membersError},{data:scores,error:scoresError}]=await Promise.all([
+  db.rpc("get_active_class_members"),
+  db.from("score_transactions").select("student_id,amount")
+ ]);
 
- if(error){
-  console.error(error);
+ if(membersError){
+  console.error("Lỗi tải học sinh để xếp hạng:",membersError);
+  return;
+ }
+ if(scoresError){
+  console.error("Lỗi tải điểm:",scoresError);
   return;
  }
 
  const totals={};
-
- (data||[]).forEach(x=>{
+ (scores||[]).forEach(x=>{
   totals[x.student_id]=(totals[x.student_id]||0)+Number(x.amount||0);
  });
 
- const {data:people}=await db.from("profiles")
-  .select("id,display_name")
-  .eq("classroom_id",CLASSROOM_ID);
-
- const rows=(people||[]).map(p=>({
+ // Khử trùng lặp theo ID học sinh, đồng thời loại mọi hồ sơ không thuộc phiên hiện tại.
+ const uniqueMembers=new Map();
+ (members||[]).forEach(p=>{
+  if(p.student_id)uniqueMembers.set(p.student_id,p);
+ });
+ const rows=[...uniqueMembers.values()].map(p=>({
   name:p.display_name,
-  score:totals[p.id]||0
- })).sort((a,b)=>b.score-a.score);
+  score:totals[p.student_id]||0
+ })).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,"vi"));
 
  $("wallRankSummary").textContent=rows.length
   ?`🥇 ${rows[0].name} · ${rows[0].score} điểm`
@@ -1203,7 +1211,7 @@ async function loadLeaderboard(){
    <span>${["🥇","🥈","🥉"][i]||`${i+1}.`} ${esc(p.name)}</span>
    <b>${p.score}</b>
   </div>`
- ).join("")||"Chưa có điểm";
+ ).join("")||"Chưa có học sinh trong lớp.";
 }
 
 /* =========================
@@ -1211,18 +1219,17 @@ async function loadLeaderboard(){
 ========================= */
 
 async function loadClassStats(){
- const {count,error}=await db.from("profiles")
-  .select("id",{count:"exact",head:true})
-  .eq("classroom_id",CLASSROOM_ID)
-  .eq("role","student");
-
+ // Sĩ số phải lấy từ đúng phiên lớp đang mở, giống danh sách bàn học.
+ // Không đếm profiles vì có thể còn hồ sơ cũ hoặc học sinh đã lưu trữ.
+ const {data:members,error}=await db.rpc("get_active_class_members");
  if(error){
-  console.error("Lỗi tải sĩ số:",error);
+  console.error("Lỗi tải sĩ số lớp hiện tại:",error);
   return;
  }
-
- $("totalStudents").textContent=count||0;
- $("wallClassCount").textContent=`👩‍🎓 ${count||0} học sinh trong lớp`;
+ const uniqueStudents=new Set((members||[]).map(p=>p.student_id).filter(Boolean));
+ const count=uniqueStudents.size;
+ $("totalStudents").textContent=count;
+ $("wallClassCount").textContent=`👩‍🎓 ${count} học sinh trong lớp`;
 }
 
 function addClassActivity(message){
