@@ -78,6 +78,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .small{font-size:12px;color:#967d9b}
 footer{text-align:center;padding:25px;color:#a184a4;font-size:12px}
 
+.student-quiz-collapsed{display:none!important}
 .quiz-section{margin-top:16px}
 .quiz-section h3{color:#86568f}
 .quiz-intro{background:linear-gradient(120deg,#fff0f7,#f0edff);padding:15px;border-radius:15px;margin-bottom:15px}
@@ -1077,6 +1078,7 @@ async function enterClass(){
  $("teacherBehaviorArea")?.classList.toggle("hidden",!isTeacher);
  $("teacherQuizArea").classList.toggle("hidden",!isTeacher);
  $("studentQuizArea").classList.toggle("hidden",isTeacher);
+ if(!isTeacher)$("studentQuizArea").classList.add("student-quiz-collapsed");
 
  const studentDock=$("floatingDock");
  document.body.classList.toggle("student-mode",!isTeacher);
@@ -1912,6 +1914,8 @@ function floatingQuizAction(){
   return;
  }
 
+ $("studentQuizArea").classList.remove("student-quiz-collapsed");
+
  if(quizSubmission&&quizSubmission.status==="submitted"){
   alert("Bạn đã hoàn thành bài kiểm tra này rồi!");
 
@@ -1923,6 +1927,7 @@ function floatingQuizAction(){
  }
 
  if(quizSubmission&&quizQuestionRows.length){
+  $("studentQuizArea").classList.remove("student-quiz-collapsed");
   $("quizSection").scrollIntoView({
    behavior:"smooth",
    block:"start"
@@ -1932,6 +1937,7 @@ function floatingQuizAction(){
   return;
  }
 
+ $("studentQuizArea").classList.remove("student-quiz-collapsed");
  $("quizSection").scrollIntoView({
   behavior:"smooth",
   block:"start"
