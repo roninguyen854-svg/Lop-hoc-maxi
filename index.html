@@ -1109,7 +1109,7 @@ async function enterClass(){
  if(memberRefreshInterval)clearInterval(memberRefreshInterval);
  // Dự phòng khi Realtime không gửi sự kiện hoặc kết nối bị gián đoạn.
  memberRefreshInterval=setInterval(()=>{
-  if(me&&isTeacher&&!document.hidden)loadMembers();
+  if(me&&!document.hidden)loadMembers();
  },4000);
  await subscribePresence();
 
@@ -1130,30 +1130,11 @@ async function loadMembers(){
  if(memberRefreshBusy)return;
  memberRefreshBusy=true;
  try{
- const {data:classroom,error:classError}=await db.from("classrooms")
-  .select("active_session_id")
-  .eq("id",CLASSROOM_ID).maybeSingle();
- if(classError){
-  console.error("Lỗi đọc phiên lớp:",classError);
-  $("seatOccupancy").textContent="⚠️ Không tải được số ghế.";
-  return;
- }
-
  createSeats();
  $("noSeatStudents").textContent="Đang tải danh sách học sinh...";
- if(!classroom?.active_session_id){
-  $("seatOccupancy").textContent="🪑 0/30 chỗ đang sử dụng";
-  $("noSeatCount").textContent="(0)";
-  $("noSeatStudents").textContent="Chưa có học sinh.";
-  return;
- }
-
- const {data:members,error}=await db.from("class_session_members")
-  .select("student_id,display_name,avatar_id,seat_number,status")
-  .eq("session_id",classroom.active_session_id)
-  .in("status",["online","offline"])
-  .order("seat_number",{ascending:true})
-  .limit(1000);
+ // Dùng RPC bảo mật để cả giáo viên và học sinh đều đọc cùng danh sách
+ // của phiên đang mở, không bị bộ lọc RLS làm mất bạn cùng lớp.
+ const {data:members,error}=await db.rpc("get_active_class_members");
  if(error){
   console.error("Lỗi tải danh sách lớp:",error);
   $("seatOccupancy").textContent="⚠️ Không tải được sĩ số.";
