@@ -928,6 +928,24 @@ async function joinClass(){
  me={id:user.id,name:savedName,avatarId};
  isTeacher=false;
  await enterClass();
+ const dock=$("floatingDock");
+ document.body.classList.remove("teacher-mode");
+ document.body.classList.add("student-mode","dock-active");
+ dock.classList.add("student-toolbar-active");
+ dock.removeAttribute("hidden");
+ dock.classList.remove("hidden");
+ dock.style.setProperty("display","flex","important");
+ dock.style.setProperty("visibility","visible","important");
+ dock.style.setProperty("opacity","1","important");
+ dock.style.setProperty("position","fixed","important");
+ dock.style.setProperty("bottom","calc(8px + env(safe-area-inset-bottom))","important");
+ dock.style.setProperty("z-index","10050","important");
+ dock.querySelectorAll("button").forEach(button=>{
+  button.style.setProperty("display","grid","important");
+  button.style.setProperty("visibility","visible","important");
+  button.style.setProperty("opacity","1","important");
+  button.style.setProperty("pointer-events","auto","important");
+ });
 }
 
 async function teacherLogin(){
