@@ -1146,6 +1146,7 @@ let presenceChannel=null;
 let activityUsersSnapshot=null;
 let memberRefreshInterval=null;
 let memberRefreshBusy=false;
+let memberRefreshPending=false;
 let classStatusInterval=null;
 let joinedSessionId=null;
 let classStatusCheckBusy=false;
@@ -1513,10 +1514,20 @@ async function enterClass(){
    if(me&&!isTeacher)loadQuestion();
   },3000);
  }
- // Không dựng lại danh sách theo chu kỳ 4 giây.
- // Danh sách, sĩ số và xếp hạng được cập nhật theo sự kiện Realtime
- // khi học sinh vào lớp hoặc rời lớp.
  await subscribePresence();
+
+ // Dự phòng khi Realtime bị trễ hoặc mất sự kiện: giáo viên tự đồng bộ
+ // danh sách học sinh và sĩ số định kỳ, không phụ thuộc một subscription.
+ if(memberRefreshInterval){clearInterval(memberRefreshInterval);memberRefreshInterval=null;}
+ if(isTeacher){
+  memberRefreshInterval=setInterval(()=>{
+   if(me&&isTeacher){
+    loadMembers();
+    loadClassStats();
+    loadLeaderboard();
+   }
+  },4000);
+ }
 
  await loadQuiz();
 
@@ -1534,7 +1545,10 @@ async function refreshAll(){
 }
 
 async function loadMembers(){
- if(memberRefreshBusy)return;
+ if(memberRefreshBusy){
+  memberRefreshPending=true;
+  return;
+ }
  memberRefreshBusy=true;
  try{
  createSeats();
@@ -1596,7 +1610,13 @@ async function loadMembers(){
   const avatar=character?avatarSVG(character):"👤";
   return `<div class="no-seat-student"><span class="mini-avatar">${character?"👤":"👤"}</span><span class="no-seat-name">${esc(p.display_name)}${p.status==="offline"?" · Offline":""}</span></div>`;
  }).join(""):"Tất cả học sinh hiện có bàn ngồi.";
- }finally{memberRefreshBusy=false;}
+ }finally{
+  memberRefreshBusy=false;
+  if(memberRefreshPending){
+   memberRefreshPending=false;
+   loadMembers();
+  }
+ }
 }
 
 async function loadStudentPointsProfile(){
