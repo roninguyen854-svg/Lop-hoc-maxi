@@ -1532,11 +1532,14 @@ async function loadMembers(){
     activityBadge.setAttribute("aria-live","polite");
     desk.querySelector(".desk-top").appendChild(activityBadge);
    }
+   // Mặc định mọi học sinh đều đang học; hành vi đang hoạt động sẽ thay thế emoji này.
    const activity=activityByStudent[p.student_id];
-   const activityEmoji=activity?activityEmojis[activity.behavior]:"";
-   activityBadge.textContent=activityEmoji;
-   activityBadge.title=activity?activityNames[activity.behavior]||"Đang hoạt động":"";
-   activityBadge.hidden=!activityEmoji;
+   const currentBehavior=activity&&activityEmojis[activity.behavior]
+    ?activity.behavior
+    :"studying";
+   activityBadge.textContent=activityEmojis[currentBehavior];
+   activityBadge.title=activityNames[currentBehavior];
+   activityBadge.hidden=false;
  });
 
  $("noSeatStudents").innerHTML=noSeat.length?noSeat.map(p=>{
