@@ -831,6 +831,8 @@ body.student-mode.dock-active{padding-bottom:0!important}
   <div class="card panel teacher-only">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div id="leaderboard"></div>
+   <button class="primary" id="manualTop3RewardBtn" onclick="previewAndRewardTop3()">🎁 PHÁT QUÀ TOP 3</button>
+   <p class="small" id="manualTop3RewardStatus">Giáo viên bấm nút để tặng mỗi bạn trong Top 3 một bim bim.</p>
   </div>
 
  </div>
@@ -1466,6 +1468,10 @@ function goTeacherPanel(id){
 async function enterClass(){
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
+ // Mỗi lần vào giao diện lớp, bảng hoạt động bắt đầu trống cho phiên hiện tại.
+ activityUsersSnapshot=null;
+ classActivityItems=[];
+ renderClassActivityEmpty();
  if(!isTeacher){
   const {data:activeClass,error:activeClassError}=await db.from("classrooms")
    .select("is_open,active_session_id")
@@ -1509,7 +1515,6 @@ async function enterClass(){
  // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
  studentDock.classList.toggle("student-toolbar-active",!isTeacher);
  studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
- if(!isTeacher){checkSnackTop3Reward();if(snackRewardInterval)clearInterval(snackRewardInterval);snackRewardInterval=setInterval(checkSnackTop3Reward,30000);}
  studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
  studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
  studentDock.querySelectorAll("button").forEach(button=>{
@@ -1767,6 +1772,10 @@ async function loadClassStats(){
  if(onlineEl)onlineEl.textContent=String(online);
  if(wallCountEl)wallCountEl.textContent=`👩‍🎓 ${total} học sinh trong lớp`;
 }
+function renderClassActivityEmpty(){
+ const box=$("classActivityFeed");
+ if(box)box.innerHTML="";
+}
 function renderClassActivity(message){
  const item={message,time:new Date()};
  classActivityItems.unshift(item);
@@ -1800,7 +1809,8 @@ function renderOnlineMembers(){
  const students=users.filter(user=>user.role==="student");
  const teachers=users.filter(user=>user.role==="teacher");
 
- $("onlineStudents").textContent=students.length;
+ // Chỉ loadClassStats được quyền cập nhật bộ đếm online từ DB.
+ // Presence chỉ hiển thị danh sách tên, tránh ghi đè số liệu bằng snapshot lệch.
 
  if(!users.length){
   $("onlineMembers").textContent="Chưa có thành viên online.";
@@ -1849,24 +1859,34 @@ async function subscribePresence(){
    Object.values(state).flat().forEach(user=>{
     if(user.user_id)current.set(user.user_id,user);
    });
-   if(activityUsersSnapshot instanceof Map){
-    current.forEach((user,id)=>{
-     if(!activityUsersSnapshot.has(id)&&id!==me.id){
-      addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
-     }
-    });
-    activityUsersSnapshot.forEach((user,id)=>{
-     if(!current.has(id)&&id!==me.id){
-      addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
-     }
-    });
+
+   // Chỉ giáo viên phát thông báo vào/rời lớp để tránh mỗi máy tự phát trùng.
+   if(isTeacher){
+    if(activityUsersSnapshot instanceof Map){
+     current.forEach((user,id)=>{
+      if(user.role==="student"&&!activityUsersSnapshot.has(id)){
+       addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
+      }
+     });
+     activityUsersSnapshot.forEach((user,id)=>{
+      if(user.role==="student"&&!current.has(id)){
+       addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
+      }
+     });
+    }else{
+     // Đồng bộ đầu tiên cũng ghi nhận các học sinh đã có mặt trước khi GV kết nối.
+     current.forEach((user,id)=>{
+      if(user.role==="student"){
+       addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> đang có mặt trong lớp");
+      }
+     });
+    }
    }
+
    activityUsersSnapshot=current;
    renderOnlineMembers();
 
-   // Presence sync fires when a student enters or leaves, including when
-   // the database event subscription is delayed or unavailable.
-   // Refresh the authoritative roster once per actual presence change.
+   // Refresh danh sách và sĩ số từ DB; Presence chỉ là tín hiệu kích hoạt đồng bộ.
    loadMembers();
    loadClassStats();
    loadLeaderboard();
@@ -2165,7 +2185,6 @@ async function gradeAnswer(answerId,studentId,correct){
 }
 
 
-let snackRewardInterval=null;
 let snackShopState=null;
 let eatingSnackKey=null;
 let eatingSnackProgress=0;
@@ -2266,16 +2285,37 @@ async function buySnack(itemKey){
  $("snackShopMessage").textContent="🎉 Mua thành công "+(snackLabels[itemKey]||"món ăn")+"!";
  await refreshSnackShop();await loadLeaderboard();
 }
-async function checkSnackTop3Reward(){
- if(!me||isTeacher)return;
- const {data,error}=await db.rpc("claim_snack_top3_reward");
- if(error){console.warn("Không kiểm tra được quà top 3:",error.message);return;}
- if(data&&data.you_are_top3&&data.rewarded_count>0){
-  const msg="🏆 Chúc mừng! Em thuộc top 3 và được tặng 1 bim bim miễn phí!";
-  if($("snackShopModal").classList.contains("open"))$("snackShopMessage").textContent=msg;
-  else console.info(msg);
-  await loadLeaderboard();
-  if($("snackShopModal").classList.contains("open"))await refreshSnackShop();
+async function previewAndRewardTop3(){
+ if(!isTeacher||!me)return;
+ const button=$("manualTop3RewardBtn");
+ const status=$("manualTop3RewardStatus");
+ if(button)button.disabled=true;
+ if(status)status.textContent="Đang tính bảng xếp hạng...";
+ try{
+  const {data:preview,error:previewError}=await db.rpc("get_teacher_top3_snack_preview");
+  if(previewError)throw previewError;
+  const winners=Array.isArray(preview)?preview:[];
+  if(!winners.length){
+   if(status)status.textContent="Chưa có học sinh trong phiên học hiện tại.";
+   return;
+  }
+  const medals=["🥇","🥈","🥉"];
+  const summary=winners.map((p,i)=>`${medals[i]} ${p.display_name} — ${Number(p.points||0)} điểm`).join("\\n");
+  if(!confirm("Xác nhận tặng mỗi bạn sau đây 1 bim bim?\\n\\n"+summary))return;
+  const requestId=crypto.randomUUID();
+  if(status)status.textContent="Đang phát quà...";
+  const {data,error}=await db.rpc("teacher_reward_top3_snacks",{p_request_id:requestId});
+  if(error)throw error;
+  const awarded=Array.isArray(data?.winners)?data.winners:[];
+  if(status)status.textContent=awarded.length
+   ? "🎉 Đã tặng 1 bim bim cho: "+awarded.map(x=>x.display_name).join(", ")
+   : "Không có học sinh nào nhận quà.";
+  addClassActivity("🎁 Giáo viên đã phát 1 bim bim cho Top 3: "+awarded.map(x=>esc(x.display_name)).join(", "));
+ }catch(error){
+  console.error(error);
+  if(status)status.textContent="❌ Không phát được quà: "+error.message;
+ }finally{
+  if(button)button.disabled=false;
  }
 }
 
@@ -2571,7 +2611,6 @@ async function endClass(){
 
 async function exitClassView(signOut){
  if(questionRefreshInterval){clearInterval(questionRefreshInterval);questionRefreshInterval=null;}
- if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
  closeSnackShop();
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
