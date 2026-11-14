@@ -1466,6 +1466,10 @@ function goTeacherPanel(id){
 async function enterClass(){
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
+ // Mỗi lần vào giao diện lớp, bảng hoạt động bắt đầu trống cho phiên hiện tại.
+ activityUsersSnapshot=null;
+ classActivityItems=[];
+ renderClassActivityEmpty();
  if(!isTeacher){
   const {data:activeClass,error:activeClassError}=await db.from("classrooms")
    .select("is_open,active_session_id")
@@ -1767,6 +1771,10 @@ async function loadClassStats(){
  if(onlineEl)onlineEl.textContent=String(online);
  if(wallCountEl)wallCountEl.textContent=`👩‍🎓 ${total} học sinh trong lớp`;
 }
+function renderClassActivityEmpty(){
+ const box=$("classActivityFeed");
+ if(box)box.innerHTML="";
+}
 function renderClassActivity(message){
  const item={message,time:new Date()};
  classActivityItems.unshift(item);
@@ -1800,7 +1808,8 @@ function renderOnlineMembers(){
  const students=users.filter(user=>user.role==="student");
  const teachers=users.filter(user=>user.role==="teacher");
 
- $("onlineStudents").textContent=students.length;
+ // Chỉ loadClassStats được quyền cập nhật bộ đếm online từ DB.
+ // Presence chỉ hiển thị danh sách tên, tránh ghi đè số liệu bằng snapshot lệch.
 
  if(!users.length){
   $("onlineMembers").textContent="Chưa có thành viên online.";
@@ -1849,24 +1858,34 @@ async function subscribePresence(){
    Object.values(state).flat().forEach(user=>{
     if(user.user_id)current.set(user.user_id,user);
    });
-   if(activityUsersSnapshot instanceof Map){
-    current.forEach((user,id)=>{
-     if(!activityUsersSnapshot.has(id)&&id!==me.id){
-      addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
-     }
-    });
-    activityUsersSnapshot.forEach((user,id)=>{
-     if(!current.has(id)&&id!==me.id){
-      addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
-     }
-    });
+
+   // Chỉ giáo viên phát thông báo vào/rời lớp để tránh mỗi máy tự phát trùng.
+   if(isTeacher){
+    if(activityUsersSnapshot instanceof Map){
+     current.forEach((user,id)=>{
+      if(user.role==="student"&&!activityUsersSnapshot.has(id)){
+       addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> vừa vào lớp");
+      }
+     });
+     activityUsersSnapshot.forEach((user,id)=>{
+      if(user.role==="student"&&!current.has(id)){
+       addClassActivity("🚪 <b>"+esc(user.name||"Học sinh")+"</b> vừa rời lớp");
+      }
+     });
+    }else{
+     // Đồng bộ đầu tiên cũng ghi nhận các học sinh đã có mặt trước khi GV kết nối.
+     current.forEach((user,id)=>{
+      if(user.role==="student"){
+       addClassActivity("🌸 <b>"+esc(user.name||"Học sinh")+"</b> đang có mặt trong lớp");
+      }
+     });
+    }
    }
+
    activityUsersSnapshot=current;
    renderOnlineMembers();
 
-   // Presence sync fires when a student enters or leaves, including when
-   // the database event subscription is delayed or unavailable.
-   // Refresh the authoritative roster once per actual presence change.
+   // Refresh danh sách và sĩ số từ DB; Presence chỉ là tín hiệu kích hoạt đồng bộ.
    loadMembers();
    loadClassStats();
    loadLeaderboard();
