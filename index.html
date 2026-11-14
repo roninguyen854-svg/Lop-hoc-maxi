@@ -2084,7 +2084,7 @@ async function refreshSnackBag(){
  const available=Object.keys(snackLabels).filter(k=>Number(inv[k]||0)>0);
  $("snackBagItems").innerHTML=available.length?available.map(k=>
   '<div class="snack-item"><div class="emoji">'+snackLabels[k].split(" ")[0]+'</div><b>'+
-  snackLabels[k].replace(/^\\S+\\s*/,"")+'</b><div>Số lượng: '+Number(inv[k]||0)+
+  snackLabels[k].slice(snackLabels[k].indexOf(" ")+1)+'</b><div>Số lượng: '+Number(inv[k]||0)+
   '</div><button onclick="selectSnackToEat(\''+k+'\')">Chọn món này</button></div>'
  ).join(""):"<div class='snack-inventory' style='grid-column:1/-1;text-align:center'>🎒 Túi đang trống. Hãy vào cửa hàng 🛍️ để mua đồ ăn nhé!</div>";
  if(eatingSnackKey&&Number(inv[eatingSnackKey]||0)<=0){
