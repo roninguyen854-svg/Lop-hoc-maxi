@@ -739,6 +739,20 @@ body.student-mode.dock-active{padding-bottom:0!important}
 #snackBagModal .snack-footer{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
 #snackBagModal .snack-footer button{border:0;border-radius:12px;padding:10px 16px;background:#eee3f4;color:#59445f;font-weight:700}
 #snackShopModal .snack-inventory{background:#f6f0fa;border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+#reportPickModal,#reportNoticeModal,#rpsModal,#phonePenaltyModal{position:fixed;inset:0;z-index:30000;background:#24172cbb;display:none;align-items:center;justify-content:center;padding:14px}
+#reportPickModal.open,#reportNoticeModal.open,#rpsModal.open,#phonePenaltyModal.open{display:flex}
+.behavior-game-panel{width:min(520px,100%);max-height:88vh;overflow:auto;background:#fffafd;border:2px solid #e7c8e5;border-radius:20px;padding:18px;color:#59445f;box-shadow:0 15px 45px #0004}
+.behavior-game-panel h2{text-align:center;color:#85568b;margin:4px 0 12px}
+.report-student-choice{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px;margin:8px 0;border:1px solid #eadcf1;border-radius:12px;background:#fff}
+.report-student-choice button,.behavior-game-panel button{border:0;border-radius:11px;padding:10px 13px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:800}
+.report-game-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.report-game-actions button:last-child{background:#e8e0ef;color:#624b6c}
+.rps-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}
+.rps-choices button{font-size:27px;padding:14px 6px}
+.rps-score{display:flex;justify-content:space-around;gap:8px;padding:12px;background:#f5effa;border-radius:13px;text-align:center;font-weight:800}
+.behavior-game-message{min-height:24px;margin:10px 0;text-align:center;font-size:13px}
+#phoneCopyInputs textarea{min-height:90px}
+@media(max-width:420px){.behavior-game-panel{padding:14px}.rps-choices{gap:5px}.rps-choices button{font-size:23px}}
 @media(max-width:430px){#snackShopModal .snack-panel{padding:13px}#snackShopModal .snack-item{padding:9px}}
 
 </style>
@@ -987,6 +1001,7 @@ body.student-mode.dock-active{padding-bottom:0!important}
  <button title="Cửa hàng đồ ăn" aria-label="Cửa hàng đồ ăn" onclick="openSnackShop()">🛍️</button>
  <button title="Chơi điện thoại" aria-label="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
  <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
+ <button title="Mách cô" aria-label="Mách cô" onclick="openReportPicker()">🙋</button>
  <button title="Đang học" aria-label="Đang học" onclick="reportBehavior('Đang ngoan')">📚</button>
  <button class="floating-quiz" onclick="floatingQuizAction()">✏️ LÀM KIỂM TRA</button>
  <button class="floating-leave" title="Rời lớp" aria-label="Rời lớp" onclick="leaveClass()">🚪</button>
@@ -1043,6 +1058,37 @@ body.student-mode.dock-active{padding-bottom:0!important}
   <div class="snack-footer"><button onclick="closeSnackBag()">Đóng</button><button onclick="refreshSnackBag()">🔄 Cập nhật túi</button></div>
  </div>
 </div>
+<div id="reportPickModal" role="dialog" aria-modal="true"><div class="behavior-game-panel">
+ <h2>🙋 MÁCH CÔ</h2><p>Chọn học sinh đang có hoạt động vi phạm:</p>
+ <div id="reportStudentChoices">Đang tải danh sách...</div>
+ <div class="report-game-actions"><button onclick="closeReportPicker()">Đóng</button><button onclick="loadReportTargets()">🔄 Cập nhật</button></div>
+ </div></div>
+<div id="reportNoticeModal" role="dialog" aria-modal="true"><div class="behavior-game-panel">
+ <h2 id="reportNoticeTitle">📣 BẠN ĐƯỢC MÁCH CÔ</h2>
+ <div id="reportNoticeText"></div>
+ <div id="reportNoticeActions" class="report-game-actions"></div>
+ <div id="reportNoticeMessage" class="behavior-game-message"></div>
+ </div></div>
+<div id="rpsModal" role="dialog" aria-modal="true"><div class="behavior-game-panel">
+ <h2>✊ OẲN TÙ XÌ ✋</h2>
+ <p id="rpsOpponentText" style="text-align:center"></p>
+ <div class="rps-score"><span id="rpsReporterScore">Người mách: 0</span><span id="rpsTargetScore">Người bị mách: 0</span></div>
+ <p id="rpsStatus" class="behavior-game-message">Chọn một biểu tượng. Lựa chọn của hai bên được giữ kín đến khi cả hai đã chọn.</p>
+ <div class="rps-choices">
+  <button onclick="playRps('rock')">✊<small>Búa</small></button>
+  <button onclick="playRps('paper')">✋<small>Bao</small></button>
+  <button onclick="playRps('scissors')">✌️<small>Kéo</small></button>
+ </div>
+ <div class="report-game-actions"><button onclick="closeRpsModal()">Đóng</button><button onclick="refreshBehaviorReport()">🔄 Cập nhật</button></div>
+ </div></div>
+<div id="phonePenaltyModal" role="dialog" aria-modal="true"><div class="behavior-game-panel">
+ <h2>📱 HÌNH PHẠT CHÉP CÂU</h2>
+ <p>Chép chính xác câu dưới đây đủ 3 lần, mỗi lần một dòng:</p>
+ <b style="display:block;text-align:center;padding:10px;background:#f5effa;border-radius:12px">em xin hứa sẽ ko chơi đt trong lớp nữa</b>
+ <div id="phoneCopyInputs"><textarea id="phoneCopyText" placeholder="em xin hứa sẽ ko chơi đt trong lớp nữa&#10;em xin hứa sẽ ko chơi đt trong lớp nữa&#10;em xin hứa sẽ ko chơi đt trong lớp nữa"></textarea></div>
+ <div id="phoneCopyMessage" class="behavior-game-message"></div>
+ <button style="width:100%" onclick="submitPhoneCopyPenalty()">✅ NỘP HÌNH PHẠT</button>
+ </div></div>
 <div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
  <button type="button" onclick="goTeacherPanel('boardHomework')">📝 BÀI TẬP TRÊN BẢNG</button>
  <button type="button" onclick="goTeacherPanel('quizSection')">📋 KIỂM TRA</button>
@@ -2188,35 +2234,133 @@ async function checkSnackTop3Reward(){
 }
 
 async function reportBehavior(behavior){
- if(!me)return;
- if(isTeacher){
-  alert("Tài khoản giáo viên không thể gửi báo cáo hành vi học sinh.");
-  return;
- }
- const behaviorKeys={
-  "Ăn vụng":"snacking",
-  "Chơi điện thoại":"phone",
-  "Nói chuyện riêng":"talking",
-  "Đang ngoan":"studying"
- };
+ if(!me||isTeacher)return;
+ const behaviorKeys={"Ăn vụng":"snacking","Chơi điện thoại":"phone","Nói chuyện riêng":"talking","Đang ngoan":"studying"};
  const behaviorKey=behaviorKeys[behavior]||behavior;
- const {error}=await db.from("behavior_events").insert({
-  classroom_id:CLASSROOM_ID,
-  student_id:me.id,
-  behavior:behaviorKey,
-  status:"pending",
-  detected_by:"student",
-  note:""
- });
- if(error){
-  console.error("Gửi hoạt động học sinh thất bại:",error);
-  alert("Không gửi được: "+error.message);
+ if(behaviorKey==="studying"){
+  if($("behaviorStatus"))$("behaviorStatus").textContent="📚 Em đang học tốt!";
   return;
  }
- addClassActivity(`🙋 <b>${esc(me.name)}</b> vừa mách cô: ${esc(behavior)}`);
- if($("behaviorStatus"))$("behaviorStatus").textContent="✅ Đã ghi nhận: "+behavior;
- alert("Đã ghi nhận hoạt động của em!");
+ const {error}=await db.from("behavior_events").upsert({
+  classroom_id:CLASSROOM_ID,student_id:me.id,behavior:behaviorKey,status:"pending",detected_by:"student",note:""
+ },{onConflict:"id"});
+ if(error){console.error(error);alert("Không cập nhật được hoạt động: "+error.message);return;}
+ if($("behaviorStatus"))$("behaviorStatus").textContent="Đã cập nhật trạng thái hoạt động.";
 }
+let activeBehaviorReportId=null;
+let activeBehaviorReport=null;
+const reportBehaviorLabels={snacking:"Ăn vụng",phone:"Chơi điện thoại",talking:"Nói chuyện riêng"};
+function closeReportPicker(){$("reportPickModal").classList.remove("open");}
+async function openReportPicker(){
+ if(!me||isTeacher)return;
+ $("reportPickModal").classList.add("open");
+ await loadReportTargets();
+}
+async function loadReportTargets(){
+ if(!me||isTeacher)return;
+ const box=$("reportStudentChoices");box.textContent="Đang tải...";
+ const [{data:members,error:mErr},{data:activities,error:aErr}]=await Promise.all([
+  db.rpc("get_active_class_members"),db.rpc("get_active_student_behaviors")
+ ]);
+ if(mErr||aErr){box.textContent="Không tải được danh sách: "+(mErr||aErr).message;return;}
+ const active=new Map((activities||[]).filter(x=>reportBehaviorLabels[x.behavior]).map(x=>[x.student_id,x.behavior]));
+ const targets=(members||[]).filter(p=>p.student_id!==me.id&&active.has(p.student_id));
+ if(!targets.length){box.textContent="Hiện không có học sinh nào đang ăn vụng, chơi điện thoại hoặc nói chuyện riêng.";return;}
+ box.innerHTML=targets.map(p=>{
+  const behavior=active.get(p.student_id);
+  return '<div class="report-student-choice"><span><b>'+esc(p.display_name)+'</b><br><small>'+({snacking:"🍿 Ăn vụng",phone:"📱 Chơi điện thoại",talking:"💬 Nói chuyện riêng"}[behavior])+'</small></span><button onclick="sendBehaviorReport(\''+p.student_id+'\')">MÁCH CÔ</button></div>';
+ }).join("");
+}
+async function sendBehaviorReport(targetId){
+ const {data,error}=await db.rpc("create_behavior_report",{p_target_id:targetId});
+ if(error){alert(error.message);return;}
+ closeReportPicker();
+ $("reportNoticeMessage").textContent="Đã gửi lời mách. Chờ bạn phản hồi nhé!";
+ $("reportNoticeTitle").textContent="🙋 ĐÃ GỬI MÁCH CÔ";
+ $("reportNoticeText").textContent="Lý do: "+(reportBehaviorLabels[data.behavior]||data.behavior);
+ $("reportNoticeActions").innerHTML="";
+ $("reportNoticeModal").classList.add("open");
+ activeBehaviorReportId=data.id;
+ await refreshBehaviorReport();
+}
+async function refreshBehaviorReport(){
+ if(!me||!activeBehaviorReportId)return;
+ const {data,error}=await db.from("behavior_reports").select("*").eq("id",activeBehaviorReportId).maybeSingle();
+ if(error||!data)return;
+ activeBehaviorReport=data;
+ const {data:members}=await db.rpc("get_active_class_members");
+ const people=Object.fromEntries((members||[]).map(p=>[p.student_id,p.display_name]));
+ const reporterName=people[data.reporter_id]||"Bạn cùng lớp";
+ const targetName=people[data.target_id]||"Học sinh";
+ const isTarget=me.id===data.target_id;
+ if(data.status==="pending"){
+  if(isTarget){
+   $("reportNoticeTitle").textContent="📣 BẠN ĐƯỢC MÁCH CÔ";
+   $("reportNoticeText").innerHTML='<p><b>'+esc(reporterName)+'</b> mách bạn vì: <b>'+esc(reportBehaviorLabels[data.behavior])+'</b>.</p><p>Em chọn cách giải quyết:</p>';
+   $("reportNoticeActions").innerHTML='<button onclick="respondToBehaviorReport(\'accept\')">✅ CHẤP NHẬN HÌNH PHẠT</button><button onclick="respondToBehaviorReport(\'challenge\')">⚔️ TRANH CÃI</button>';
+  }else{
+   $("reportNoticeTitle").textContent="🙋 ĐÃ MÁCH CÔ";
+   $("reportNoticeText").textContent="Bạn đã mách "+targetName+" vì "+reportBehaviorLabels[data.behavior]+". Đang chờ bạn ấy phản hồi.";
+   $("reportNoticeActions").innerHTML="";
+  }
+  $("reportNoticeModal").classList.add("open");
+ }else if(data.status==="copy_required"&&isTarget){
+  $("reportNoticeModal").classList.remove("open");
+  $("phonePenaltyModal").classList.add("open");
+ }else if(data.status==="challenged"){
+  $("reportNoticeModal").classList.remove("open");
+  $("rpsModal").classList.add("open");
+  $("rpsOpponentText").textContent=(isTarget?"Người mách: "+reporterName:"Người bị mách: "+targetName)+" • Ai đạt 3 điểm trước là thắng.";
+  $("rpsReporterScore").textContent=reporterName+": "+data.reporter_wins;
+  $("rpsTargetScore").textContent=targetName+": "+data.target_wins;
+  const alreadyChosen=(isTarget?data.target_choice:data.reporter_choice)!==null;
+  $("rpsStatus").textContent=alreadyChosen?"Đã ghi nhận lựa chọn của em. Đang chờ đối phương chọn...":"Chọn Búa, Bao hoặc Kéo. Lựa chọn được giữ kín.";
+  $("rpsModal").querySelectorAll(".rps-choices button").forEach(b=>b.disabled=alreadyChosen);
+ }else if(data.status==="completed"){
+  $("reportNoticeModal").classList.remove("open");$("rpsModal").classList.remove("open");$("phonePenaltyModal").classList.remove("open");
+  $("reportNoticeTitle").textContent="🏁 ĐÃ KẾT THÚC";
+  $("reportNoticeText").textContent="Lượt mách cô đã được giải quyết.";
+  $("reportNoticeActions").innerHTML='<button onclick="closeBehaviorReport()">ĐÓNG</button>';
+  $("reportNoticeModal").classList.add("open");
+ }
+}
+async function respondToBehaviorReport(action){
+ if(!activeBehaviorReportId)return;
+ const {data,error}=await db.rpc("respond_behavior_report",{p_report_id:activeBehaviorReportId,p_action:action});
+ if(error){$("reportNoticeMessage").textContent=error.message;return;}
+ if(data.status==="copy_required"){$("reportNoticeModal").classList.remove("open");$("phonePenaltyModal").classList.add("open");}
+ await refreshBehaviorReport();
+}
+async function submitPhoneCopyPenalty(){
+ if(!activeBehaviorReportId)return;
+ const lines=$("phoneCopyText").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(lines.length!==3){$("phoneCopyMessage").textContent="Cần đủ 3 dòng, mỗi dòng một lần chép.";return;}
+ const phrase="em xin hứa sẽ ko chơi đt trong lớp nữa";
+ if(lines.some(x=>x!==phrase)){$("phoneCopyMessage").textContent="Em hãy chép đúng từng chữ theo câu mẫu.";return;}
+ const {error}=await db.rpc("complete_phone_copy_penalty",{p_report_id:activeBehaviorReportId,p_phrase:phrase,p_count:3});
+ if(error){$("phoneCopyMessage").textContent=error.message;return;}
+ $("phonePenaltyModal").classList.remove("open");
+ $("reportNoticeTitle").textContent="✅ ĐÃ HOÀN THÀNH HÌNH PHẠT";
+ $("reportNoticeText").textContent="Em đã chép đúng câu quy định đủ 3 lần.";
+ $("reportNoticeActions").innerHTML='<button onclick="closeBehaviorReport()">ĐÓNG</button>';
+ $("reportNoticeModal").classList.add("open");
+ await loadLeaderboard();
+}
+async function playRps(choice){
+ if(!activeBehaviorReportId)return;
+ $("rpsModal").querySelectorAll(".rps-choices button").forEach(b=>b.disabled=true);
+ $("rpsStatus").textContent="Đang gửi lựa chọn...";
+ const {data,error}=await db.rpc("submit_behavior_rps_choice",{p_report_id:activeBehaviorReportId,p_choice:choice});
+ if(error){$("rpsStatus").textContent=error.message;$("rpsModal").querySelectorAll(".rps-choices button").forEach(b=>b.disabled=false);return;}
+ if(data.waiting)$("rpsStatus").textContent="Đã chọn kín. Đang chờ đối phương...";
+ else if(data.draw)$("rpsStatus").textContent="🤝 Hòa! Không tính điểm, chơi tiếp nhé.";
+ else if(data.completed)$("rpsStatus").textContent=data.winner==="reporter"?"🏆 Người mách thắng! Người bị mách trừ 2 điểm, người mách được +1 điểm.":"🏆 Người bị mách thắng! Bạn ấy +1 điểm, người mách -1 điểm.";
+ else $("rpsStatus").textContent=data.round_result==="reporter"?"Người mách thắng ván này!":"Người bị mách thắng ván này!";
+ await refreshBehaviorReport();
+ await loadLeaderboard();
+}
+function closeRpsModal(){$("rpsModal").classList.remove("open");}
+function closeBehaviorReport(){["reportNoticeModal","rpsModal","phonePenaltyModal"].forEach(id=>$(id).classList.remove("open"));activeBehaviorReportId=null;activeBehaviorReport=null;}
 
 async function loadBehaviors(){
  if(!isTeacher)return;
@@ -2313,6 +2457,15 @@ function subscribeRealtime(){
  },()=>{
   loadMembers();
   if(isTeacher)loadBehaviors();
+ })
+ .on("postgres_changes",{
+  event:"*",schema:"public",table:"behavior_reports"
+ },async(payload)=>{
+  const row=payload.new||payload.old;
+  if(me&&row&&(row.reporter_id===me.id||row.target_id===me.id)){
+   if(row.id)activeBehaviorReportId=row.id;
+   await refreshBehaviorReport();
+  }
  })
 
  .on("postgres_changes",{
