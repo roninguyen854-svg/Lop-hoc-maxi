@@ -724,6 +724,17 @@ body.student-mode.dock-active{padding-bottom:0!important}
 #snackShopModal .snack-item button{width:100%;margin-top:8px;border:0;border-radius:12px;padding:9px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:700}
 #snackShopModal .snack-footer{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
 #snackShopModal .snack-footer button{border:0;border-radius:12px;padding:10px 16px;background:#eee3f4;color:#59445f;font-weight:700}
+#snackBagModal{position:fixed;inset:0;z-index:20001;background:#24172caa;display:none;align-items:center;justify-content:center;padding:16px}
+#snackBagModal.open{display:flex}
+#snackBagModal .snack-bag-panel{width:min(560px,100%);max-height:86vh;overflow:auto;background:#fffaf0;border:3px solid #d8b777;border-radius:22px;padding:18px;color:#59445f;box-shadow:0 15px 45px #0003}
+#snackBagModal h2{text-align:center;margin:2px 0 8px;color:#85568b}
+#snackBagModal .snack-eat-area{margin-top:14px;padding:14px;background:#f5effa;border:1px solid #e4d5ec;border-radius:16px;text-align:center}
+#snackBagModal .snack-progress{height:16px;border-radius:999px;background:#e5dbea;overflow:hidden;margin:12px 0 6px}
+#snackBagModal .snack-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#f08cbd,#9c80df);transition:width .12s ease}
+#snackBagModal .snack-eat-button{width:100%;border:0;border-radius:13px;padding:12px;background:linear-gradient(100deg,#e76bb3,#9879d7);color:white;font-weight:800;font-size:17px}
+#snackBagModal .snack-eat-button:disabled{opacity:.55;cursor:wait}
+#snackBagModal .snack-footer{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+#snackBagModal .snack-footer button{border:0;border-radius:12px;padding:10px 16px;background:#eee3f4;color:#59445f;font-weight:700}
 #snackShopModal .snack-inventory{background:#f6f0fa;border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
 @media(max-width:430px){#snackShopModal .snack-panel{padding:13px}#snackShopModal .snack-item{padding:9px}}
 
@@ -969,7 +980,7 @@ body.student-mode.dock-active{padding-bottom:0!important}
 </main>
 
 <div id="floatingDock" aria-label="Hoạt động học sinh">
- <button title="Ăn vụng" aria-label="Ăn vụng" onclick="reportBehavior('Ăn vụng')">🍿</button>
+ <button title="Ăn vụng" aria-label="Ăn vụng" onclick="openSnackBag()">🍿</button>
  <button title="Cửa hàng đồ ăn" aria-label="Cửa hàng đồ ăn" onclick="openSnackShop()">🛍️</button>
  <button title="Chơi điện thoại" aria-label="Chơi điện thoại" onclick="reportBehavior('Chơi điện thoại')">📱</button>
  <button title="Nói chuyện riêng" aria-label="Nói chuyện riêng" onclick="reportBehavior('Nói chuyện riêng')">💬</button>
@@ -1012,6 +1023,23 @@ body.student-mode.dock-active{padding-bottom:0!important}
 <div id="snackShopMessage" role="status" style="min-height:22px;margin-top:8px"></div>
 <div class="snack-footer"><button onclick="closeSnackShop()">Đóng</button><button onclick="refreshSnackShop()">🔄 Cập nhật</button></div>
 </div></div>
+<div id="snackBagModal" role="dialog" aria-modal="true" aria-label="Túi đồ ăn của học sinh">
+ <div class="snack-bag-panel">
+  <h2>🎒 TÚI ĐỒ ĂN CỦA EM</h2>
+  <p style="text-align:center;margin:0">Chọn một món trong túi rồi nhấp nút Ăn đến khi thanh tiến trình đầy 100%.</p>
+  <div id="snackBagItems" class="snack-grid" style="margin-top:14px">Đang tải túi đồ...</div>
+  <div id="snackEatArea" class="snack-eat-area hidden">
+   <b id="snackEatTitle">Đang chọn món</b>
+   <div class="snack-progress" role="progressbar" aria-label="Tiến trình ăn" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div id="snackEatProgressFill" class="snack-progress-fill"></div>
+   </div>
+   <b id="snackEatProgressText">0%</b>
+   <button id="snackEatButton" class="snack-eat-button" onclick="eatSnackClick()">🍴 ĂN</button>
+  </div>
+  <div id="snackBagMessage" role="status" style="min-height:22px;margin-top:10px"></div>
+  <div class="snack-footer"><button onclick="closeSnackBag()">Đóng</button><button onclick="refreshSnackBag()">🔄 Cập nhật túi</button></div>
+ </div>
+</div>
 <div id="teacherQuickDock" aria-label="Lối tắt giáo viên">
  <button type="button" onclick="goTeacherPanel('boardHomework')">📝 BÀI TẬP TRÊN BẢNG</button>
  <button type="button" onclick="goTeacherPanel('quizSection')">📋 KIỂM TRA</button>
@@ -1448,7 +1476,8 @@ async function refreshAll(){
   loadMembers(),
   loadLeaderboard(),
   loadQuestion(),
-  loadStudentPointsProfile()
+  loadStudentPointsProfile(),
+  isTeacher?loadBehaviors():Promise.resolve()
  ]);
 }
 
@@ -2022,7 +2051,79 @@ async function gradeAnswer(answerId,studentId,correct){
 
 let snackRewardInterval=null;
 let snackShopState=null;
+let eatingSnackKey=null;
+let eatingSnackProgress=0;
+let eatingSnackBusy=false;
 const snackLabels={candy:"🍬 Kẹo",water:"💧 Nước lọc",salt:"🧂 Muối",cookie:"🍪 Bánh quy",tamarind:"🟤 Me",bim_bim:"🍿 Bim bim",sting:"⚡ Sting",orange_juice:"🍊 Nước cam",c2:"🍵 C2",dr_thanh:"🌿 Dr.Thanh",egg:"🥚 Trứng",sausage:"🌭 Xúc xích",bt_me:"🥭 BT me",bt_tron:"🌶️ BT trộn",bt_cuon:"🌯 BT cuộn",instant_noodles:"🍜 Mì gói",milk_tea:"🧋 Tà tưa",sandwich:"🥪 Bánh mì"};
+function updateSnackEatProgress(){
+ const fill=$("snackEatProgressFill");
+ const text=$("snackEatProgressText");
+ const bar=fill?.parentElement;
+ if(fill)fill.style.width=eatingSnackProgress+"%";
+ if(text)text.textContent=eatingSnackProgress+"%";
+ if(bar)bar.setAttribute("aria-valuenow",String(eatingSnackProgress));
+}
+async function openSnackBag(){
+ if(!me||isTeacher){alert("Túi đồ chỉ dành cho học sinh đang ở trong lớp.");return;}
+ $("snackBagModal").classList.add("open");
+ $("snackBagMessage").textContent="Đang mở túi đồ...";
+ $("snackEatArea").classList.add("hidden");
+ eatingSnackKey=null;eatingSnackProgress=0;eatingSnackBusy=false;
+ await refreshSnackBag();
+}
+function closeSnackBag(){
+ $("snackBagModal").classList.remove("open");
+ eatingSnackKey=null;eatingSnackProgress=0;eatingSnackBusy=false;
+}
+async function refreshSnackBag(){
+ if(!me||isTeacher)return;
+ const {data,error}=await db.rpc("get_snack_shop_state");
+ if(error){$("snackBagMessage").textContent="Không tải được túi đồ: "+error.message;return;}
+ snackShopState=data||{};
+ const inv=snackShopState.inventory||{};
+ const available=Object.keys(snackLabels).filter(k=>Number(inv[k]||0)>0);
+ $("snackBagItems").innerHTML=available.length?available.map(k=>
+  '<div class="snack-item"><div class="emoji">'+snackLabels[k].split(" ")[0]+'</div><b>'+
+  snackLabels[k].replace(/^\\S+\\s*/,"")+'</b><div>Số lượng: '+Number(inv[k]||0)+
+  '</div><button onclick="selectSnackToEat(\''+k+'\')">Chọn món này</button></div>'
+ ).join(""):"<div class='snack-inventory' style='grid-column:1/-1;text-align:center'>🎒 Túi đang trống. Hãy vào cửa hàng 🛍️ để mua đồ ăn nhé!</div>";
+ if(eatingSnackKey&&Number(inv[eatingSnackKey]||0)<=0){
+  eatingSnackKey=null;eatingSnackProgress=0;$("snackEatArea").classList.add("hidden");
+ }
+ $("snackBagMessage").textContent=available.length?"Chọn món em muốn ăn nhé!":"";
+}
+function selectSnackToEat(itemKey){
+ const inv=snackShopState?.inventory||{};
+ if(!snackLabels[itemKey]||Number(inv[itemKey]||0)<=0){$("snackBagMessage").textContent="Món này không còn trong túi.";return;}
+ eatingSnackKey=itemKey;eatingSnackProgress=0;eatingSnackBusy=false;
+ $("snackEatTitle").textContent="Đang ăn: "+snackLabels[itemKey];
+ $("snackEatArea").classList.remove("hidden");
+ $("snackEatButton").disabled=false;
+ $("snackEatButton").textContent="🍴 ĂN (NHẤP LIÊN TỤC)";
+ updateSnackEatProgress();
+ $("snackBagMessage").textContent="Mỗi lần nhấp, thanh tiến trình tăng 10%. Đủ 100% sẽ mất 1 phần món này.";
+}
+async function eatSnackClick(){
+ if(!eatingSnackKey||eatingSnackBusy)return;
+ eatingSnackProgress=Math.min(100,eatingSnackProgress+10);
+ updateSnackEatProgress();
+ if(eatingSnackProgress<100)return;
+ eatingSnackBusy=true;
+ $("snackEatButton").disabled=true;
+ $("snackBagMessage").textContent="Đang xác nhận món đã ăn...";
+ const {data,error}=await db.rpc("eat_snack",{p_item_key:eatingSnackKey});
+ if(error){
+  eatingSnackProgress=90;updateSnackEatProgress();
+  $("snackBagMessage").textContent="Chưa trừ được món: "+error.message+" — nhấp thêm một lần để thử lại.";
+  $("snackEatButton").disabled=false;eatingSnackBusy=false;return;
+ }
+ const eatenLabel=snackLabels[eatingSnackKey];
+ eatingSnackKey=null;eatingSnackProgress=0;eatingSnackBusy=false;
+ $("snackEatArea").classList.add("hidden");
+ $("snackBagMessage").textContent="😋 Em đã ăn xong "+eatenLabel+"!";
+ await refreshSnackBag();
+ if($("snackShopModal").classList.contains("open"))await refreshSnackShop();
+}
 async function refreshSnackShop(){
  if(!me||isTeacher)return;
  const {data,error}=await db.rpc("get_snack_shop_state");
