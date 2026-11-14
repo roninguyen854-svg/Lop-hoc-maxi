@@ -1396,15 +1396,38 @@ async function teacherLogin(){
 
  isTeacher=true;
 
- // Mỗi lần giáo viên chọn "Mở lớp học mới", máy chủ tạo session mới.
- const {data:openedSession,error:openError}=await db.rpc("open_classroom");
- if(openError||!openedSession){
-  console.error("Không mở được lớp học mới:",openError);
+ // Nếu lớp đã mở, tiếp tục đúng phiên hiện tại để không tách học sinh
+ // sang phiên cũ khi giáo viên tải lại trang hoặc đăng nhập lại.
+ const {data:classState,error:classStateError}=await db.from("classrooms")
+  .select("is_open,active_session_id")
+  .eq("id",CLASSROOM_ID)
+  .maybeSingle();
+
+ if(classStateError){
+  console.error("Không kiểm tra được phiên lớp hiện tại:",classStateError);
   await db.auth.signOut();
   me=null;
   isTeacher=false;
-  alert("Không thể mở lớp học mới: "+(openError?.message||"Máy chủ không trả về phiên lớp học."));
+  alert("Không thể kiểm tra trạng thái lớp học: "+classStateError.message);
   return;
+ }
+
+ let openedSession=classState?.is_open&&classState?.active_session_id
+  ?classState.active_session_id
+  :null;
+
+ // Chỉ tạo phiên mới khi lớp chưa mở hoặc chưa có phiên hiện tại.
+ if(!openedSession){
+  const {data:newSession,error:openError}=await db.rpc("open_classroom");
+  if(openError||!newSession){
+   console.error("Không mở được lớp học mới:",openError);
+   await db.auth.signOut();
+   me=null;
+   isTeacher=false;
+   alert("Không thể mở lớp học mới: "+(openError?.message||"Máy chủ không trả về phiên lớp học."));
+   return;
+  }
+  openedSession=newSession;
  }
 
  await enterClass();
