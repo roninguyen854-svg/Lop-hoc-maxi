@@ -831,6 +831,8 @@ body.student-mode.dock-active{padding-bottom:0!important}
   <div class="card panel teacher-only">
    <h3>🏆 BẢNG XẾP HẠNG</h3>
    <div id="leaderboard"></div>
+   <button class="primary" id="manualTop3RewardBtn" onclick="previewAndRewardTop3()">🎁 PHÁT QUÀ TOP 3</button>
+   <p class="small" id="manualTop3RewardStatus">Giáo viên bấm nút để tặng mỗi bạn trong Top 3 một bim bim.</p>
   </div>
 
  </div>
@@ -1513,7 +1515,7 @@ async function enterClass(){
  // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
  studentDock.classList.toggle("student-toolbar-active",!isTeacher);
  studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
- if(!isTeacher){checkSnackTop3Reward();if(snackRewardInterval)clearInterval(snackRewardInterval);snackRewardInterval=setInterval(checkSnackTop3Reward,30000);}
+ if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
  studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
  studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
  studentDock.querySelectorAll("button").forEach(button=>{
@@ -2184,7 +2186,6 @@ async function gradeAnswer(answerId,studentId,correct){
 }
 
 
-let snackRewardInterval=null;
 let snackShopState=null;
 let eatingSnackKey=null;
 let eatingSnackProgress=0;
@@ -2285,16 +2286,37 @@ async function buySnack(itemKey){
  $("snackShopMessage").textContent="🎉 Mua thành công "+(snackLabels[itemKey]||"món ăn")+"!";
  await refreshSnackShop();await loadLeaderboard();
 }
-async function checkSnackTop3Reward(){
- if(!me||isTeacher)return;
- const {data,error}=await db.rpc("claim_snack_top3_reward");
- if(error){console.warn("Không kiểm tra được quà top 3:",error.message);return;}
- if(data&&data.you_are_top3&&data.rewarded_count>0){
-  const msg="🏆 Chúc mừng! Em thuộc top 3 và được tặng 1 bim bim miễn phí!";
-  if($("snackShopModal").classList.contains("open"))$("snackShopMessage").textContent=msg;
-  else console.info(msg);
-  await loadLeaderboard();
-  if($("snackShopModal").classList.contains("open"))await refreshSnackShop();
+async function previewAndRewardTop3(){
+ if(!isTeacher||!me)return;
+ const button=$("manualTop3RewardBtn");
+ const status=$("manualTop3RewardStatus");
+ if(button)button.disabled=true;
+ if(status)status.textContent="Đang tính bảng xếp hạng...";
+ try{
+  const {data:preview,error:previewError}=await db.rpc("get_teacher_top3_snack_preview");
+  if(previewError)throw previewError;
+  const winners=Array.isArray(preview)?preview:[];
+  if(!winners.length){
+   if(status)status.textContent="Chưa có học sinh trong phiên học hiện tại.";
+   return;
+  }
+  const medals=["🥇","🥈","🥉"];
+  const summary=winners.map((p,i)=>`${medals[i]} ${p.display_name} — ${Number(p.points||0)} điểm`).join("\\n");
+  if(!confirm("Xác nhận tặng mỗi bạn sau đây 1 bim bim?\\n\\n"+summary))return;
+  const requestId=crypto.randomUUID();
+  if(status)status.textContent="Đang phát quà...";
+  const {data,error}=await db.rpc("teacher_reward_top3_snacks",{p_request_id:requestId});
+  if(error)throw error;
+  const awarded=Array.isArray(data?.winners)?data.winners:[];
+  if(status)status.textContent=awarded.length
+   ? "🎉 Đã tặng 1 bim bim cho: "+awarded.map(x=>x.display_name).join(", ")
+   : "Không có học sinh nào nhận quà.";
+  addClassActivity("🎁 Giáo viên đã phát 1 bim bim cho Top 3: "+awarded.map(x=>esc(x.display_name)).join(", "));
+ }catch(error){
+  console.error(error);
+  if(status)status.textContent="❌ Không phát được quà: "+error.message;
+ }finally{
+  if(button)button.disabled=false;
  }
 }
 
