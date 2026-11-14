@@ -2612,7 +2612,6 @@ async function endClass(){
 
 async function exitClassView(signOut){
  if(questionRefreshInterval){clearInterval(questionRefreshInterval);questionRefreshInterval=null;}
- if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
  closeSnackShop();
  if(classStatusInterval){clearInterval(classStatusInterval);classStatusInterval=null;}
  joinedSessionId=null;
