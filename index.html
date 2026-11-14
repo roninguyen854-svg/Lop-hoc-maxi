@@ -191,6 +191,9 @@ body.dock-active{padding-bottom:85px}
 .desk.has-student{cursor:default}
 .desk .activity-tag{font-size:10px;background:#fff4fb;border-radius:10px;padding:3px 5px;margin-top:3px}
 .desk .student-name{min-height:27px}
+.desk-top{position:relative}
+.desk .activity-head-emoji{position:absolute;top:3px;left:50%;transform:translateX(-50%);z-index:5;min-width:30px;height:30px;padding:2px 6px;display:grid;place-items:center;border-radius:50%;background:#fff;border:2px solid #e5b7df;box-shadow:0 2px 7px #5b345b44;font-size:20px;line-height:1}
+.desk .activity-head-emoji[hidden]{display:none}
 @media(max-width:700px){
  .classroom-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
  .classroom-summary .notice{min-width:0;padding:7px 5px}
@@ -1498,6 +1501,12 @@ async function loadMembers(){
  }
 
  const all=members||[];
+  const {data:activityRows, error:activityError}=await db.rpc("get_active_student_behaviors");
+  if(activityError)console.warn("Không tải được emoji hoạt động:",activityError);
+  const activityByStudent={};
+  (activityRows||[]).forEach(row=>{activityByStudent[row.student_id]=row;});
+  const activityEmojis={snacking:"🍿",phone:"📱",talking:"💬",studying:"📚"};
+  const activityNames={snacking:"Đang ăn vụng",phone:"Đang chơi điện thoại",talking:"Đang nói chuyện riêng",studying:"Đang học"};
  const seated=all.filter(p=>p.seat_number!==null&&p.seat_number!==undefined);
  const noSeat=all.filter(p=>p.seat_number===null||p.seat_number===undefined);
  const occupied=seated.length;
@@ -1516,6 +1525,18 @@ async function loadMembers(){
    ?avatarSVG(character):'<div class="avatar-placeholder">👤</div>';
   desk.querySelector(".student-name").textContent=
    p.display_name+(p.status==="offline"?" (Ngoại tuyến)":"");
+   let activityBadge=desk.querySelector(".activity-head-emoji");
+   if(!activityBadge){
+    activityBadge=document.createElement("div");
+    activityBadge.className="activity-head-emoji";
+    activityBadge.setAttribute("aria-live","polite");
+    desk.querySelector(".desk-top").appendChild(activityBadge);
+   }
+   const activity=activityByStudent[p.student_id];
+   const activityEmoji=activity?activityEmojis[activity.behavior]:"";
+   activityBadge.textContent=activityEmoji;
+   activityBadge.title=activity?activityNames[activity.behavior]||"Đang hoạt động":"";
+   activityBadge.hidden=!activityEmoji;
  });
 
  $("noSeatStudents").innerHTML=noSeat.length?noSeat.map(p=>{
@@ -2287,6 +2308,7 @@ function subscribeRealtime(){
   event:"*",schema:"public",table:"behavior_events",
   filter:"classroom_id=eq."+CLASSROOM_ID
  },()=>{
+  loadMembers();
   if(isTeacher)loadBehaviors();
  })
 
