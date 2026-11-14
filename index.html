@@ -1515,7 +1515,6 @@ async function enterClass(){
  // Reset display cũ rồi bật thanh công cụ riêng cho học sinh.
  studentDock.classList.toggle("student-toolbar-active",!isTeacher);
  studentDock.style.setProperty("display",isTeacher?"none":"flex","important");
- if(snackRewardInterval){clearInterval(snackRewardInterval);snackRewardInterval=null;}
  studentDock.style.setProperty("visibility",isTeacher?"hidden":"visible","important");
  studentDock.style.setProperty("opacity",isTeacher?"0":"1","important");
  studentDock.querySelectorAll("button").forEach(button=>{
